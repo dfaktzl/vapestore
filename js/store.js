@@ -1,9 +1,8 @@
 /* ==========================================================================
-   STOREFRONT MAIN CONTROLLER (LUXURY GOLD)
+   STOREFRONT MAIN CONTROLLER (OZCHEAPVAPES REBRAND)
    ========================================================================== */
 
 document.addEventListener("DOMContentLoaded", () => {
-  // Initialize App
   window.store = new StoreApp();
 });
 
@@ -23,6 +22,7 @@ class StoreApp {
     // Active modal states
     this.selectedProduct = null;
     this.selectedFlavor = "";
+    this.selectedFormat = "Single";
     
     this.init();
   }
@@ -69,7 +69,6 @@ class StoreApp {
     });
 
     rejectBtn.addEventListener("click", () => {
-      // Redirect to safety or search engine
       window.location.href = "https://www.google.com";
     });
 
@@ -105,7 +104,7 @@ class StoreApp {
         return;
       }
     } catch (e) {
-      console.warn("Could not load config.json (expected in local file:// mode). Falling back to default script.");
+      console.warn("Could not load config.json. Falling back to default script.");
     }
 
     // 3. Fallback to JS config default
@@ -171,7 +170,6 @@ class StoreApp {
     const container = document.getElementById("brand-filters");
     if (!container || !this.config || !this.config.products) return;
     
-    // Extract unique brands
     const brands = [...new Set(this.config.products.map(p => p.brand))].sort();
     
     container.innerHTML = "";
@@ -207,17 +205,14 @@ class StoreApp {
     
     // Filter logic
     let filtered = this.config.products.filter(prod => {
-      // 1. Category check
       if (this.activeCategory !== "all") {
         if (prod.category !== this.activeCategory) return false;
       }
       
-      // 2. Brand check
       if (this.selectedBrands.length > 0) {
         if (!this.selectedBrands.includes(prod.brand)) return false;
       }
       
-      // 3. Search check
       if (this.searchQuery) {
         const query = this.searchQuery.toLowerCase();
         const matchesName = prod.name.toLowerCase().includes(query);
@@ -226,7 +221,6 @@ class StoreApp {
         if (!matchesName && !matchesBrand && !matchesFlavor) return false;
       }
       
-      // 4. Price check
       if (this.selectedPrices.length > 0) {
         let matchPrice = false;
         if (this.selectedPrices.includes("under-50") && prod.price < 50) matchPrice = true;
@@ -235,7 +229,6 @@ class StoreApp {
         if (!matchPrice) return false;
       }
 
-      // 5. Format check
       if (this.selectedFormats.length > 0) {
         let matchFormat = false;
         if (this.selectedFormats.includes("single") && !prod.isBoxOnly) matchFormat = true;
@@ -254,12 +247,8 @@ class StoreApp {
     } else if (this.currentSort === "name-asc") {
       filtered.sort((a, b) => a.name.localeCompare(b.name));
     }
-    // "featured" leaves the products in default order
 
-    // Render count
     if (counter) counter.innerText = filtered.length;
-    
-    // Clear grid
     grid.innerHTML = "";
     
     if (filtered.length === 0) {
@@ -267,52 +256,71 @@ class StoreApp {
         <div class="empty-catalog">
           <div class="empty-icon">🔍</div>
           <h3 class="empty-title">No products match your criteria</h3>
-          <p class="empty-desc">Try clearing filters or searching for another flavor.</p>
+          <p class="empty-desc">Try clearing filters or searching for another term.</p>
         </div>
       `;
       return;
     }
     
-    // Render cards
     filtered.forEach(prod => {
       const card = document.createElement("div");
       card.className = "product-card glass-card animate-slideup";
       
-      // Badges
       let badgeHTML = "";
       if (prod.popular) {
         badgeHTML = `<div class="product-badge">Best Seller</div>`;
       } else if (prod.isBoxOnly) {
-        badgeHTML = `<div class="product-badge">Wholesale Box</div>`;
+        badgeHTML = `<div class="product-badge">Wholesale Box Only</div>`;
       }
       
-      // Flavor select
+      // Flavor Dropdown
       let flavorHTML = "";
       if (prod.flavors && prod.flavors.length > 0) {
-        flavorHTML = `<select class="product-card-flavor-select" id="flavor-${prod.id}">`;
+        flavorHTML = `<div class="form-field" style="margin-bottom:10px;"><select class="product-card-flavor-select" id="flavor-${prod.id}" style="margin-bottom:0;">`;
         prod.flavors.forEach(flavor => {
           flavorHTML += `<option value="${flavor}">${flavor}</option>`;
         });
-        flavorHTML += `</select>`;
+        flavorHTML += `</select></div>`;
       }
       
-      // Prices row
+      // Format Dropdown select (Single vs Box of 10)
+      let formatHTML = "";
+      if (prod.isBoxOnly) {
+        formatHTML = `
+          <div class="form-field" style="margin-bottom:12px;">
+            <select class="product-card-flavor-select" id="format-${prod.id}" style="margin-bottom:0;" disabled>
+              <option value="Box">Box of 10 Pack</option>
+            </select>
+          </div>
+        `;
+      } else {
+        formatHTML = `
+          <div class="form-field" style="margin-bottom:12px;">
+            <select class="product-card-flavor-select" id="format-${prod.id}" style="margin-bottom:0;">
+              <option value="Single">Single Unit ($${prod.price.toFixed(2)})</option>
+              <option value="Box">Box of 10 ($${prod.boxPrice.toFixed(2)})</option>
+            </select>
+          </div>
+        `;
+      }
+      
+      // Prices row representation
       let priceRow = "";
       if (prod.isBoxOnly) {
         priceRow = `
           <div class="product-card-price-row">
-            <span class="price-label">Wholesale Box:</span>
+            <span class="price-label">Wholesale Price:</span>
             <span class="price-value highlight-gold">$${prod.price.toFixed(2)}</span>
           </div>
         `;
       } else {
         priceRow = `
           <div class="product-card-price-row">
-            <span class="price-label">Single Unit:</span>
+            <span class="price-label">Single Rate:</span>
             <span class="price-value">$${prod.price.toFixed(2)}</span>
           </div>
           <div class="product-card-price-row">
-            <span class="price-label">Box (10x):</span>
+            <span class="price-label">Box Rate (10x):</span>
             <span class="price-value highlight-gold">$${prod.boxPrice.toFixed(2)}</span>
           </div>
         `;
@@ -326,7 +334,10 @@ class StoreApp {
         <div class="product-card-brand">${prod.brand}</div>
         <a href="#" class="product-card-name" id="name-${prod.id}">${prod.name}</a>
         
-        ${flavorHTML}
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px;">
+          ${flavorHTML}
+          ${formatHTML}
+        </div>
         
         <div class="product-card-footer">
           <div class="product-card-prices">
@@ -336,7 +347,6 @@ class StoreApp {
         </div>
       `;
       
-      // Add Event Listeners
       const imgWrap = card.querySelector(".product-card-image-wrap");
       const nameLink = card.querySelector(`#name-${prod.id}`);
       const addBtn = card.querySelector(`#add-${prod.id}`);
@@ -350,9 +360,13 @@ class StoreApp {
       nameLink.addEventListener("click", openDetails);
       
       addBtn.addEventListener("click", () => {
-        const select = card.querySelector(`#flavor-${prod.id}`);
-        const selectedFlav = select ? select.value : (prod.flavors[0] || "Default");
-        this.addToCart(prod, selectedFlav, 1);
+        const selectFlav = card.querySelector(`#flavor-${prod.id}`);
+        const selectForm = card.querySelector(`#format-${prod.id}`);
+        
+        const flavor = selectFlav ? selectFlav.value : (prod.flavors[0] || "Default");
+        const format = selectForm ? selectForm.value : "Box"; // Default to Box if boxOnly
+        
+        this.addToCart(prod, flavor, format, 1);
         
         // Success animation feedback on button
         const originalText = addBtn.innerText;
@@ -381,17 +395,18 @@ class StoreApp {
   openModal(product) {
     this.selectedProduct = product;
     this.selectedFlavor = product.flavors[0] || "Default";
+    this.selectedFormat = "Single";
     
     const modal = document.getElementById("product-detail-modal");
     const mImg = document.getElementById("modal-image");
     const mBrand = document.getElementById("modal-brand");
     const mName = document.getElementById("modal-name");
     const mDesc = document.getElementById("modal-description");
-    const mFlavors = document.getElementById("modal-flavors");
-    const mPriceSingle = document.getElementById("modal-price-single");
-    const mPriceBox = document.getElementById("modal-price-box");
-    const mPriceBoxRow = document.getElementById("modal-price-box-row");
-    const mFlavGroup = document.getElementById("modal-flavor-group");
+    
+    const mFlavorSelect = document.getElementById("modal-flavor-select");
+    const mFormatSelect = document.getElementById("modal-format-select");
+    const mPriceValue = document.getElementById("modal-price-value");
+    const mPriceLabel = document.getElementById("modal-price-label");
     
     // Fill text
     mImg.src = product.image;
@@ -399,40 +414,66 @@ class StoreApp {
     mName.innerText = product.name;
     mDesc.innerText = product.description;
     
-    // Price renders
-    mPriceSingle.innerText = `$${product.price.toFixed(2)}`;
-    if (product.isBoxOnly) {
-      mPriceBoxRow.style.display = "none";
-      mPriceSingle.previousElementSibling.innerText = "Wholesale Price:";
-      mPriceSingle.classList.add("highlight-gold");
-    } else {
-      mPriceBoxRow.style.display = "flex";
-      mPriceSingle.previousElementSibling.innerText = "Single Price:";
-      mPriceSingle.classList.remove("highlight-gold");
-      mPriceBox.innerText = `$${product.boxPrice.toFixed(2)}`;
-    }
-    
-    // Render flavor pills
-    mFlavors.innerHTML = "";
+    // Render flavor select options
+    mFlavorSelect.innerHTML = "";
     if (product.flavors && product.flavors.length > 0) {
-      mFlavGroup.style.display = "block";
+      document.getElementById("modal-flavor-group").style.display = "block";
       product.flavors.forEach(flavor => {
-        const pill = document.createElement("div");
-        pill.className = `modal-flavor-pill ${this.selectedFlavor === flavor ? "active" : ""}`;
-        pill.innerText = flavor;
-        
-        pill.addEventListener("click", () => {
-          this.selectedFlavor = flavor;
-          // toggle classes
-          mFlavors.querySelectorAll(".modal-flavor-pill").forEach(p => p.classList.remove("active"));
-          pill.classList.add("active");
-        });
-        
-        mFlavors.appendChild(pill);
+        const option = document.createElement("option");
+        option.value = flavor;
+        option.innerText = flavor;
+        mFlavorSelect.appendChild(option);
       });
     } else {
-      mFlavGroup.style.display = "none";
+      document.getElementById("modal-flavor-group").style.display = "none";
     }
+    
+    // Render format select options
+    mFormatSelect.innerHTML = "";
+    if (product.isBoxOnly) {
+      const option = document.createElement("option");
+      option.value = "Box";
+      option.innerText = "Box of 10 pack";
+      mFormatSelect.appendChild(option);
+      mFormatSelect.disabled = true;
+      this.selectedFormat = "Box";
+    } else {
+      mFormatSelect.disabled = false;
+      const optionSingle = document.createElement("option");
+      optionSingle.value = "Single";
+      optionSingle.innerText = "Single Unit";
+      
+      const optionBox = document.createElement("option");
+      optionBox.value = "Box";
+      optionBox.innerText = "Box of 10 Pack";
+      
+      mFormatSelect.appendChild(optionSingle);
+      mFormatSelect.appendChild(optionBox);
+      this.selectedFormat = "Single";
+    }
+    
+    // Price dynamic change handler
+    const updatePrice = () => {
+      if (this.selectedFormat === "Box") {
+        mPriceLabel.innerText = "Box Price:";
+        mPriceValue.innerText = `$${(product.boxPrice || product.price).toFixed(2)}`;
+      } else {
+        mPriceLabel.innerText = "Single Price:";
+        mPriceValue.innerText = `$${product.price.toFixed(2)}`;
+      }
+    };
+    
+    updatePrice();
+    
+    // Bind change event to modal selectors
+    mFlavorSelect.onchange = (e) => {
+      this.selectedFlavor = e.target.value;
+    };
+    
+    mFormatSelect.onchange = (e) => {
+      this.selectedFormat = e.target.value;
+      updatePrice();
+    };
     
     // Open
     modal.classList.add("active");
@@ -445,7 +486,7 @@ class StoreApp {
   }
 
   /* ==========================================================================
-     4. CART MANAGEMENT & LOGIC
+     4. CART MANAGEMENT & STORAGE
      ========================================================================== */
   
   loadCart() {
@@ -465,8 +506,11 @@ class StoreApp {
     this.updateCartUI();
   }
 
-  addToCart(product, flavor, qty) {
-    const existing = this.cart.find(item => item.id === product.id && item.flavor === flavor);
+  addToCart(product, flavor, format, qty) {
+    // Unique match by ID + Flavor + Format
+    const existing = this.cart.find(item => item.id === product.id && item.flavor === flavor && item.format === format);
+    
+    const unitPrice = format === "Box" ? (product.boxPrice || product.price) : product.price;
     
     if (existing) {
       existing.quantity += qty;
@@ -476,7 +520,9 @@ class StoreApp {
         brand: product.brand,
         name: product.name,
         flavor: flavor,
-        price: product.price,
+        format: format, // "Single" or "Box"
+        price: unitPrice,
+        singlePrice: product.price,
         boxPrice: product.boxPrice || product.price,
         isBoxOnly: product.isBoxOnly,
         image: product.image,
@@ -487,25 +533,25 @@ class StoreApp {
     this.saveCart();
   }
 
-  updateQuantity(id, flavor, delta) {
-    const item = this.cart.find(item => item.id === id && item.flavor === flavor);
+  updateQuantity(id, flavor, format, delta) {
+    const item = this.cart.find(item => item.id === id && item.flavor === flavor && item.format === format);
     if (!item) return;
     
     item.quantity += delta;
     if (item.quantity <= 0) {
-      this.cart = this.cart.filter(i => !(i.id === id && i.flavor === flavor));
+      this.cart = this.cart.filter(i => !(i.id === id && i.flavor === flavor && i.format === format));
     }
     
     this.saveCart();
   }
 
-  removeFromCart(id, flavor) {
-    this.cart = this.cart.filter(item => !(item.id === id && item.flavor === flavor));
+  removeFromCart(id, flavor, format) {
+    this.cart = this.cart.filter(item => !(item.id === id && item.flavor === flavor && item.format === format));
     this.saveCart();
   }
 
   /* ==========================================================================
-     5. CART CALCULATOR & BULK SAVINGS Engine
+     5. CART CALCULATOR & BULK SAVINGS ENGINE
      ========================================================================== */
   
   calculateOrder() {
@@ -514,51 +560,53 @@ class StoreApp {
     let savings = 0;
     let itemCount = 0;
 
-    // Group items by product ID to check if their combined flavor quantities exceed 10 (carton rate)
-    const productQuantities = {};
+    // Group items in format "Single" by product ID to apply auto-carton discounts
+    const singleProductQuantities = {};
     this.cart.forEach(item => {
       itemCount += item.quantity;
-      if (!productQuantities[item.id]) {
-        productQuantities[item.id] = 0;
+      if (item.format === "Single") {
+        if (!singleProductQuantities[item.id]) {
+          singleProductQuantities[item.id] = 0;
+        }
+        singleProductQuantities[item.id] += item.quantity;
       }
-      productQuantities[item.id] += item.quantity;
     });
 
     this.cart.forEach(item => {
-      const singlePrice = item.price;
-      const boxPrice = item.boxPrice; // e.g. 260
-      const isBoxOnly = item.isBoxOnly;
-      
-      const totalProdQty = productQuantities[item.id];
-      
-      // If the product is naturally sold only in cartons/boxes (like HQD Box or Winfield),
-      // or if they haven't reached 10 units threshold, they pay the default unit price.
-      if (isBoxOnly || totalProdQty < 10) {
-        const cost = item.quantity * singlePrice;
+      // 1. If the item is in Box format, the price is already discounted, so sum it up directly
+      if (item.format === "Box") {
+        const cost = item.quantity * item.boxPrice;
         subtotal += cost;
         total += cost;
       } else {
-        // Carton rate discount logic:
-        // Calculate the proportion of this flavor relative to total product order
-        const proportion = item.quantity / totalProdQty;
+        // 2. If the item is in Single format, check if total singles ordered reaches 10
+        const totalSingleQty = singleProductQuantities[item.id];
         
-        // Full boxes of 10 cost boxPrice. Singles cost singlePrice.
-        const totalFullBoxes = Math.floor(totalProdQty / 10);
-        const totalLeftoverSingles = totalProdQty % 10;
-        
-        const totalCalculatedCost = (totalFullBoxes * boxPrice) + (totalLeftoverSingles * singlePrice);
-        const itemAllocatedCost = totalCalculatedCost * proportion;
-        
-        const standardCost = item.quantity * singlePrice;
-        
-        subtotal += standardCost;
-        total += itemAllocatedCost;
-        savings += (standardCost - itemAllocatedCost);
+        if (totalSingleQty < 10) {
+          const cost = item.quantity * item.singlePrice;
+          subtotal += cost;
+          total += cost;
+        } else {
+          // Auto Carton rate discount applied for buying 10 or more singles!
+          const proportion = item.quantity / totalSingleQty;
+          
+          const boxes = Math.floor(totalSingleQty / 10);
+          const leftovers = totalSingleQty % 10;
+          
+          const totalCalculatedCost = (boxes * item.boxPrice) + (leftovers * item.singlePrice);
+          const itemAllocatedCost = totalCalculatedCost * proportion;
+          
+          const standardCost = item.quantity * item.singlePrice;
+          
+          subtotal += standardCost;
+          total += itemAllocatedCost;
+          savings += (standardCost - itemAllocatedCost);
+        }
       }
     });
 
-    // Hardcode free shipping on all orders over $250
-    const shipping = (total >= 250 || total === 0) ? 0 : 15.00;
+    // Hardcode free shipping on all orders over $200 (updated from $250)
+    const shipping = (total >= 200 || total === 0) ? 0 : 15.00;
     total += shipping;
 
     return {
@@ -581,11 +629,9 @@ class StoreApp {
     
     const calculations = this.calculateOrder();
     
-    // Update header badge
     if (countBadge) countBadge.innerText = calculations.itemCount;
     if (countText) countText.innerText = calculations.itemCount;
     
-    // Update footer totals
     if (subtotalText) subtotalText.innerText = `$${calculations.subtotal.toFixed(2)}`;
     if (savingsText) {
       if (calculations.savings > 0) {
@@ -600,7 +646,6 @@ class StoreApp {
     }
     if (totalText) totalText.innerText = `$${calculations.total.toFixed(2)}`;
     
-    // Render list
     if (!itemsList) return;
     itemsList.innerHTML = "";
     
@@ -620,6 +665,7 @@ class StoreApp {
       cartItem.className = "cart-item";
       
       const itemPriceTotal = item.quantity * item.price;
+      const formatBadge = item.format === "Box" ? "10x Box" : "Single";
       
       cartItem.innerHTML = `
         <div class="cart-item-image-wrap">
@@ -628,7 +674,9 @@ class StoreApp {
         <div class="cart-item-info">
           <div class="cart-item-brand">${item.brand}</div>
           <div class="cart-item-name">${item.name}</div>
-          <div class="cart-item-flavor">Flavor: <strong>${item.flavor}</strong></div>
+          <div class="cart-item-flavor">
+            Flavor: <strong>${item.flavor}</strong> | Format: <span class="product-badge" style="position:static; font-size:9px; padding:2px 6px;">${formatBadge}</span>
+          </div>
           <div class="cart-item-controls">
             <div class="qty-selector">
               <button class="qty-btn dec-btn">-</button>
@@ -641,17 +689,16 @@ class StoreApp {
         <button class="cart-item-remove-btn">✖</button>
       `;
       
-      // Event listeners for quantity adjustment
-      cartItem.querySelector(".dec-btn").addEventListener("click", () => this.updateQuantity(item.id, item.flavor, -1));
-      cartItem.querySelector(".inc-btn").addEventListener("click", () => this.updateQuantity(item.id, item.flavor, 1));
-      cartItem.querySelector(".cart-item-remove-btn").addEventListener("click", () => this.removeFromCart(item.id, item.flavor));
+      cartItem.querySelector(".dec-btn").addEventListener("click", () => this.updateQuantity(item.id, item.flavor, item.format, -1));
+      cartItem.querySelector(".inc-btn").addEventListener("click", () => this.updateQuantity(item.id, item.flavor, item.format, 1));
+      cartItem.querySelector(".cart-item-remove-btn").addEventListener("click", () => this.removeFromCart(item.id, item.flavor, item.format));
       
       itemsList.appendChild(cartItem);
     });
   }
 
   /* ==========================================================================
-     6. CHECKOUT FLOW
+     6. CHECKOUT FLOW & METADATA LOGGING
      ========================================================================== */
   
   openCheckout() {
@@ -667,13 +714,11 @@ class StoreApp {
     const shippingText = document.getElementById("checkout-shipping");
     const totalText = document.getElementById("checkout-total");
     
-    // Close cart drawer
     document.getElementById("cart-drawer").classList.remove("active");
     document.getElementById("cart-drawer-overlay").classList.remove("active");
     
     const calculations = this.calculateOrder();
     
-    // Populate summaries
     subtotalText.innerText = `$${calculations.subtotal.toFixed(2)}`;
     if (calculations.savings > 0) {
       savingsText.parentElement.style.display = "flex";
@@ -684,7 +729,6 @@ class StoreApp {
     shippingText.innerText = calculations.shipping === 0 ? "Free" : `$${calculations.shipping.toFixed(2)}`;
     totalText.innerText = `$${calculations.total.toFixed(2)}`;
     
-    // Render simple items list
     checkList.innerHTML = "";
     this.cart.forEach(item => {
       const row = document.createElement("div");
@@ -694,14 +738,13 @@ class StoreApp {
       row.style.marginBottom = "8px";
       row.innerHTML = `
         <span style="color:var(--text-secondary)">
-          ${item.quantity}x ${item.name} (${item.flavor})
+          ${item.quantity}x ${item.name} (${item.flavor}) [${item.format}]
         </span>
         <strong>$${(item.quantity * item.price).toFixed(2)}</strong>
       `;
       checkList.appendChild(row);
     });
     
-    // Open
     document.getElementById("checkout-content").style.display = "block";
     document.getElementById("checkout-success").style.display = "none";
     checkout.classList.add("active");
@@ -728,22 +771,36 @@ class StoreApp {
     
     const calculations = this.calculateOrder();
     
-    // Generate order ID and unique reference
-    const orderId = `CG-${Date.now().toString().slice(-6)}`;
+    // Generate Order ID & Reference Code
+    const orderId = `OCV-${Date.now().toString().slice(-6)}`;
     const randAlpha = Math.random().toString(36).substring(2, 6).toUpperCase();
     const refCode = `REF-${Date.now().toString().slice(-4)}-${randAlpha}`;
     
-    // Create order object
+    // LOG DETAILED CLIENT INFORMATION & BROWSER METADATA
+    const metadata = {
+      userAgent: navigator.userAgent,
+      resolution: `${window.screen.width}x${window.screen.height}`,
+      language: navigator.language,
+      localTime: new Date().toString(),
+      referrer: document.referrer || "direct"
+    };
+
     const order = {
       orderId,
       refCode,
       date: new Date().toISOString(),
       customer: { name, address: `${addr}, ${city}, ${state} ${post}`, phone, email, notes },
-      items: this.cart.map(i => ({ name: i.name, flavor: i.flavor, quantity: i.quantity, total: i.quantity * i.price })),
-      total: calculations.total
+      items: this.cart.map(i => ({ 
+        name: i.name, 
+        flavor: i.flavor, 
+        format: i.format, 
+        quantity: i.quantity, 
+        total: i.quantity * i.price 
+      })),
+      total: calculations.total,
+      metadata // Save user agent metrics
     };
     
-    // Save order locally for Admin logs
     const storedOrders = localStorage.getItem("crown_gold_orders");
     let ordersList = [];
     if (storedOrders) {
@@ -751,10 +808,11 @@ class StoreApp {
         ordersList = JSON.parse(storedOrders);
       } catch(e) {}
     }
-    ordersList.unshift(order); // add to top
+    ordersList.unshift(order);
     localStorage.setItem("crown_gold_orders", JSON.stringify(ordersList));
     
-    // Display Bank transfer details
+    // Display Checkout instructions
+    const successPayid = document.getElementById("success-payid");
     const successBank = document.getElementById("success-bank-name");
     const successName = document.getElementById("success-account-name");
     const successBsb = document.getElementById("success-bsb");
@@ -762,6 +820,7 @@ class StoreApp {
     const successRef = document.getElementById("success-ref");
     
     const bank = this.config.settings.bankDetails;
+    if (successPayid) successPayid.innerText = bank.payId || "vapesonlineaustralia@proton.me";
     if (successBank) successBank.innerText = bank.bankName;
     if (successName) successName.innerText = bank.accountName;
     if (successBsb) successBsb.innerText = bank.bsb;
@@ -773,7 +832,7 @@ class StoreApp {
     localStorage.removeItem("crown_gold_cart");
     this.updateCartUI();
     
-    // Swap screens
+    // Swap checkout view screen
     document.getElementById("checkout-content").style.display = "none";
     document.getElementById("checkout-success").style.display = "block";
   }
@@ -783,7 +842,6 @@ class StoreApp {
      ========================================================================= */
   
   bindEvents() {
-    // Search bindings
     const globalSearch = document.getElementById("global-search");
     if (globalSearch) {
       globalSearch.addEventListener("input", (e) => {
@@ -792,7 +850,6 @@ class StoreApp {
       });
     }
     
-    // Sidebar clears
     const clearBtn = document.getElementById("btn-clear-filters");
     if (clearBtn) {
       clearBtn.addEventListener("click", () => {
@@ -801,7 +858,6 @@ class StoreApp {
         this.selectedFormats = [];
         this.searchQuery = "";
         
-        // Uncheck all sidebar checkboxes
         document.querySelectorAll(".filter-checkbox").forEach(c => c.checked = false);
         if (globalSearch) globalSearch.value = "";
         
@@ -809,7 +865,6 @@ class StoreApp {
       });
     }
     
-    // Sort Select
     const sortSelect = document.getElementById("sort-select");
     if (sortSelect) {
       sortSelect.addEventListener("change", (e) => {
@@ -818,7 +873,6 @@ class StoreApp {
       });
     }
     
-    // Sidebar format / price changes
     document.querySelectorAll("input[name='price-filter']").forEach(box => {
       box.addEventListener("change", () => {
         this.selectedPrices = Array.from(document.querySelectorAll("input[name='price-filter']:checked")).map(b => b.value);
@@ -833,18 +887,16 @@ class StoreApp {
       });
     });
     
-    // Modal Close binding
     document.getElementById("modal-close").addEventListener("click", () => this.closeModal());
     document.getElementById("product-detail-modal").addEventListener("click", (e) => {
       if (e.target === document.getElementById("product-detail-modal")) this.closeModal();
     });
     
-    // Modal Add Button binding
     const modalAdd = document.getElementById("btn-modal-add");
     if (modalAdd) {
       modalAdd.addEventListener("click", () => {
         if (this.selectedProduct) {
-          this.addToCart(this.selectedProduct, this.selectedFlavor, 1);
+          this.addToCart(this.selectedProduct, this.selectedFlavor, this.selectedFormat, 1);
           
           modalAdd.innerText = "Added to Cart! ✓";
           modalAdd.style.background = "linear-gradient(135deg, #10b981 0%, #059669 100%)";
@@ -858,7 +910,6 @@ class StoreApp {
       });
     }
     
-    // Cart Drawer Toggle
     const cartToggle = document.getElementById("cart-toggle");
     const cartClose = document.getElementById("cart-close");
     const cartOverlay = document.getElementById("cart-drawer-overlay");
@@ -873,14 +924,12 @@ class StoreApp {
     if (cartClose) cartClose.addEventListener("click", toggleCart);
     if (cartOverlay) cartOverlay.addEventListener("click", toggleCart);
     
-    // Checkout Drawer
     const checkTrigger = document.getElementById("btn-checkout-trigger");
     const checkClose = document.getElementById("checkout-close");
     
     if (checkTrigger) checkTrigger.addEventListener("click", () => this.openCheckout());
     if (checkClose) checkClose.addEventListener("click", () => this.closeCheckout());
     
-    // Form Submit
     const form = document.getElementById("checkout-form");
     if (form) {
       form.addEventListener("submit", (e) => {

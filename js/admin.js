@@ -1,5 +1,5 @@
 /* ==========================================================================
-   MERCHANT DASHBOARD CONTROLLER (LUXURY GOLD)
+   MERCHANT DASHBOARD CONTROLLER (OZCHEAPVAPES REBRAND)
    ========================================================================== */
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -114,8 +114,9 @@ class AdminApp {
     document.getElementById("set-contact-phone").value = this.config.settings.contactPhone || "";
     document.getElementById("set-announcement").value = this.config.settings.announcement || "";
     
-    // Bank
+    // Bank & PayID
     const bank = this.config.settings.bankDetails;
+    document.getElementById("set-payid").value = bank.payId || "";
     document.getElementById("set-bank-name").value = bank.bankName || "";
     document.getElementById("set-bank-holder").value = bank.accountName || "";
     document.getElementById("set-bank-bsb").value = bank.bsb || "";
@@ -134,6 +135,7 @@ class AdminApp {
     this.config.settings.announcement = document.getElementById("set-announcement").value;
     
     this.config.settings.bankDetails = {
+      payId: document.getElementById("set-payid").value,
       bankName: document.getElementById("set-bank-name").value,
       accountName: document.getElementById("set-bank-holder").value,
       bsb: document.getElementById("set-bank-bsb").value,
@@ -387,12 +389,22 @@ class AdminApp {
       order.items.forEach(item => {
         itemsHTML += `
           <tr>
-            <td>${item.name} (${item.flavor})</td>
+            <td>${item.name} (${item.flavor}) [Format: ${item.format || "Single"}]</td>
             <td style="text-align:center;">${item.quantity}</td>
             <td style="text-align:right;">$${item.total.toFixed(2)}</td>
           </tr>
         `;
       });
+      
+      // Log client agent metadata if stored
+      let metaHTML = "";
+      if (order.metadata) {
+        metaHTML = `
+          <p style="margin-top: 15px; padding-top: 10px; border-top: 1px dashed rgba(255,255,255,0.05); font-size:11px; color:var(--text-muted);">
+            <strong>Client System Log:</strong> UA: ${order.metadata.userAgent.slice(0, 75)}... | Res: ${order.metadata.resolution} | Lang: ${order.metadata.language}
+          </p>
+        `;
+      }
       
       card.innerHTML = `
         <div class="order-card-header">
@@ -409,6 +421,7 @@ class AdminApp {
             <p><strong>Email Address:</strong> ${order.customer.email}</p>
             <p><strong>Shipping Address:</strong> ${order.customer.address}</p>
             <p><strong>Delivery Notes:</strong> <span style="font-style:italic; color:var(--text-muted);">${order.customer.notes || "None"}</span></p>
+            ${metaHTML}
           </div>
           <div>
             <table class="order-items-table">

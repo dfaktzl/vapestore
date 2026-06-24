@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Merchant Portal | Crown & Gold</title>
+  <title>Merchant Portal | OzCheapVapes</title>
   
   <!-- Styles -->
   <link rel="stylesheet" href="css/design_system.css">
@@ -18,7 +18,7 @@
       <div class="container header-container">
         <a href="admin.html" class="logo-link">
           <span class="logo-crown">👑</span>
-          <span class="logo-text">Merchant Control</span>
+          <span class="logo-text">OzCheapVapes Admin</span>
         </a>
         <div class="header-actions">
           <a href="index.html" class="btn-secondary" style="font-size:12px; padding:8px 16px;">View Storefront ➜</a>
@@ -31,9 +31,9 @@
       
       <div class="admin-header">
         <div>
-          <h1 class="admin-title text-gold">Crown & Gold Wholesale</h1>
+          <h1 class="admin-title text-gold">OzCheapVapes Merchant Panel</h1>
           <p style="font-size:14px; color:var(--text-secondary); margin-top:5px;">
-            Configure products, adjust SEO headers, manage transaction BSB values, and log customer bank orders.
+            Configure products, adjust SEO tags, manage bank details and PayID, and review local client orders database logs.
           </p>
         </div>
         
@@ -91,11 +91,11 @@
             <div class="form-grid">
               <div class="form-field">
                 <label class="form-label">Unit/Carton Price ($) *</label>
-                <input type="number" step="0.01" id="prod-price" required placeholder="e.g. 32.00 or 240.00" class="form-input">
+                <input type="number" step="0.01" id="prod-price" required placeholder="e.g. 30.00 or 220.00" class="form-input">
               </div>
               <div class="form-field">
                 <label class="form-label">Bulk Box (10x) Price ($)</label>
-                <input type="number" step="0.01" id="prod-box-price" placeholder="e.g. 260.00 (leave empty if box-only)" class="form-input">
+                <input type="number" step="0.01" id="prod-box-price" placeholder="e.g. 240.00 (leave empty if box-only)" class="form-input">
               </div>
               <div class="form-field" style="justify-content: center; padding-left: 10px;">
                 <label class="filter-checkbox-label" style="margin-top: 15px;">
@@ -107,7 +107,7 @@
 
             <div class="form-grid" style="grid-template-columns: 1.5fr 1fr;">
               <div class="form-field">
-                <label class="form-label">Image URL * (Right click competitor images and paste, or use Unsplash links)</label>
+                <label class="form-label">Image URL * (Paste image address from reference sites or uploads)</label>
                 <input type="text" id="prod-image" required placeholder="https://..." class="form-input">
               </div>
               <div class="form-field">
@@ -190,23 +190,27 @@
 
           <!-- Bank settings -->
           <div class="glass-card admin-card">
-            <h2 class="admin-card-title">Bank Transfer Checkout Credentials</h2>
+            <h2 class="admin-card-title">Checkout Credentials (PayID & Bank Transfer)</h2>
             <p style="font-size:12px; color:var(--text-secondary); margin-bottom:20px; line-height:1.4;">
-              Configure your bank coordinates. These coordinates display directly on the success screen after a customer clicks buy. The reference matches a unique token generated on checkout.
+              Configure your payment coordinates. These coordinates display directly on the success screen after a customer clicks buy. The reference matches a unique token generated on checkout.
             </p>
             
             <div class="form-grid">
               <div class="form-field">
-                <label class="form-label">Bank Name</label>
-                <input type="text" id="set-bank-name" class="form-input">
+                <label class="form-label">PayID Email / Number</label>
+                <input type="text" id="set-payid" class="form-input">
               </div>
               <div class="form-field">
-                <label class="form-label">Account Holder Name</label>
-                <input type="text" id="set-bank-holder" class="form-input">
+                <label class="form-label">Bank Name</label>
+                <input type="text" id="set-bank-name" class="form-input">
               </div>
             </div>
             
             <div class="form-grid">
+              <div class="form-field">
+                <label class="form-label">Account Holder Name</label>
+                <input type="text" id="set-bank-holder" class="form-input">
+              </div>
               <div class="form-field">
                 <label class="form-label">BSB (Format: XX-XXX or XXXXXX)</label>
                 <input type="text" id="set-bank-bsb" class="form-input">
@@ -262,9 +266,9 @@
             <div class="guide-step-num">2</div>
             <h3 class="guide-step-title">Create a Repository on GitHub</h3>
             <p class="guide-step-desc">
-              Go to <a href="https://github.com" target="_blank" style="color:var(--gold-accent);">GitHub</a>, sign in (free), and create a new repository called <code>vapes</code>. Push your local files to GitHub:
+              Go to <a href="https://github.com" target="_blank" style="color:var(--gold-accent);">GitHub</a>, sign in (free), and create a new repository called <code>vapestore</code> under your account. Push your local files to GitHub:
               <div class="code-box">
-                git remote add origin https://github.com/YOUR_USERNAME/vapes.git<br>
+                git remote add origin https://github.com/dfaktzl/vapestore.git<br>
                 git branch -M main<br>
                 git push -u origin main
               </div>
@@ -278,9 +282,9 @@
               Register a free account on <a href="https://netlify.com" target="_blank" style="color:var(--gold-accent);">Netlify</a> or <a href="https://pages.cloudflare.com" target="_blank" style="color:var(--gold-accent);">Cloudflare Pages</a>:
               <br>• Select <strong>Import from Git</strong>.
               <br>• Link your GitHub repository.
-              <br>• Leave the build command and directory blank (since this is pure static HTML/CSS/JS). Click <strong>Deploy</strong>.
+              <br>• Leave the build command and directory blank. Click <strong>Deploy</strong>.
               <br><br>
-              Netlify will generate a free custom subdomain (e.g. <code>crown-gold.netlify.app</code>). You can hook up a custom domains like <code>crowngold.au</code> for free in their panel.
+              Netlify will generate a free custom subdomain. You can hook up custom domains like <code>ozcheapvapes.com</code> for free in their panel.
             </p>
           </div>
 
