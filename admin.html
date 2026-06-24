@@ -15,8 +15,10 @@
   <!-- ADMIN AUTHENTICATION GATEWAY -->
   <div id="admin-login-overlay" style="display: none; align-items: center; justify-content: center; background: #090a0c; z-index: 100000; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;">
     <div class="glass-card" style="width: 100%; max-width: 400px; padding: 40px; text-align: center; border-color: var(--gold-accent); box-shadow: 0 0 30px rgba(212, 175, 55, 0.15); background: rgba(9, 10, 12, 0.95); border: 1px solid rgba(212, 175, 55, 0.2); border-radius: 12px;">
-      <div class="logo-text" style="font-size: 28px; margin-bottom: 10px; font-family: var(--font-title); letter-spacing: 2px; color: var(--gold-accent);">Vapes 'R' Aus</div>
-      <h2 class="text-gold" style="font-size: 14px; text-transform: uppercase; margin-bottom: 30px; letter-spacing: 1px; color: var(--gold-light);">Merchant Control Center</h2>
+      <div style="margin-bottom: 15px;">
+        <img src="img/logo.png" alt="Vapes 'R' Aus Logo" style="height:46px; object-fit:contain;">
+      </div>
+      <h2 class="text-gold" style="font-size: 13px; text-transform: uppercase; margin-bottom: 30px; letter-spacing: 1px; color: var(--gold-light);">Merchant Control Center</h2>
       
       <form id="admin-login-form" onsubmit="event.preventDefault();">
         <div style="margin-bottom: 20px; text-align: left;">
@@ -42,9 +44,9 @@
     <!-- Header -->
     <header class="main-header">
       <div class="container header-container">
-        <a href="admin.html" class="logo-link">
-          <span class="logo-crown">👑</span>
-          <span class="logo-text">Vapes 'R' Aus Admin</span>
+        <a href="admin.html" class="logo-link" style="display:flex; align-items:center; height:100%;">
+          <img src="img/logo.png" alt="Vapes 'R' Aus Logo" style="height:32px; object-fit:contain; filter: drop-shadow(0 0 4px rgba(255,255,255,0.15)); margin-right:8px;">
+          <span class="logo-text" style="font-size:16px;">Admin</span>
         </a>
         <div class="header-actions">
           <a href="index.html" class="btn-secondary" style="font-size:12px; padding:8px 16px;">View Storefront ➜</a>
