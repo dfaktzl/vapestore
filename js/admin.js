@@ -15,15 +15,48 @@ class AdminApp {
 
   async init() {
     this.setupTabs();
+    
+    // Check authentication gateway
+    if (sessionStorage.getItem("admin_authenticated") === "true") {
+      document.getElementById("admin-login-overlay").style.display = "none";
+      await this.initDashboard();
+    } else {
+      document.getElementById("admin-login-overlay").style.display = "flex";
+      this.bindLoginEvent();
+    }
+  }
+
+  async initDashboard() {
     await this.loadConfig();
     await this.loadOrders();
     
     // Populate form fields with config settings
     this.populateSettingsForm();
     this.renderProductsList();
+    this.renderOrders();
     
     // Setup event handlers
     this.bindEvents();
+  }
+
+  bindLoginEvent() {
+    const form = document.getElementById("admin-login-form");
+    if (!form) return;
+    
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const user = document.getElementById("login-username").value.trim();
+      const pass = document.getElementById("login-password").value;
+      
+      if (user === "admin" && pass === "_passw00rd!_") {
+        sessionStorage.setItem("admin_authenticated", "true");
+        document.getElementById("admin-login-overlay").style.display = "none";
+        document.getElementById("login-error").style.display = "none";
+        await this.initDashboard();
+      } else {
+        document.getElementById("login-error").style.display = "block";
+      }
+    });
   }
 
   /* ==========================================================================
@@ -701,6 +734,15 @@ class AdminApp {
     const clearOrdersBtn = document.getElementById("btn-clear-orders");
     if (clearOrdersBtn) {
       clearOrdersBtn.addEventListener("click", () => this.clearOrders());
+    }
+    
+    // Logout Action
+    const logoutBtn = document.getElementById("btn-logout");
+    if (logoutBtn) {
+      logoutBtn.addEventListener("click", () => {
+        sessionStorage.removeItem("admin_authenticated");
+        location.reload();
+      });
     }
   }
 }
