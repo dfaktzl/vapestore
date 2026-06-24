@@ -798,6 +798,7 @@ class StoreApp {
         total: i.quantity * i.price 
       })),
       total: calculations.total,
+      status: "Pending Payment",
       metadata // Save user agent metrics
     };
     
@@ -810,6 +811,28 @@ class StoreApp {
     }
     ordersList.unshift(order);
     localStorage.setItem("crown_gold_orders", JSON.stringify(ordersList));
+
+    // Optional Cloud Sync to Firebase
+    if (this.config && this.config.settings && this.config.settings.orderSyncUrl) {
+      let dbUrl = this.config.settings.orderSyncUrl.trim();
+      if (dbUrl) {
+        if (!dbUrl.endsWith("/")) dbUrl += "/";
+        const postUrl = `${dbUrl}orders.json`;
+        
+        fetch(postUrl, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(order)
+        })
+        .then(res => {
+          if (!res.ok) throw new Error("Sync server returned error status " + res.status);
+          console.log("Order successfully pushed to real-time cloud database.");
+        })
+        .catch(err => {
+          console.warn("Cloud sync failed (will remain local only):", err);
+        });
+      }
+    }
     
     // Display Checkout instructions
     const successPayid = document.getElementById("success-payid");

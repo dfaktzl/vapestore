@@ -249,6 +249,12 @@
                 <textarea id="cust-notes" rows="3" class="search-input" style="padding-left:15px; border-radius:6px; background:rgba(0,0,0,0.4); resize:none; font-family:var(--font-body);" placeholder="If a flavor is out of stock, list preferred replacements here..."></textarea>
               </div>
 
+              <!-- Shipping policy alert -->
+              <div style="margin-bottom: 20px; padding: 12px; background: rgba(212,175,55,0.05); border: 1px dashed rgba(212,175,55,0.2); border-radius: var(--radius-sm); font-size: 12px; color: var(--gold-light); display: flex; align-items: flex-start; gap: 8px; line-height: 1.4;">
+                <span style="font-size:14px; margin-top:2px;">🚚</span>
+                <span><strong>Order Shipping Policy:</strong> Once your transfer is received, the order will be Processed and Shipped (usually always within 48 hours).</span>
+              </div>
+
               <button type="submit" id="btn-submit-order" class="btn-primary" style="width:100%;">Confirm & Place Order</button>
             </form>
             
@@ -416,6 +422,13 @@
           <span>Total Payable</span>
           <span id="cart-total" class="cart-total-value">$0.00</span>
         </div>
+        
+        <!-- Shipping notice -->
+        <div style="margin: 12px 0; padding: 10px; background: rgba(212,175,55,0.03); border: 1px solid rgba(212,175,55,0.1); border-radius: var(--radius-sm); font-size: 11px; text-align: center; color: var(--gold-light); display: flex; align-items: center; justify-content: center; gap: 6px;">
+          <span>🚚</span>
+          <span>Orders processed & shipped within 48 hours of payment receipt.</span>
+        </div>
+        
         <button id="btn-checkout-trigger" class="btn-primary btn-checkout">Proceed to Checkout</button>
       </div>
     </div>

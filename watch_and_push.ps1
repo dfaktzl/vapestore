@@ -10,15 +10,14 @@
 # ==========================================================================
 
 $folder = Get-Location
-$file = "config.json"
-$filter = "config.json"
+$filter = "*.json"
 
 Write-Host "=============================================" -ForegroundColor Gold
 Write-Host "  OzCheapVapes Git Auto-Push Agent Active" -ForegroundColor Gold
 Write-Host "=============================================" -ForegroundColor Gold
-Write-Host "Watching for changes to: $folder\$file" -ForegroundColor Cyan
+Write-Host "Watching for changes to config.json & orders.json in: $folder" -ForegroundColor Cyan
 Write-Host "Keep this window open to automate git pushes." -ForegroundColor DarkGray
-Write-Host "Press Ctrl+C to terminate." -ForegroundColor Muted
+Write-Host "Press Ctrl+C to terminate." -ForegroundColor Yellow
 
 # Create FileSystemWatcher
 $watcher = New-Object System.IO.FileSystemWatcher
@@ -30,8 +29,13 @@ $watcher.EnableRaisingEvents = $true
 # Action block on change
 $action = {
     $path = $Event.SourceEventArgs.FullPath
-    $changeType = $Event.SourceEventArgs.ChangeType
-    Write-Host "[$(Get-Date -Format 'HH:mm:ss')] Detected change in $path" -ForegroundColor Yellow
+    $fileName = Split-Path $path -Leaf
+    
+    if ($fileName -ne "config.json" -and $fileName -ne "orders.json") {
+        return
+    }
+    
+    Write-Host "[$(Get-Date -Format 'HH:mm:ss')] Detected change in $fileName" -ForegroundColor Yellow
     
     # Wait for write completion
     Start-Sleep -Seconds 1
@@ -39,7 +43,10 @@ $action = {
     try {
         Write-Host "Running Git automation..." -ForegroundColor Gray
         git add config.json
-        git commit -m "update: config.json updated via merchant panel"
+        if (Test-Path "orders.json") {
+            git add orders.json
+        }
+        git commit -m "update: $fileName updated via merchant panel"
         git push
         Write-Host "Successfully committed and pushed to GitHub!" -ForegroundColor Green
     }

@@ -15,6 +15,7 @@ const CONFIG_DEFAULT = {
     contactPhone: "+61 499 999 999",
     announcement: "🔥 OZCHEAPVAPES: FREE EXPRESS SHIPPING ON ALL ORDERS OVER $200! PAYID & BANK XFER ACCEPTED 🔥",
     ageLimit: 18,
+    orderSyncUrl: "",
     bankDetails: {
       payId: "vapesonlineaustralia@proton.me",
       bankName: "Westpac Banking Corporation",

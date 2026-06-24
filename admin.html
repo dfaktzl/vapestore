@@ -220,9 +220,21 @@
                 <input type="text" id="set-bank-account" class="form-input">
               </div>
             </div>
+
+            <!-- Cloud Database Integration -->
+            <div style="margin-top:20px; padding-top:20px; border-top: 1px dashed rgba(255,255,255,0.05);">
+              <h3 class="modal-option-title text-gold" style="font-size:14px; margin-bottom:10px;">Cloud Database Integration (Optional)</h3>
+              <p style="font-size:12px; color:var(--text-secondary); margin-bottom:15px; line-height:1.5;">
+                Enter a free Firebase Realtime Database URL to sync customer orders and tracking status in real time across multiple browsers/devices. Leave blank to run in offline local demo mode.
+              </p>
+              <div class="form-field">
+                <label class="form-label">Firebase Database URL</label>
+                <input type="url" id="set-order-sync-url" placeholder="https://your-project-id-default-rtdb.firebaseio.com" class="form-input">
+              </div>
+            </div>
           </div>
 
-          <div style="display:flex; justify-content:flex-end;">
+          <div style="display:flex; justify-content:flex-end; margin-top:20px;">
             <button type="submit" id="btn-save-settings" class="btn-primary">Apply Settings Caches</button>
           </div>
 
@@ -231,9 +243,16 @@
 
       <!-- TAB 3: CUSTOMER ORDERS LOG -->
       <section id="tab-orders" class="admin-tab-content">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
-          <h2 class="admin-card-title" style="border:none; margin:0;">Local Orders Database</h2>
-          <button id="btn-clear-orders" class="btn-secondary" style="border-color:var(--error-color); color:var(--error-color); font-size:11px; padding:6px 12px;">Clear Orders History</button>
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; flex-wrap:wrap; gap:10px;">
+          <h2 class="admin-card-title" style="border:none; margin:0;">Customer Orders Log</h2>
+          <div style="display:flex; gap:10px; align-items:center;">
+            <button id="btn-export-orders" class="btn-primary" style="font-size:11px; padding:6px 12px; border-color:var(--gold-accent); margin:0;">Export orders.json</button>
+            <label class="btn-secondary" style="font-size:11px; padding:6px 12px; cursor:pointer; display:inline-flex; align-items:center; margin:0;">
+              Import orders.json
+              <input type="file" id="orders-upload" accept=".json" style="display:none;">
+            </label>
+            <button id="btn-clear-orders" class="btn-secondary" style="border-color:var(--error-color); color:var(--error-color); font-size:11px; padding:6px 12px; margin:0;">Clear All Logs</button>
+          </div>
         </div>
         
         <div id="admin-orders-container" class="orders-list">

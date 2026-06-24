@@ -16,12 +16,11 @@ class AdminApp {
   async init() {
     this.setupTabs();
     await this.loadConfig();
-    this.loadOrders();
+    await this.loadOrders();
     
     // Populate form fields with config settings
     this.populateSettingsForm();
     this.renderProductsList();
-    this.renderOrders();
     
     // Setup event handlers
     this.bindEvents();
@@ -87,13 +86,46 @@ class AdminApp {
     localStorage.setItem("crown_gold_config", JSON.stringify(this.config));
   }
 
-  loadOrders() {
+  async loadOrders() {
     const stored = localStorage.getItem("crown_gold_orders");
     if (stored) {
       try {
         this.orders = JSON.parse(stored);
       } catch(e) {
         this.orders = [];
+      }
+    }
+
+    // Try fetching from Firebase if configured
+    if (this.config && this.config.settings && this.config.settings.orderSyncUrl) {
+      let dbUrl = this.config.settings.orderSyncUrl.trim();
+      if (dbUrl) {
+        if (!dbUrl.endsWith("/")) dbUrl += "/";
+        const getUrl = `${dbUrl}orders.json`;
+        
+        try {
+          const response = await fetch(getUrl);
+          if (response.ok) {
+            const data = await response.json();
+            if (data) {
+              const list = [];
+              Object.keys(data).forEach(key => {
+                const item = data[key];
+                item.firebaseKey = key; // Attach key to update/delete
+                if (!item.status) item.status = "Pending Payment";
+                list.push(item);
+              });
+              list.sort((a,b) => new Date(b.date) - new Date(a.date));
+              this.orders = list;
+              localStorage.setItem("crown_gold_orders", JSON.stringify(list));
+            } else {
+              this.orders = [];
+              localStorage.setItem("crown_gold_orders", JSON.stringify([]));
+            }
+          }
+        } catch (err) {
+          console.warn("Could not fetch orders from cloud database (running offline mode):", err);
+        }
       }
     }
   }
@@ -113,6 +145,7 @@ class AdminApp {
     document.getElementById("set-contact-email").value = this.config.settings.contactEmail || "";
     document.getElementById("set-contact-phone").value = this.config.settings.contactPhone || "";
     document.getElementById("set-announcement").value = this.config.settings.announcement || "";
+    document.getElementById("set-order-sync-url").value = this.config.settings.orderSyncUrl || "";
     
     // Bank & PayID
     const bank = this.config.settings.bankDetails;
@@ -133,6 +166,7 @@ class AdminApp {
     this.config.settings.contactEmail = document.getElementById("set-contact-email").value;
     this.config.settings.contactPhone = document.getElementById("set-contact-phone").value;
     this.config.settings.announcement = document.getElementById("set-announcement").value;
+    this.config.settings.orderSyncUrl = document.getElementById("set-order-sync-url").value.trim();
     
     this.config.settings.bankDetails = {
       payId: document.getElementById("set-payid").value,
@@ -360,7 +394,7 @@ class AdminApp {
   }
 
   /* ==========================================================================
-     5. ORDERS VIEWER
+     5. ORDERS VIEWER & MANAGEMENT
      ========================================================================== */
   
   renderOrders() {
@@ -406,13 +440,27 @@ class AdminApp {
         `;
       }
       
+      // Order status options dropdown
+      const status = order.status || "Pending Payment";
+      const statusOptions = ["Pending Payment", "Payment Received", "Processed / Shipped", "Cancelled"];
+      let statusSelectHTML = `<select class="order-status-select sort-select" style="width:auto; height:32px; padding:0 8px; font-size:12px; border-color:var(--gold-accent); background:rgba(0,0,0,0.6);" data-order-id="${order.orderId}">`;
+      statusOptions.forEach(opt => {
+        const selected = status === opt ? "selected" : "";
+        statusSelectHTML += `<option value="${opt}" ${selected}>${opt}</option>`;
+      });
+      statusSelectHTML += `</select>`;
+      
       card.innerHTML = `
-        <div class="order-card-header">
+        <div class="order-card-header" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
           <div class="order-id-block">
             <span class="order-id">Order ID: ${order.orderId}</span>
             <span class="order-date">Date: ${formattedDate}</span>
           </div>
-          <span class="order-ref">${order.refCode}</span>
+          <div style="display:flex; align-items:center; gap:10px;">
+            <span class="order-ref" style="font-size:12px; margin-right:5px;">Ref: <strong>${order.refCode}</strong></span>
+            ${statusSelectHTML}
+            <button class="btn-icon delete-order-btn" title="Delete Order" data-order-id="${order.orderId}" style="background:none; border:none; cursor:pointer; font-size:16px;">🗑️</button>
+          </div>
         </div>
         <div class="order-grid">
           <div class="order-customer-details">
@@ -448,14 +496,152 @@ class AdminApp {
       
       container.appendChild(card);
     });
+
+    // Bind status change listener
+    container.querySelectorAll(".order-status-select").forEach(select => {
+      select.addEventListener("change", (e) => {
+        const orderId = e.target.dataset.orderId;
+        const newStatus = e.target.value;
+        this.updateOrderStatus(orderId, newStatus);
+      });
+    });
+
+    // Bind delete order listener
+    container.querySelectorAll(".delete-order-btn").forEach(btn => {
+      btn.addEventListener("click", (e) => {
+        const orderId = e.currentTarget.dataset.orderId;
+        this.deleteOrder(orderId);
+      });
+    });
   }
 
-  clearOrders() {
+  async updateOrderStatus(orderId, newStatus) {
+    const index = this.orders.findIndex(o => o.orderId === orderId);
+    if (index === -1) return;
+    
+    const order = this.orders[index];
+    order.status = newStatus;
+    
+    // Save to LocalStorage
+    localStorage.setItem("crown_gold_orders", JSON.stringify(this.orders));
+    
+    // Update Firebase if key exists
+    if (order.firebaseKey && this.config.settings.orderSyncUrl) {
+      let dbUrl = this.config.settings.orderSyncUrl.trim();
+      if (!dbUrl.endsWith("/")) dbUrl += "/";
+      const patchUrl = `${dbUrl}orders/${order.firebaseKey}.json`;
+      
+      try {
+        const res = await fetch(patchUrl, {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ status: newStatus })
+        });
+        if (!res.ok) throw new Error("Database returned status " + res.status);
+        console.log("Order status updated in cloud database.");
+      } catch (err) {
+        console.error("Cloud status update failed:", err);
+      }
+    }
+    
+    this.renderOrders();
+  }
+
+  async deleteOrder(orderId) {
+    if (!confirm(`Are you sure you want to delete order ${orderId}? This action cannot be undone.`)) {
+      return;
+    }
+    
+    const index = this.orders.findIndex(o => o.orderId === orderId);
+    if (index === -1) return;
+    
+    const order = this.orders[index];
+    
+    // Remove from array
+    this.orders.splice(index, 1);
+    
+    // Save to LocalStorage
+    localStorage.setItem("crown_gold_orders", JSON.stringify(this.orders));
+    
+    // Delete from Firebase if key exists
+    if (order.firebaseKey && this.config.settings.orderSyncUrl) {
+      let dbUrl = this.config.settings.orderSyncUrl.trim();
+      if (!dbUrl.endsWith("/")) dbUrl += "/";
+      const deleteUrl = `${dbUrl}orders/${order.firebaseKey}.json`;
+      
+      try {
+        const res = await fetch(deleteUrl, { method: "DELETE" });
+        if (!res.ok) throw new Error("Database returned status " + res.status);
+        console.log("Order deleted from cloud database.");
+      } catch (err) {
+        console.error("Cloud delete failed:", err);
+      }
+    }
+    
+    this.renderOrders();
+  }
+
+  async clearOrders() {
     if (confirm("Are you sure you want to delete all order history logs? This cannot be undone.")) {
+      // Clear from Firebase
+      if (this.config && this.config.settings && this.config.settings.orderSyncUrl) {
+        let dbUrl = this.config.settings.orderSyncUrl.trim();
+        if (dbUrl) {
+          if (!dbUrl.endsWith("/")) dbUrl += "/";
+          const deleteUrl = `${dbUrl}orders.json`;
+          try {
+            await fetch(deleteUrl, { method: "DELETE" });
+            console.log("All orders cleared from cloud database.");
+          } catch (err) {
+            console.error("Cloud database clear failed:", err);
+          }
+        }
+      }
+      
       localStorage.removeItem("crown_gold_orders");
       this.orders = [];
       this.renderOrders();
     }
+  }
+
+  exportOrders() {
+    if (this.orders.length === 0) {
+      alert("No orders available to export.");
+      return;
+    }
+    const jsonStr = JSON.stringify(this.orders, null, 2);
+    const blob = new Blob([jsonStr], { type: "application/json" });
+    
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "orders.json";
+    
+    document.body.appendChild(a);
+    a.click();
+    
+    document.body.removeChild(a);
+    URL.revokeObjectURL(a.href);
+    alert("orders.json downloaded. Save this in your project folder to commit to GitHub!");
+  }
+
+  importOrders(file) {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      try {
+        const parsed = JSON.parse(e.target.result);
+        if (Array.isArray(parsed)) {
+          this.orders = parsed;
+          localStorage.setItem("crown_gold_orders", JSON.stringify(parsed));
+          this.renderOrders();
+          alert("orders.json successfully imported! Edits applied to browser cache.");
+        } else {
+          alert("Invalid orders schema. Expected an array of orders.");
+        }
+      } catch (err) {
+        alert("Failed to parse JSON file: " + err.message);
+      }
+    };
+    reader.readAsText(file);
   }
 
   /* ==========================================================================
@@ -488,6 +674,18 @@ class AdminApp {
     // Export/Reset buttons
     document.getElementById("btn-export-config").addEventListener("click", () => this.exportConfig());
     document.getElementById("btn-reset-config").addEventListener("click", () => this.resetConfig());
+    
+    // Export/Import orders buttons
+    document.getElementById("btn-export-orders").addEventListener("click", () => this.exportOrders());
+    
+    const ordersUpload = document.getElementById("orders-upload");
+    if (ordersUpload) {
+      ordersUpload.addEventListener("change", (e) => {
+        if (e.target.files.length > 0) {
+          this.importOrders(e.target.files[0]);
+        }
+      });
+    }
     
     // File upload loading
     const configUpload = document.getElementById("config-upload");
