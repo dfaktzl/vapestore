@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Merchant Portal | Crown & Gold</title>
+  
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/design_system.css">
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+
+  <div class="main-wrapper">
+    <!-- Header -->
+    <header class="main-header">
+      <div class="container header-container">
+        <a href="admin.html" class="logo-link">
+          <span class="logo-crown">👑</span>
+          <span class="logo-text">Merchant Control</span>
+        </a>
+        <div class="header-actions">
+          <a href="index.html" class="btn-secondary" style="font-size:12px; padding:8px 16px;">View Storefront ➜</a>
+        </div>
+      </div>
+    </header>
+
+    <!-- Admin Body -->
+    <div class="admin-container animate-fade">
+      
+      <div class="admin-header">
+        <div>
+          <h1 class="admin-title text-gold">Crown & Gold Wholesale</h1>
+          <p style="font-size:14px; color:var(--text-secondary); margin-top:5px;">
+            Configure products, adjust SEO headers, manage transaction BSB values, and log customer bank orders.
+          </p>
+        </div>
+        
+        <div class="admin-actions">
+          <!-- Export/Import Actions -->
+          <button id="btn-export-config" class="btn-primary">💾 Export config.json</button>
+          <button id="btn-reset-config" class="btn-secondary" style="border-color:var(--error-color); color:var(--error-color);">Reset Defaults</button>
+        </div>
+      </div>
+
+      <!-- Config File Upload Helper -->
+      <div class="glass-card" style="padding: 15px 20px; margin-bottom: 30px; display: flex; align-items: center; justify-content: space-between; gap: 20px; border-color: rgba(212, 175, 55, 0.1);">
+        <p style="font-size: 13px; color: var(--text-secondary);">
+          📁 Load an existing <strong>config.json</strong> to resume editing:
+        </p>
+        <input type="file" id="config-upload" accept=".json" style="font-size: 12px; color: var(--text-secondary);">
+      </div>
+
+      <!-- Tabs Navigation -->
+      <nav class="admin-tabs">
+        <button class="admin-tab active" data-tab="catalog">Products Catalog</button>
+        <button class="admin-tab" data-tab="seo-settings">SEO & Bank Settings</button>
+        <button class="admin-tab" data-tab="orders">Customer Orders</button>
+        <button class="admin-tab" data-tab="guide">Hosting & Automation</button>
+      </nav>
+
+      <!-- TAB 1: CATALOG MANAGEMENT -->
+      <section id="tab-catalog" class="admin-tab-content active">
+        
+        <!-- Add/Edit Product Card -->
+        <div class="glass-card admin-card" id="product-editor-card">
+          <h2 class="admin-card-title" id="editor-title">Add New Catalog Product</h2>
+          <form id="product-form" onsubmit="event.preventDefault();">
+            <input type="hidden" id="edit-product-id">
+            
+            <div class="form-grid">
+              <div class="form-field">
+                <label class="form-label">Brand *</label>
+                <input type="text" id="prod-brand" required placeholder="e.g. IGET, Alibarbar, Marlboro" class="form-input">
+              </div>
+              <div class="form-field">
+                <label class="form-label">Product Name *</label>
+                <input type="text" id="prod-name" required placeholder="e.g. IGET Bar 3500 Puffs" class="form-input">
+              </div>
+              <div class="form-field">
+                <label class="form-label">Category *</label>
+                <select id="prod-category" required class="form-select">
+                  <option value="vapes-single">IGET & Alibarbar (Singles)</option>
+                  <option value="vapes-boxes">Waka & HQD Boxes (Wholesale 10x)</option>
+                  <option value="cigarettes">Cigarette Cartons</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-grid">
+              <div class="form-field">
+                <label class="form-label">Unit/Carton Price ($) *</label>
+                <input type="number" step="0.01" id="prod-price" required placeholder="e.g. 32.00 or 240.00" class="form-input">
+              </div>
+              <div class="form-field">
+                <label class="form-label">Bulk Box (10x) Price ($)</label>
+                <input type="number" step="0.01" id="prod-box-price" placeholder="e.g. 260.00 (leave empty if box-only)" class="form-input">
+              </div>
+              <div class="form-field" style="justify-content: center; padding-left: 10px;">
+                <label class="filter-checkbox-label" style="margin-top: 15px;">
+                  <input type="checkbox" id="prod-box-only" class="filter-checkbox">
+                  Bulk Box/Carton Only (No Singles)
+                </label>
+              </div>
+            </div>
+
+            <div class="form-grid" style="grid-template-columns: 1.5fr 1fr;">
+              <div class="form-field">
+                <label class="form-label">Image URL * (Right click competitor images and paste, or use Unsplash links)</label>
+                <input type="text" id="prod-image" required placeholder="https://..." class="form-input">
+              </div>
+              <div class="form-field">
+                <label class="form-label">Flavor List (Comma-separated)</label>
+                <input type="text" id="prod-flavors" placeholder="e.g. Lush Ice, Grape Ice, Blueberry" class="form-input">
+              </div>
+            </div>
+
+            <div class="form-field" style="margin-bottom: 25px;">
+              <label class="form-label">Description</label>
+              <textarea id="prod-description" rows="3" placeholder="Explain puff counts, carton contents, and specifications..." class="form-textarea"></textarea>
+            </div>
+
+            <div style="display:flex; justify-content:flex-end; gap:12px;">
+              <button type="button" id="btn-cancel-edit" class="btn-secondary" style="display:none;">Cancel Edit</button>
+              <button type="submit" id="btn-save-product" class="btn-primary">Add Product</button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Products List -->
+        <h2 class="admin-card-title" style="border:none; margin-bottom:15px;">Active Inventory Items (<span id="admin-product-count">0</span>)</h2>
+        <div class="admin-table-container">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Product Information</th>
+                <th>Category</th>
+                <th>Single Price</th>
+                <th>Box (10x) Price</th>
+                <th>Formats</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="admin-products-list">
+              <!-- Dynamically populated -->
+            </tbody>
+          </table>
+        </div>
+
+      </section>
+
+      <!-- TAB 2: SEO & SETTINGS -->
+      <section id="tab-seo-settings" class="admin-tab-content">
+        <form id="settings-form" onsubmit="event.preventDefault();">
+          
+          <!-- SEO settings -->
+          <div class="glass-card admin-card">
+            <h2 class="admin-card-title">SEO & Metadata Details</h2>
+            <div class="form-grid">
+              <div class="form-field">
+                <label class="form-label">Browser Page Title</label>
+                <input type="text" id="set-seo-title" class="form-input">
+              </div>
+            </div>
+            <div class="form-field" style="margin-top: 15px;">
+              <label class="form-label">Meta Description (Search Engines Snippet)</label>
+              <textarea id="set-seo-desc" rows="3" class="form-textarea"></textarea>
+            </div>
+          </div>
+
+          <!-- Site Contact settings -->
+          <div class="glass-card admin-card">
+            <h2 class="admin-card-title">Contact & Announcement Settings</h2>
+            <div class="form-grid">
+              <div class="form-field">
+                <label class="form-label">Customer Support Email</label>
+                <input type="email" id="set-contact-email" class="form-input">
+              </div>
+              <div class="form-field">
+                <label class="form-label">Customer Support Phone</label>
+                <input type="text" id="set-contact-phone" class="form-input">
+              </div>
+            </div>
+            <div class="form-field" style="margin-top: 15px;">
+              <label class="form-label">Floating Banner Announcement Text</label>
+              <input type="text" id="set-announcement" class="form-input">
+            </div>
+          </div>
+
+          <!-- Bank settings -->
+          <div class="glass-card admin-card">
+            <h2 class="admin-card-title">Bank Transfer Checkout Credentials</h2>
+            <p style="font-size:12px; color:var(--text-secondary); margin-bottom:20px; line-height:1.4;">
+              Configure your bank coordinates. These coordinates display directly on the success screen after a customer clicks buy. The reference matches a unique token generated on checkout.
+            </p>
+            
+            <div class="form-grid">
+              <div class="form-field">
+                <label class="form-label">Bank Name</label>
+                <input type="text" id="set-bank-name" class="form-input">
+              </div>
+              <div class="form-field">
+                <label class="form-label">Account Holder Name</label>
+                <input type="text" id="set-bank-holder" class="form-input">
+              </div>
+            </div>
+            
+            <div class="form-grid">
+              <div class="form-field">
+                <label class="form-label">BSB (Format: XX-XXX or XXXXXX)</label>
+                <input type="text" id="set-bank-bsb" class="form-input">
+              </div>
+              <div class="form-field">
+                <label class="form-label">Account Number</label>
+                <input type="text" id="set-bank-account" class="form-input">
+              </div>
+            </div>
+          </div>
+
+          <div style="display:flex; justify-content:flex-end;">
+            <button type="submit" id="btn-save-settings" class="btn-primary">Apply Settings Caches</button>
+          </div>
+
+        </form>
+      </section>
+
+      <!-- TAB 3: CUSTOMER ORDERS LOG -->
+      <section id="tab-orders" class="admin-tab-content">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+          <h2 class="admin-card-title" style="border:none; margin:0;">Local Orders Database</h2>
+          <button id="btn-clear-orders" class="btn-secondary" style="border-color:var(--error-color); color:var(--error-color); font-size:11px; padding:6px 12px;">Clear Orders History</button>
+        </div>
+        
+        <div id="admin-orders-container" class="orders-list">
+          <!-- Dynamically populated -->
+        </div>
+      </section>
+
+      <!-- TAB 4: HOSTING & AUTOMATION GUIDE -->
+      <section id="tab-guide" class="admin-tab-content">
+        <div class="glass-card guide-card">
+          <h2 class="admin-card-title" style="border:none;">Git & Deployment Automation Guide</h2>
+          <p style="font-size:14px; color:var(--text-secondary); margin-bottom:25px; line-height:1.6;">
+            Because this application runs on static JSON architectures, you don't need databases, hosting servers, or recurring billing. Follow this guide to hook up the repository to automatic deployment pipelines for free.
+          </p>
+
+          <div class="guide-step">
+            <div class="guide-step-num">1</div>
+            <h3 class="guide-step-title">Initialize Local Git Repository</h3>
+            <p class="guide-step-desc">
+              Open your terminal inside this directory and initialize your repository. Commit all current layout files:
+              <div class="code-box">
+                git init<br>
+                git add .<br>
+                git commit -m "feat: luxury storefront layout"
+              </div>
+            </p>
+          </div>
+
+          <div class="guide-step">
+            <div class="guide-step-num">2</div>
+            <h3 class="guide-step-title">Create a Repository on GitHub</h3>
+            <p class="guide-step-desc">
+              Go to <a href="https://github.com" target="_blank" style="color:var(--gold-accent);">GitHub</a>, sign in (free), and create a new repository called <code>vapes</code>. Push your local files to GitHub:
+              <div class="code-box">
+                git remote add origin https://github.com/YOUR_USERNAME/vapes.git<br>
+                git branch -M main<br>
+                git push -u origin main
+              </div>
+            </p>
+          </div>
+
+          <div class="guide-step">
+            <div class="guide-step-num">3</div>
+            <h3 class="guide-step-title">Connect Netlify or Cloudflare Pages</h3>
+            <p class="guide-step-desc">
+              Register a free account on <a href="https://netlify.com" target="_blank" style="color:var(--gold-accent);">Netlify</a> or <a href="https://pages.cloudflare.com" target="_blank" style="color:var(--gold-accent);">Cloudflare Pages</a>:
+              <br>• Select <strong>Import from Git</strong>.
+              <br>• Link your GitHub repository.
+              <br>• Leave the build command and directory blank (since this is pure static HTML/CSS/JS). Click <strong>Deploy</strong>.
+              <br><br>
+              Netlify will generate a free custom subdomain (e.g. <code>crown-gold.netlify.app</code>). You can hook up a custom domains like <code>crowngold.au</code> for free in their panel.
+            </p>
+          </div>
+
+          <div class="guide-step">
+            <div class="guide-step-num">4</div>
+            <h3 class="guide-step-title">Automate Content Updates</h3>
+            <p class="guide-step-desc">
+              When you want to edit pricing, bank routing numbers, or add vapes:
+              <br>• Make changes in this admin panel.
+              <br>• Click the <strong>Export config.json</strong> button at the top of the page.
+              <br>• Save the file directly, replacing the existing <code>config.json</code> in this local folder.
+              <br>• Push the update to GitHub using git:
+              <div class="code-box">
+                git add config.json<br>
+                git commit -m "update: product catalog"<br>
+                git push
+              </div>
+              <br>Netlify detects the commit in GitHub and automatically deploys the update. Your live site will update worldwide in 10-15 seconds!
+            </p>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/config_default.js"></script>
+  <script src="js/admin.js"></script>
+</body>
+</html>

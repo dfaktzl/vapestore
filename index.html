@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Dynamic SEO variables fallback, loaded from js/store.js -->
+  <title>Crown & Gold | Australia's Premium Smoke & Vape Wholesale</title>
+  <meta name="description" id="meta-description" content="Welcome to Crown & Gold. We offer authentic IGET, Alibarbar, cigarette cartons, and bulk boxes of Waka and HQD. Premium bank-transfer checkout with fast, discreet shipping Australia-wide.">
+  <meta name="robots" content="index, follow">
+  
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/design_system.css">
+  <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+
+  <!-- 1. AGE GATE OVERLAY -->
+  <div id="age-gate" class="age-gate-overlay">
+    <div class="age-gate-container glass-card">
+      <div class="age-gate-logo">
+        <span>👑</span>
+        CROWN & GOLD
+      </div>
+      <h1 class="age-gate-title">Age Verification</h1>
+      <p class="age-gate-desc">
+        Under Australian law, you must be <strong>18 years of age or older</strong> to view or purchase tobacco, nicotine, and vape products.
+        <br><br>
+        Please confirm your age to enter.
+      </p>
+      <div class="age-gate-buttons">
+        <button id="btn-age-verify" class="btn-primary age-gate-btn">I am 18+</button>
+        <button id="btn-age-reject" class="btn-secondary age-gate-btn">Under 18</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="main-wrapper">
+    <!-- 2. ANNOUNCEMENT BAR -->
+    <div class="announcement-bar">
+      <p id="announcement-text">Loading premium announcements...</p>
+    </div>
+
+    <!-- 3. MAIN HEADER -->
+    <header class="main-header">
+      <div class="container header-container">
+        <a href="index.html" class="logo-link">
+          <span class="logo-crown">👑</span>
+          <span class="logo-text">Crown & Gold</span>
+        </a>
+
+        <!-- Global Search -->
+        <div class="search-bar-container">
+          <span class="search-icon">🔍</span>
+          <input type="text" id="global-search" class="search-input" placeholder="Search brands, products, or flavor profiles...">
+        </div>
+
+        <!-- Header Actions -->
+        <div class="header-actions">
+          <a href="admin.html" class="nav-link">Admin Panel</a>
+          <button id="cart-toggle" class="cart-toggle-btn">
+            <span>🛒</span> CART
+            <span id="cart-count" class="cart-count-badge">0</span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- 4. HERO SECTION -->
+    <section class="hero-section">
+      <div class="container hero-grid animate-fade">
+        <div class="hero-info">
+          <h2 class="hero-title text-gold">Australia's Premier<br>Smoke & Vape wholesale</h2>
+          <p class="hero-subtitle">
+            Direct wholesale prices on authentic Alibarbar, IGET systems, and premium cigarette cartons. Boxes of HQD and Waka in bulk quantities. No hidden fees, payment securely processed via bank transfer.
+          </p>
+          <div class="hero-buttons">
+            <button class="btn-primary pulse-gold" onclick="document.getElementById('catalog').scrollIntoView({behavior: 'smooth'})">Browse Catalog</button>
+            <a href="admin.html" class="btn-secondary">Merchant Setup</a>
+          </div>
+        </div>
+        <div class="hero-visual">
+          <div class="hero-glow-ring"></div>
+          <div class="hero-floating-card">
+            <div>
+              <div class="hero-card-header">Top Choice</div>
+              <div class="hero-card-title">IGET Bar 3500</div>
+            </div>
+            <div>
+              <div class="hero-card-price">$32.00 <span>/ unit</span></div>
+              <p style="font-size: 12px; color: var(--text-secondary); margin-top: 8px;">
+                Wholesale bulk carton discounts available in checkout.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. CATEGORIES BAR -->
+    <div class="container">
+      <div id="category-tabs" class="categories-tabs">
+        <!-- Rendered dynamically by store.js -->
+      </div>
+    </div>
+
+    <!-- 6. PRODUCT CATALOG & GRID -->
+    <main class="catalog-section" id="catalog">
+      <div class="container catalog-grid-layout">
+        
+        <!-- Sidebar Filters -->
+        <aside class="filter-sidebar glass-card">
+          <div class="filter-group">
+            <h3 class="filter-title">Brands</h3>
+            <ul id="brand-filters" class="filter-list">
+              <!-- Rendered dynamically -->
+            </ul>
+          </div>
+          
+          <div class="filter-group">
+            <h3 class="filter-title">Price Range</h3>
+            <ul id="price-filters" class="filter-list">
+              <li class="filter-item">
+                <label class="filter-checkbox-label">
+                  <input type="checkbox" name="price-filter" value="under-50" class="filter-checkbox">
+                  Under $50 (Singles)
+                </label>
+              </li>
+              <li class="filter-item">
+                <label class="filter-checkbox-label">
+                  <input type="checkbox" name="price-filter" value="50-250" class="filter-checkbox">
+                  $50 - $250 (Wholesale Boxes)
+                </label>
+              </li>
+              <li class="filter-item">
+                <label class="filter-checkbox-label">
+                  <input type="checkbox" name="price-filter" value="over-250" class="filter-checkbox">
+                  Over $250 (Premium Cartons)
+                </label>
+              </li>
+            </ul>
+          </div>
+
+          <div class="filter-group">
+            <h3 class="filter-title">Format</h3>
+            <ul id="format-filters" class="filter-list">
+              <li class="filter-item">
+                <label class="filter-checkbox-label">
+                  <input type="checkbox" name="format-filter" value="single" class="filter-checkbox">
+                  Singles / Cartons
+                </label>
+              </li>
+              <li class="filter-item">
+                <label class="filter-checkbox-label">
+                  <input type="checkbox" name="format-filter" value="box-only" class="filter-checkbox">
+                  Wholesale Bulk Boxes Only
+                </label>
+              </li>
+            </ul>
+          </div>
+
+          <button id="btn-clear-filters" class="btn-secondary btn-clear-filters">Clear All Filters</button>
+        </aside>
+
+        <!-- Product Listings -->
+        <section class="products-panel">
+          <div class="products-panel-header">
+            <div class="results-count">
+              Showing <span id="displayed-products-count">0</span> products
+            </div>
+            <div class="sort-selector-container">
+              <span class="sort-label">Sort By</span>
+              <select id="sort-select" class="sort-select">
+                <option value="featured">Featured</option>
+                <option value="price-asc">Price: Low to High</option>
+                <option value="price-desc">Price: High to Low</option>
+                <option value="name-asc">Alphabetical: A-Z</option>
+              </select>
+            </div>
+          </div>
+
+          <div id="products-grid" class="products-grid">
+            <!-- Rendered dynamically by store.js -->
+          </div>
+        </section>
+
+      </div>
+    </main>
+
+    <!-- 7. SECURE CHECKOUT PAGE / OVERLAY (Toggled by clicking Checkout) -->
+    <div id="checkout-section" class="modal-overlay">
+      <div class="modal-container glass-card">
+        <button id="checkout-close" class="modal-close-btn">✖</button>
+        <h2 class="modal-name text-gold" style="margin-bottom: 20px; text-transform: uppercase;">Secure Order Submission</h2>
+        
+        <div id="checkout-content">
+          <div class="modal-grid">
+            <!-- Left Panel: Delivery Details Form -->
+            <form id="checkout-form" onsubmit="event.preventDefault();">
+              <h3 class="modal-option-title" style="margin-bottom: 15px;">Shipping & Delivery Address</h3>
+              
+              <div style="margin-bottom: 12px;">
+                <label style="display:block; font-size:12px; color:var(--text-secondary); margin-bottom:5px;">Full Name *</label>
+                <input type="text" id="cust-name" required class="search-input" style="padding-left:15px; border-radius:6px; background:rgba(0,0,0,0.4)">
+              </div>
+              
+              <div style="margin-bottom: 12px;">
+                <label style="display:block; font-size:12px; color:var(--text-secondary); margin-bottom:5px;">Street Address *</label>
+                <input type="text" id="cust-address" required class="search-input" style="padding-left:15px; border-radius:6px; background:rgba(0,0,0,0.4)">
+              </div>
+              
+              <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-bottom:12px;">
+                <div>
+                  <label style="display:block; font-size:12px; color:var(--text-secondary); margin-bottom:5px;">City/Suburb *</label>
+                  <input type="text" id="cust-city" required class="search-input" style="padding-left:15px; border-radius:6px; background:rgba(0,0,0,0.4)">
+                </div>
+                <div>
+                  <label style="display:block; font-size:12px; color:var(--text-secondary); margin-bottom:5px;">State *</label>
+                  <select id="cust-state" required class="sort-select" style="width:100%; border-radius:6px; height:42px; background:rgba(0,0,0,0.4)">
+                    <option value="NSW">NSW</option>
+                    <option value="VIC">VIC</option>
+                    <option value="QLD">QLD</option>
+                    <option value="WA">WA</option>
+                    <option value="SA">SA</option>
+                    <option value="TAS">TAS</option>
+                    <option value="ACT">ACT</option>
+                    <option value="NT">NT</option>
+                  </select>
+                </div>
+              </div>
+              
+              <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-bottom:12px;">
+                <div>
+                  <label style="display:block; font-size:12px; color:var(--text-secondary); margin-bottom:5px;">Postcode *</label>
+                  <input type="text" id="cust-postcode" required class="search-input" style="padding-left:15px; border-radius:6px; background:rgba(0,0,0,0.4)">
+                </div>
+                <div>
+                  <label style="display:block; font-size:12px; color:var(--text-secondary); margin-bottom:5px;">Phone Number *</label>
+                  <input type="tel" id="cust-phone" required class="search-input" style="padding-left:15px; border-radius:6px; background:rgba(0,0,0,0.4)">
+                </div>
+              </div>
+
+              <div style="margin-bottom: 20px;">
+                <label style="display:block; font-size:12px; color:var(--text-secondary); margin-bottom:5px;">Email Address *</label>
+                <input type="email" id="cust-email" required class="search-input" style="padding-left:15px; border-radius:6px; background:rgba(0,0,0,0.4)">
+              </div>
+
+              <div style="margin-bottom: 20px;">
+                <label style="display:block; font-size:12px; color:var(--text-secondary); margin-bottom:5px;">Delivery Notes / Flavour Replacements</label>
+                <textarea id="cust-notes" rows="3" class="search-input" style="padding-left:15px; border-radius:6px; background:rgba(0,0,0,0.4); resize:none; font-family:var(--font-body);" placeholder="If a flavor is out of stock, list preferred replacements here..."></textarea>
+              </div>
+
+              <button type="submit" id="btn-submit-order" class="btn-primary" style="width:100%;">Confirm & Place Order</button>
+            </form>
+            
+            <!-- Right Panel: Order Summary -->
+            <div style="background:rgba(0,0,0,0.3); padding:20px; border-radius:var(--radius-md); border:1px solid rgba(212,175,55,0.08); display:flex; flex-direction:column; justify-content:space-between; max-height: 520px; overflow-y:auto;">
+              <div>
+                <h3 class="modal-option-title" style="margin-bottom: 15px; border-bottom:1px solid rgba(255,255,255,0.05); padding-bottom:8px;">Order Summary</h3>
+                <div id="checkout-items-list" style="margin-bottom:15px;">
+                  <!-- Dynamically rendered -->
+                </div>
+              </div>
+              <div>
+                <div class="cart-summary-row">
+                  <span>Subtotal</span>
+                  <span id="checkout-subtotal">$0.00</span>
+                </div>
+                <div class="cart-summary-row savings-row">
+                  <span>Carton Discounts</span>
+                  <span id="checkout-savings">$0.00</span>
+                </div>
+                <div class="cart-summary-row">
+                  <span>Shipping</span>
+                  <span id="checkout-shipping">Free</span>
+                </div>
+                <div class="cart-summary-row total-row">
+                  <span>Total Payable</span>
+                  <span id="checkout-total" class="cart-total-value">$0.00</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Successful Checkout Success Screen -->
+        <div id="checkout-success" style="display:none; text-align:center; padding:20px 0;">
+          <span style="font-size:50px; color:var(--success-color); margin-bottom:15px; display:inline-block;">✓</span>
+          <h2 class="hero-card-title text-gold" style="font-size:32px; margin-bottom:10px;">Order Placed Successfully!</h2>
+          <p style="color:var(--text-secondary); max-width:600px; margin:0 auto 30px auto; font-size:14px;">
+            Thank you for shopping with Crown & Gold. We have received your order details. To finalize your shipment, please process the bank transfer payment below.
+          </p>
+          
+          <!-- Bank Credentials Card -->
+          <div class="glass-card" style="max-width:550px; margin:0 auto 30px auto; padding:24px; text-align:left; border-color:var(--gold-accent); position:relative;">
+            <h3 class="modal-option-title text-gold" style="margin-bottom:15px; text-align:center; font-size:16px;">Bank Transfer Instructions</h3>
+            
+            <div style="display:grid; grid-template-columns: 1.2fr 2fr; gap:10px; font-size:14px; margin-bottom:10px;">
+              <span style="color:var(--text-secondary)">Bank Name:</span>
+              <strong id="success-bank-name">Commonwealth Bank</strong>
+              
+              <span style="color:var(--text-secondary)">Account Name:</span>
+              <strong id="success-account-name">CROWN & GOLD LOGISTICS</strong>
+              
+              <span style="color:var(--text-secondary)">BSB:</span>
+              <strong id="success-bsb">062-900</strong>
+              
+              <span style="color:var(--text-secondary)">Account Number:</span>
+              <strong id="success-account-num">1088 4729</strong>
+              
+              <span style="color:var(--text-secondary)">Unique Reference:</span>
+              <strong style="color:var(--gold-accent); font-size:18px; font-family:var(--font-title);" id="success-ref">REF-2026-X12Y</strong>
+            </div>
+            
+            <p style="font-size:12px; color:var(--text-muted); text-align:center; margin-top:20px; line-height:1.4;">
+              ⚠️ IMPORTANT: Please copy and use the <strong>Unique Reference</strong> code above in your bank transaction description, otherwise your shipment verification may be delayed.
+            </p>
+          </div>
+          
+          <div style="display:flex; justify-content:center; gap:15px;">
+            <button onclick="window.print();" class="btn-secondary">Print Receipt</button>
+            <button onclick="location.reload();" class="btn-primary">Return to Store</button>
+          </div>
+        </div>
+        
+      </div>
+    </div>
+
+    <!-- 8. DYNAMIC PRODUCT DETAIL MODAL -->
+    <div id="product-detail-modal" class="modal-overlay">
+      <div class="modal-container glass-card">
+        <button id="modal-close" class="modal-close-btn">✖</button>
+        <div class="modal-grid">
+          <div class="modal-image-wrap">
+            <img id="modal-image" class="modal-image" src="" alt="">
+          </div>
+          <div style="display: flex; flex-direction: column; justify-content: space-between;">
+            <div>
+              <div id="modal-brand" class="modal-brand">Brand</div>
+              <h2 id="modal-name" class="modal-name">Product Name</h2>
+              <p id="modal-description" class="modal-description">Detailed product description goes here...</p>
+              
+              <div id="modal-flavor-group">
+                <h4 class="modal-option-title">Select Flavor</h4>
+                <div id="modal-flavors" class="modal-flavor-list">
+                  <!-- Rendered dynamically -->
+                </div>
+              </div>
+            </div>
+            
+            <div>
+              <div class="modal-price-card">
+                <div class="modal-price-row">
+                  <span class="price-label">Carton/Single Price</span>
+                  <span id="modal-price-single" class="price-value">$0.00</span>
+                </div>
+                <div class="modal-price-row highlight" id="modal-price-box-row">
+                  <span class="price-label">Wholesale Box Price (10x Pack)</span>
+                  <span id="modal-price-box" class="price-value highlight-gold">$0.00</span>
+                </div>
+              </div>
+              <button id="btn-modal-add" class="btn-primary" style="width: 100%;">Add Item to Cart</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 9. SHOPPING CART SIDE DRAWER -->
+    <div id="cart-drawer-overlay" class="cart-drawer-overlay"></div>
+    <div id="cart-drawer" class="cart-drawer">
+      <div class="cart-drawer-header">
+        <h3 class="cart-drawer-title">Your Order</h3>
+        <button id="cart-close" class="cart-close-btn">✖</button>
+      </div>
+      
+      <div id="cart-items" class="cart-items-container">
+        <!-- Rendered dynamically by store.js -->
+      </div>
+      
+      <div class="cart-drawer-footer">
+        <div class="cart-summary-row">
+          <span>Items Selected</span>
+          <span id="cart-items-count">0</span>
+        </div>
+        <div class="cart-summary-row">
+          <span>Subtotal</span>
+          <span id="cart-subtotal">$0.00</span>
+        </div>
+        <div class="cart-summary-row savings-row">
+          <span>Bulk Savings</span>
+          <span id="cart-savings">$0.00</span>
+        </div>
+        <div class="cart-summary-row">
+          <span>Shipping (Express)</span>
+          <span id="cart-shipping">Free</span>
+        </div>
+        <div class="cart-summary-row total-row">
+          <span>Total Payable</span>
+          <span id="cart-total" class="cart-total-value">$0.00</span>
+        </div>
+        <button id="btn-checkout-trigger" class="btn-primary btn-checkout">Proceed to Checkout</button>
+      </div>
+    </div>
+
+    <!-- 10. MAIN FOOTER -->
+    <footer class="main-footer">
+      <div class="container">
+        <div class="footer-grid">
+          <div>
+            <div class="logo-text" style="font-size: 20px; margin-bottom: 20px;">Crown & Gold</div>
+            <p class="footer-text">
+              Australia's premier boutique merchant for bulk and carton distribution of leading smoke and vape brands.
+            </p>
+            <p style="font-size: 12px; color: var(--text-muted);">
+              Crown & Gold strictly enforces identity verification for age requirements. Nicotine products are only sold in accordance with local regulations.
+            </p>
+          </div>
+          
+          <div>
+            <h3 class="footer-col-title">Product Catalog</h3>
+            <ul class="footer-links">
+              <li><a href="#" onclick="event.preventDefault(); window.store.setCategory('vapes-single')">IGET & Alibarbar Vapes</a></li>
+              <li><a href="#" onclick="event.preventDefault(); window.store.setCategory('vapes-boxes')">Wholesale Bulk Boxes (10x)</a></li>
+              <li><a href="#" onclick="event.preventDefault(); window.store.setCategory('cigarettes')">Popular Cigarette Cartons</a></li>
+            </ul>
+          </div>
+          
+          <div>
+            <h3 class="footer-col-title">Merchant Support</h3>
+            <ul class="footer-links">
+              <li><a href="admin.html">Merchant Admin Portal</a></li>
+              <li><a href="#" id="footer-btn-clear-cookie">Reset Age Consent Cache</a></li>
+              <li><a href="#">Shipping & Tracking Policies</a></li>
+            </ul>
+          </div>
+          
+          <div>
+            <h3 class="footer-col-title">Contact & Orders</h3>
+            <div class="footer-contact-item">
+              <span class="footer-contact-icon">✉</span>
+              <span id="footer-email">orders@crowngoldstore.com</span>
+            </div>
+            <div class="footer-contact-item">
+              <span class="footer-contact-icon">☎</span>
+              <span id="footer-phone">+61 488 888 888</span>
+            </div>
+            <div class="footer-contact-item">
+              <span class="footer-contact-icon">📍</span>
+              <span>Sydney, NSW, Australia</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="footer-bottom">
+          <div class="footer-copy">
+            &copy; 2026 Crown & Gold Logistics. All rights reserved. Wholesale Smoke & Vape Distributors.
+          </div>
+          <div style="display: flex; gap: 15px; color: var(--text-muted);">
+            <span>ABN: 88 472 910 374</span>
+            <span>|</span>
+            <span>Bank Transfer Only</span>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Loading scripts -->
+  <script src="js/config_default.js"></script>
+  <script src="js/store.js"></script>
+</body>
+</html>
