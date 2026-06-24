@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 Disallow: /admin.html
 
-Sitemap: https://ozcheapvapes.com/sitemap.xml
+Sitemap: https://vapesraus.com/sitemap.xml

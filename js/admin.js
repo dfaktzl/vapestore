@@ -1,5 +1,5 @@
 /* ==========================================================================
-   MERCHANT DASHBOARD CONTROLLER (OZCHEAPVAPES REBRAND)
+   MERCHANT DASHBOARD CONTROLLER (VAPESRAUS REBRAND)
    ========================================================================== */
 
 document.addEventListener("DOMContentLoaded", () => {

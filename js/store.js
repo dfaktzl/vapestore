@@ -1,5 +1,5 @@
 /* ==========================================================================
-   STOREFRONT MAIN CONTROLLER (OZCHEAPVAPES REBRAND)
+   STOREFRONT MAIN CONTROLLER (VAPESRAUS REBRAND)
    ========================================================================== */
 
 document.addEventListener("DOMContentLoaded", () => {

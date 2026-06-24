@@ -1,5 +1,5 @@
 # ==========================================================================
-# OZCHEAPVAPES AUTO-PUSH ENGINE (FileSystem Watcher for config.json)
+# VAPESRAUS AUTO-PUSH ENGINE (FileSystem Watcher for config.json)
 # ==========================================================================
 # Instructions:
 # 1. Open PowerShell inside the project directory.
@@ -13,7 +13,7 @@ $folder = Get-Location
 $filter = "*.json"
 
 Write-Host "=============================================" -ForegroundColor Gold
-Write-Host "  OzCheapVapes Git Auto-Push Agent Active" -ForegroundColor Gold
+Write-Host "  Vapes 'R' Aus Git Auto-Push Agent Active" -ForegroundColor Gold
 Write-Host "=============================================" -ForegroundColor Gold
 Write-Host "Watching for changes to config.json & orders.json in: $folder" -ForegroundColor Cyan
 Write-Host "Keep this window open to automate git pushes." -ForegroundColor DarkGray

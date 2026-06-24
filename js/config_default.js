@@ -4,16 +4,16 @@
 
 const CONFIG_DEFAULT = {
   seo: {
-    title: "OzCheapVapes | Buy Cheap Vapes & Cigarettes Online Australia",
-    description: "OzCheapVapes & Smokes is Australia's #1 trusted online vape & smoke shop. Buy cheap cigarettes online, IGET Bar 3500, Alibarbar, Waka SoPro, & HQD boxes at discount wholesale prices. Bank transfer & PayID processed with fast, discreet shipping.",
-    keywords: "buy vapes online, cheap vapes australia, cheap cigarettes online, iget bar 3500 online, alibarbar vape, waka box wholesale, cheap smokes sydney, ozcheapvapes, local cig supply, auvaper, quantum vape, tobacco delivery australia"
+    title: "Vapes 'R' Aus | Buy Cheap Vapes & Cigarettes Online Australia",
+    description: "Vapes 'R' Aus & Smokes is Australia's #1 trusted online vape & smoke shop. Buy cheap cigarettes online, IGET Bar 3500, Alibarbar, Waka SoPro, & HQD boxes at discount wholesale prices. Bank transfer & PayID processed with fast, discreet shipping.",
+    keywords: "buy vapes online, cheap vapes australia, cheap cigarettes online, iget bar 3500 online, alibarbar vape, waka box wholesale, cheap smokes sydney, vapesraus, local cig supply, auvaper, quantum vape, tobacco delivery australia"
   },
   settings: {
-    siteName: "OzCheapVapes",
-    tagline: "Oz's Best Deals on Vapes & Smokes",
+    siteName: "Vapes 'R' Aus",
+    tagline: "Best Deals on Vapes & Smokes in Australia",
     contactEmail: "vapesonlineaustralia@proton.me",
     contactPhone: "0402 179 489",
-    announcement: "🔥 OZCHEAPVAPES: FREE EXPRESS SHIPPING ON ALL ORDERS OVER $200! PAYID & BANK XFER ACCEPTED 🔥",
+    announcement: "🔥 VAPES 'R' AUS: FREE EXPRESS SHIPPING ON ALL ORDERS OVER $200! PAYID & BANK XFER ACCEPTED 🔥",
     ageLimit: 18,
     orderSyncUrl: "",
     bankDetails: {
