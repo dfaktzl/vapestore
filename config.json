@@ -7,14 +7,14 @@
   "settings": {
     "siteName": "OzCheapVapes",
     "tagline": "Oz's Best Deals on Vapes & Smokes",
-    "contactEmail": "orders@ozcheapvapes.com",
-    "contactPhone": "+61 499 999 999",
+    "contactEmail": "vapesonlineaustralia@proton.me",
+    "contactPhone": "0402 179 489",
     "announcement": "🔥 OZCHEAPVAPES: FREE EXPRESS SHIPPING ON ALL ORDERS OVER $200! PAYID & BANK XFER ACCEPTED 🔥",
     "ageLimit": 18,
     "orderSyncUrl": "",
     "bankDetails": {
       "payId": "vapesonlineaustralia@proton.me",
-      "bankName": "Westpac Banking Corporation",
+      "bankName": "NAB - National Australia Bank",
       "accountName": "Vapes Discount Australia",
       "bsb": "086-724",
       "accountNumber": "91-591-6658"
