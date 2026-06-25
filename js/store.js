@@ -1,5 +1,5 @@
 /* ==========================================================================
-   STOREFRONT MAIN CONTROLLER (VAPESRAUS REBRAND)
+   STOREFRONT MAIN CONTROLLER (VAPERAUS REBRAND)
    ========================================================================== */
 
 document.addEventListener("DOMContentLoaded", () => {
