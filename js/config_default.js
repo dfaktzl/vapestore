@@ -173,7 +173,7 @@ const CONFIG_DEFAULT = {
       boxPrice: 175.00,
       isBoxOnly: true,
       flavors: ["Black Ice", "Grapey", "Lush Ice", "Strawberry Banana", "Mango Peach", "Double Apple"],
-      image: "img/hqd_cuvie_box.webp",
+      image: "img/hqd_cuvie_box.png",
       description: "WHOLESALE ONLY BOX (Cheapest Box Option - No Singles Available). HQD Cuvie Bar disposables featuring 7000 puffs and mesh heating coils. Each box contains 10 units of the selected flavor.",
       inStock: true,
       popular: true
