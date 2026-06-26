@@ -2,6 +2,25 @@
    MERCHANT DASHBOARD CONTROLLER (VAPERAUS REBRAND)
    ========================================================================== */
 
+// Safe localStorage wrapper to prevent exceptions under file:// or cookie-blocked environments
+const localStorage = (() => {
+  try {
+    const testKey = "__storage_test__";
+    window.localStorage.setItem(testKey, testKey);
+    window.localStorage.removeItem(testKey);
+    return window.localStorage;
+  } catch (e) {
+    console.warn("localStorage is blocked or unavailable. Falling back to in-memory storage.", e);
+    return {
+      _data: {},
+      setItem(id, val) { this._data[id] = String(val); },
+      getItem(id) { return this._data.hasOwnProperty(id) ? this._data[id] : null; },
+      removeItem(id) { delete this._data[id]; },
+      clear() { this._data = {}; }
+    };
+  }
+})();
+
 document.addEventListener("DOMContentLoaded", () => {
   window.adminApp = new AdminApp();
 });
