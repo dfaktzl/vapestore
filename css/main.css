@@ -1241,3 +1241,135 @@
     display: none; /* Hide main search bar in navigation header on mobile - show in side panel or menu */
   }
 }
+
+/* ==========================================================================
+   11. EDUCATIONAL HUB & GUIDES
+   ========================================================================== */
+.guides-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+  gap: 25px;
+}
+
+.guide-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 24px;
+  position: relative;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--glass-border);
+  background: linear-gradient(180deg, rgba(22, 25, 32, 0.4) 0%, rgba(10, 11, 14, 0.85) 100%);
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--transition-normal), border-color var(--transition-normal), box-shadow var(--transition-normal);
+  cursor: pointer;
+}
+
+.guide-card:hover {
+  transform: translateY(-5px);
+  border-color: rgba(212, 175, 55, 0.35);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 15px rgba(212, 175, 55, 0.05);
+}
+
+.guide-meta {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--gold-accent);
+  margin-bottom: 10px;
+}
+
+.guide-card-title {
+  font-family: var(--font-title);
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.3;
+  margin-bottom: 12px;
+  color: var(--text-primary);
+  transition: color var(--transition-fast);
+}
+
+.guide-card:hover .guide-card-title {
+  color: var(--gold-light);
+}
+
+.guide-excerpt {
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--text-secondary);
+  flex-grow: 1;
+  margin-bottom: 20px;
+}
+
+.guide-readmore {
+  font-family: var(--font-title);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--gold-accent);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.guide-readmore::after {
+  content: '→';
+  transition: transform var(--transition-fast);
+}
+
+.guide-card:hover .guide-readmore::after {
+  transform: translateX(5px);
+}
+
+/* Article Modal Body Typography */
+.article-title {
+  font-family: var(--font-title);
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1.25;
+  color: var(--text-primary);
+  margin-bottom: 15px;
+  border-bottom: 1px solid rgba(212, 175, 55, 0.15);
+  padding-bottom: 15px;
+}
+
+.article-meta {
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin-bottom: 25px;
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.article-meta span {
+  color: var(--gold-light);
+}
+
+.article-body {
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--text-secondary);
+}
+
+.article-body p {
+  margin-bottom: 20px;
+}
+
+.article-body h3 {
+  font-family: var(--font-title);
+  font-size: 18px;
+  color: var(--gold-accent);
+  margin: 30px 0 15px 0;
+  font-weight: 600;
+}
+
+.article-body ol, .article-body ul {
+  margin-bottom: 20px;
+  padding-left: 20px;
+}
+
+.article-body li {
+  margin-bottom: 10px;
+}

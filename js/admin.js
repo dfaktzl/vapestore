@@ -33,6 +33,7 @@ class AdminApp {
     // Populate form fields with config settings
     this.populateSettingsForm();
     this.renderProductsList();
+    this.renderGuidesList();
     this.renderOrders();
     
     // Setup event handlers
@@ -404,6 +405,7 @@ class AdminApp {
           this.saveConfigPreview();
           this.populateSettingsForm();
           this.renderProductsList();
+          this.renderGuidesList();
           alert("config.json successfully imported! Edits applied to browser cache.");
         } else {
           alert("Invalid config schema. Make sure the JSON contains products, settings, and seo properties.");
@@ -421,9 +423,155 @@ class AdminApp {
       this.loadConfig().then(() => {
         this.populateSettingsForm();
         this.renderProductsList();
+        this.renderGuidesList();
         alert("Configuration restored to defaults.");
       });
     }
+  }
+
+  /* ==========================================================================
+     4B. SEO CONTENT HUB (GUIDES) CRUD ENGINE
+     ========================================================================== */
+
+  renderGuidesList() {
+    const listBody = document.getElementById("admin-guides-list");
+    const countText = document.getElementById("admin-guide-count");
+    if (!listBody || !this.config) return;
+    
+    // Ensure guides array exists
+    if (!this.config.guides) {
+      this.config.guides = [];
+    }
+    
+    countText.innerText = this.config.guides.length;
+    listBody.innerHTML = "";
+    
+    if (this.config.guides.length === 0) {
+      listBody.innerHTML = `
+        <tr>
+          <td colspan="5" style="text-align: center; padding: 40px; color: var(--text-secondary);">
+            No articles currently in the content hub. Use the form above to add items.
+          </td>
+        </tr>
+      `;
+      return;
+    }
+    
+    this.config.guides.forEach(guide => {
+      const tr = document.createElement("tr");
+      
+      tr.innerHTML = `
+        <td style="font-weight: 600; color: #fff;">${guide.title}</td>
+        <td><code>${guide.keyword || ""}</code></td>
+        <td>${guide.date || ""}</td>
+        <td>${guide.author || "Vape 'R' Aus Education"}</td>
+        <td style="text-align: right;">
+          <button class="btn-primary btn-edit-guide" style="padding: 4px 8px; font-size: 11px; margin-right: 5px; border-color: var(--gold-accent);">Edit</button>
+          <button class="btn-secondary btn-delete-guide" style="padding: 4px 8px; font-size: 11px; color: var(--error-color); border-color: var(--error-color);">Delete</button>
+        </td>
+      `;
+      
+      tr.querySelector(".btn-edit-guide").addEventListener("click", () => this.editGuide(guide.id));
+      tr.querySelector(".btn-delete-guide").addEventListener("click", () => this.deleteGuide(guide.id));
+      
+      listBody.appendChild(tr);
+    });
+  }
+
+  saveGuide() {
+    if (!this.config) return;
+    if (!this.config.guides) this.config.guides = [];
+    
+    const idField = document.getElementById("edit-guide-id").value;
+    const titleVal = document.getElementById("guide-title").value.trim();
+    const keywordVal = document.getElementById("guide-keyword").value.trim();
+    const authorVal = document.getElementById("guide-author").value.trim() || "Vape 'R' Aus Education";
+    const summaryVal = document.getElementById("guide-summary").value.trim();
+    const contentVal = document.getElementById("guide-content").value.trim();
+    
+    if (!titleVal || !keywordVal || !summaryVal || !contentVal) {
+      alert("Please fill in all required fields marked with *");
+      return;
+    }
+    
+    if (idField) {
+      // Update existing
+      const guide = this.config.guides.find(g => g.id === idField);
+      if (guide) {
+        guide.title = titleVal;
+        guide.keyword = keywordVal;
+        guide.author = authorVal;
+        guide.summary = summaryVal;
+        guide.content = contentVal;
+      }
+    } else {
+      // Create new
+      // Generate URL slug from title as ID
+      const newId = titleVal.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+      
+      // Ensure ID is unique
+      let finalId = newId;
+      let counter = 1;
+      while (this.config.guides.some(g => g.id === finalId)) {
+        finalId = `${newId}-${counter}`;
+        counter++;
+      }
+      
+      const today = new Date().toISOString().split("T")[0]; // YYYY-MM-DD
+      
+      this.config.guides.push({
+        id: finalId,
+        title: titleVal,
+        keyword: keywordVal,
+        date: today,
+        summary: summaryVal,
+        content: contentVal,
+        author: authorVal
+      });
+    }
+    
+    this.saveConfigPreview();
+    this.renderGuidesList();
+    this.cancelGuideEdit();
+    alert("Educational article saved successfully!");
+  }
+
+  editGuide(guideId) {
+    if (!this.config || !this.config.guides) return;
+    const guide = this.config.guides.find(g => g.id === guideId);
+    if (!guide) return;
+    
+    document.getElementById("edit-guide-id").value = guide.id;
+    document.getElementById("guide-title").value = guide.title;
+    document.getElementById("guide-keyword").value = guide.keyword || "";
+    document.getElementById("guide-author").value = guide.author || "Vape 'R' Aus Education";
+    document.getElementById("guide-summary").value = guide.summary;
+    document.getElementById("guide-content").value = guide.content;
+    
+    document.getElementById("guide-editor-title").innerText = "Edit Educational Article";
+    document.getElementById("btn-save-guide").innerText = "Save Changes";
+    document.getElementById("btn-cancel-guide-edit").style.display = "inline-block";
+    
+    // Scroll to form smoothly
+    document.getElementById("guide-editor-card").scrollIntoView({ behavior: "smooth" });
+  }
+
+  deleteGuide(guideId) {
+    if (confirm("Are you sure you want to delete this educational article from the content hub?")) {
+      this.config.guides = this.config.guides.filter(g => g.id !== guideId);
+      this.saveConfigPreview();
+      this.renderGuidesList();
+      this.cancelGuideEdit();
+    }
+  }
+
+  cancelGuideEdit() {
+    document.getElementById("edit-guide-id").value = "";
+    document.getElementById("guide-form").reset();
+    
+    document.getElementById("guide-editor-title").innerText = "Add New Educational Article";
+    document.getElementById("btn-save-guide").innerText = "Add Article";
+    document.getElementById("btn-cancel-guide-edit").style.display = "none";
   }
 
   /* ==========================================================================
@@ -702,6 +850,19 @@ class AdminApp {
         e.preventDefault();
         this.saveSettings();
       });
+    }
+    
+    const guideForm = document.getElementById("guide-form");
+    if (guideForm) {
+      guideForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        this.saveGuide();
+      });
+    }
+    
+    const cancelGuideEditBtn = document.getElementById("btn-cancel-guide-edit");
+    if (cancelGuideEditBtn) {
+      cancelGuideEditBtn.addEventListener("click", () => this.cancelGuideEdit());
     }
     
     // Export/Reset buttons

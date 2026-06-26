@@ -91,6 +91,7 @@
       <nav class="admin-tabs">
         <button class="admin-tab active" data-tab="catalog">Products Catalog</button>
         <button class="admin-tab" data-tab="seo-settings">SEO & Bank Settings</button>
+        <button class="admin-tab" data-tab="guides">SEO Content Hub</button>
         <button class="admin-tab" data-tab="orders">Customer Orders</button>
         <button class="admin-tab" data-tab="guide">Hosting & Automation</button>
       </nav>
@@ -274,6 +275,72 @@
           </div>
 
         </form>
+      </section>
+
+      <!-- TAB: SEO GUIDES CONTENT HUB -->
+      <section id="tab-guides" class="admin-tab-content">
+        
+        <!-- Add/Edit Article Card -->
+        <div class="glass-card admin-card" id="guide-editor-card">
+          <h2 class="admin-card-title" id="guide-editor-title">Add New Educational Article</h2>
+          <form id="guide-form" onsubmit="event.preventDefault();">
+            <input type="hidden" id="edit-guide-id">
+            
+            <div class="form-grid">
+              <div class="form-field" style="grid-column: span 2;">
+                <label class="form-label">Article Title *</label>
+                <input type="text" id="guide-title" required placeholder="e.g. How to Clean a Vape Coil: A Step-by-Step Guide" class="form-input">
+              </div>
+              
+              <div class="form-field">
+                <label class="form-label">Target Informational Keyword *</label>
+                <input type="text" id="guide-keyword" required placeholder="e.g. how to clean a vape coil" class="form-input">
+              </div>
+              
+              <div class="form-field">
+                <label class="form-label">Author</label>
+                <input type="text" id="guide-author" placeholder="Default: Vape 'R' Aus Education" class="form-input">
+              </div>
+              
+              <div class="form-field" style="grid-column: span 2;">
+                <label class="form-label">Summary / Excerpt * (Brief overview for cards)</label>
+                <input type="text" id="guide-summary" required placeholder="A brief one-sentence summary of what readers will learn..." class="form-input">
+              </div>
+              
+              <div class="form-field" style="grid-column: span 2;">
+                <label class="form-label">Article Content * (Use double newlines for paragraphs)</label>
+                <textarea id="guide-content" required placeholder="Write the main body of your educational guide here. Focus on compliance, safety, and helpful facts..." class="form-input" style="height: 180px; font-family: inherit; font-size: 13px; line-height: 1.5; resize: vertical;"></textarea>
+              </div>
+            </div>
+            
+            <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:20px;">
+              <button type="button" id="btn-cancel-guide-edit" class="btn-secondary" style="display:none; margin:0;">Cancel Edit</button>
+              <button type="submit" id="btn-save-guide" class="btn-primary" style="margin:0;">Add Article</button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Guides List Grid -->
+        <div class="glass-card admin-card" style="margin-top: 30px;">
+          <h2 class="admin-card-title">Manage Existing Articles (<span id="admin-guide-count">0</span>)</h2>
+          <div class="admin-table-container">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>Title</th>
+                  <th>Target Keyword</th>
+                  <th>Date</th>
+                  <th>Author</th>
+                  <th style="text-align: right; width: 150px;">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="admin-guides-list">
+                <!-- Rendered dynamically by admin.js -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
       </section>
 
       <!-- TAB 3: CUSTOMER ORDERS LOG -->
