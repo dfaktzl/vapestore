@@ -9,6 +9,7 @@ document.addEventListener("DOMContentLoaded", () => {
 class AdminApp {
   constructor() {
     this.config = null;
+    this.guides = [];
     this.orders = [];
     this.init();
   }
@@ -28,6 +29,7 @@ class AdminApp {
 
   async initDashboard() {
     await this.loadConfig();
+    await this.loadGuides();
     await this.loadOrders();
     
     // Populate form fields with config settings
@@ -113,6 +115,67 @@ class AdminApp {
     } else {
       alert("Error: Default configuration variables missing.");
     }
+  }
+
+  async loadGuides() {
+    // 1. Check local storage cache first
+    const cached = localStorage.getItem("crown_gold_guides");
+    if (cached) {
+      try {
+        this.guides = JSON.parse(cached);
+        console.log("Admin loaded guides from local storage cache.");
+        return;
+      } catch (e) {
+        console.error("Failed to parse cached guides, resetting.", e);
+      }
+    }
+
+    // 2. Try fetching guides.json from server
+    try {
+      const response = await fetch("guides.json");
+      if (response.ok) {
+        this.guides = await response.json();
+        console.log("Admin loaded guides from guides.json.");
+        return;
+      }
+    } catch(e) {
+      console.warn("Could not retrieve guides.json. Using fallback default.");
+    }
+
+    // 3. Fallback default guides
+    this.guides = [
+      {
+        id: "how-to-clean-vape-coil",
+        title: "How to Clean a Vape Coil: A Step-by-Step Maintenance Guide",
+        keyword: "how to clean a vape coil",
+        date: "2026-06-25",
+        summary: "Extend the life of your vape coils, improve flavor, and prevent burnt hits with our simple step-by-step coil cleaning guide.",
+        content: "Cleaning your vape coils regularly is one of the best ways to ensure a clean taste and extend their lifespan. Over time, e-liquid residue (commonly known as 'gunk') builds up on the heating coil and wick. This residue can lead to a burnt taste, reduced vapor production, and overall poor performance.\n\n### Why Clean Your Vape Coils?\n1. **Restore Flavor:** A build-up of old sweetener and flavoring can mute new e-liquid profiles.\n2. **Extend Coil Lifespan:** Removing debris prevents the coil from overheating and burning out prematurely.\n3. **Save Money:** Reusing clean coils reduces the frequency of buying replacements.\n\n### Step-by-Step Cleaning Process\n1. **Disassemble the Tank:** Carefully remove the tank from your mod and unscrew the coil head.\n2. **Rinse in Warm Water:** Run warm water through the coil to wash away loose e-liquid. For deep cleaning, submerge the coil in a bowl of warm water for 30 minutes.\n3. **Use an Alcohol Bath (Optional):** For stubborn build-ups, soak the coil in high-proof grain alcohol (like ethanol or vodka) for 2 hours, then rinse thoroughly with warm water.\n4. **Air Dry Completely:** This is the most crucial step. Place the coil on a paper towel and let it dry for at least 24 hours. Placing a coil with water in it back into your vape can cause spitting and short circuits.\n5. **Prime and Reassemble:** Once bone-dry, apply a few drops of e-liquid directly onto the wick, screw the coil back into the tank, and fill it. Let it sit for 5-10 minutes before firing.",
+        author: "Vape 'R' Aus Education"
+      },
+      {
+        id: "understanding-vg-pg-ratios",
+        title: "Understanding VG/PG Ratios: The Complete E-Liquid Guide",
+        keyword: "understanding vg/pg ratios",
+        date: "2026-06-25",
+        summary: "Learn the difference between Vegetable Glycerin (VG) and Propylene Glycol (PG) to optimize vapor production and throat hit for your device.",
+        content: "Every bottle of e-liquid contains two primary base carriers: Vegetable Glycerin (VG) and Propylene Glycol (PG). The ratio between these two fluids determines how your e-liquid behaves, the amount of vapor it produces, the severity of the throat hit, and which devices it is compatible with.\n\n### What is Vegetable Glycerin (VG)?\nVG is a thick, sweet vegetable-derived liquid. \n* **Characteristics:** Produces massive vapor clouds, offers a throat hit, and has a slight natural sweetness.\n* **Best For:** Sub-ohm devices, high-wattage mods, and direct-to-lung (DTL) vaping styles.\n\n### What is Propylene Glycol (PG)?\nPG is a thin, odorless, and tasteless organic compound.\n* **Characteristics:** Carries flavor more effectively, provides a strong 'throat hit' similar to traditional smoking, and has a very thin viscosity.\n* **Best For:** Low-wattage pod devices, starter kits, and mouth-to-lung (MTL) vaping styles.\n\n### Choosing Your Ideal VG/PG Ratio\n* **70% VG / 30% PG:** The gold standard for sub-ohm vaping. Excellent cloud production and smooth inhales.\n* **50% VG / 50% PG:** Perfect for pod systems (like IGET or Alibarbar style systems) and starter kits. Balanced throat hit and sharp flavor delivery.\n* **Max VG:** Best for vapers with PG sensitivities and cloud chasing enthusiasts.",
+        author: "Vape 'R' Aus Education"
+      },
+      {
+        id: "cigarette-carton-storage-guide",
+        title: "How to Store Cigarette Cartons: Keeping Tobacco Fresh",
+        keyword: "how to store cigarette cartons",
+        date: "2026-06-25",
+        summary: "Discover the best techniques to preserve the freshness and flavor of bulk cigarette cartons and loose leaf tobacco.",
+        content: "Buying cigarettes in bulk cartons is a highly cost-effective option, but proper storage is vital to prevent the tobacco from drying out, losing its natural aroma, or becoming stale. Storing your tobacco products correctly preserves their moisture levels and premium smoking quality.\n\n### Environmental Factors Affecting Tobacco\n1. **Humidity:** Excessive humidity can cause mold, while very dry air makes tobacco burn hot and harsh.\n2. **Temperature:** Keep cartons away from high heat sources, which bake the oils out of the leaf.\n3. **Air Exposure:** Once cellophane is opened, oxygen speeds up the drying process.\n\n### Best Storage Practices\n* **Keep Sealed:** Do not open the cellophane wrapping around the carton until you are ready to smoke the individual packs.\n* **Cool, Dark Place:** Store cartons in a drawer, closet, or cabinet away from direct sunlight and temperature fluctuations.\n* **Use Airtight Containers:** For long-term storage of opened packs, placing them in a sealed container or high-quality ziplock bag with a humidity control pack (like Boveda 62%) is highly recommended.\n* **Never Freeze:** Avoid putting cigarettes in the freezer, as freezing cycles dry out the tobacco fibers and ruin the paper wrappers.",
+        author: "Vape 'R' Aus Education"
+      }
+    ];
+  }
+
+  saveGuidesPreview() {
+    localStorage.setItem("crown_gold_guides", JSON.stringify(this.guides));
   }
 
   saveConfigPreview() {
@@ -417,6 +480,49 @@ class AdminApp {
     reader.readAsText(file);
   }
 
+  exportGuides() {
+    if (!this.guides || this.guides.length === 0) {
+      alert("No guides available to export.");
+      return;
+    }
+    
+    // Format JSON with 2-spaces indentation
+    const jsonStr = JSON.stringify(this.guides, null, 2);
+    const blob = new Blob([jsonStr], { type: "application/json" });
+    
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "guides.json";
+    
+    document.body.appendChild(a);
+    a.click();
+    
+    document.body.removeChild(a);
+    URL.revokeObjectURL(a.href);
+  }
+
+  importGuides(file) {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      try {
+        const parsed = JSON.parse(e.target.result);
+        
+        // Simple schema validation
+        if (Array.isArray(parsed)) {
+          this.guides = parsed;
+          this.saveGuidesPreview();
+          this.renderGuidesList();
+          alert("guides.json successfully imported! Edits applied to browser cache.");
+        } else {
+          alert("Invalid guides schema. Make sure the JSON file contains an array of articles.");
+        }
+      } catch (err) {
+        alert("Failed to parse JSON file: " + err.message);
+      }
+    };
+    reader.readAsText(file);
+  }
+
   resetConfig() {
     if (confirm("WARNING: This will clear all custom edits and reset the store to the default catalog. Do you want to continue?")) {
       localStorage.removeItem("crown_gold_config");
@@ -436,17 +542,12 @@ class AdminApp {
   renderGuidesList() {
     const listBody = document.getElementById("admin-guides-list");
     const countText = document.getElementById("admin-guide-count");
-    if (!listBody || !this.config) return;
+    if (!listBody || !this.guides) return;
     
-    // Ensure guides array exists
-    if (!this.config.guides) {
-      this.config.guides = [];
-    }
-    
-    countText.innerText = this.config.guides.length;
+    countText.innerText = this.guides.length;
     listBody.innerHTML = "";
     
-    if (this.config.guides.length === 0) {
+    if (this.guides.length === 0) {
       listBody.innerHTML = `
         <tr>
           <td colspan="5" style="text-align: center; padding: 40px; color: var(--text-secondary);">
@@ -457,7 +558,7 @@ class AdminApp {
       return;
     }
     
-    this.config.guides.forEach(guide => {
+    this.guides.forEach(guide => {
       const tr = document.createElement("tr");
       
       tr.innerHTML = `
@@ -479,8 +580,7 @@ class AdminApp {
   }
 
   saveGuide() {
-    if (!this.config) return;
-    if (!this.config.guides) this.config.guides = [];
+    if (!this.guides) this.guides = [];
     
     const idField = document.getElementById("edit-guide-id").value;
     const titleVal = document.getElementById("guide-title").value.trim();
@@ -496,7 +596,7 @@ class AdminApp {
     
     if (idField) {
       // Update existing
-      const guide = this.config.guides.find(g => g.id === idField);
+      const guide = this.guides.find(g => g.id === idField);
       if (guide) {
         guide.title = titleVal;
         guide.keyword = keywordVal;
@@ -512,14 +612,14 @@ class AdminApp {
       // Ensure ID is unique
       let finalId = newId;
       let counter = 1;
-      while (this.config.guides.some(g => g.id === finalId)) {
+      while (this.guides.some(g => g.id === finalId)) {
         finalId = `${newId}-${counter}`;
         counter++;
       }
       
       const today = new Date().toISOString().split("T")[0]; // YYYY-MM-DD
       
-      this.config.guides.push({
+      this.guides.push({
         id: finalId,
         title: titleVal,
         keyword: keywordVal,
@@ -530,15 +630,15 @@ class AdminApp {
       });
     }
     
-    this.saveConfigPreview();
+    this.saveGuidesPreview();
     this.renderGuidesList();
     this.cancelGuideEdit();
     alert("Educational article saved successfully!");
   }
 
   editGuide(guideId) {
-    if (!this.config || !this.config.guides) return;
-    const guide = this.config.guides.find(g => g.id === guideId);
+    if (!this.guides) return;
+    const guide = this.guides.find(g => g.id === guideId);
     if (!guide) return;
     
     document.getElementById("edit-guide-id").value = guide.id;
@@ -558,8 +658,8 @@ class AdminApp {
 
   deleteGuide(guideId) {
     if (confirm("Are you sure you want to delete this educational article from the content hub?")) {
-      this.config.guides = this.config.guides.filter(g => g.id !== guideId);
-      this.saveConfigPreview();
+      this.guides = this.guides.filter(g => g.id !== guideId);
+      this.saveGuidesPreview();
       this.renderGuidesList();
       this.cancelGuideEdit();
     }
@@ -868,6 +968,18 @@ class AdminApp {
     // Export/Reset buttons
     document.getElementById("btn-export-config").addEventListener("click", () => this.exportConfig());
     document.getElementById("btn-reset-config").addEventListener("click", () => this.resetConfig());
+    
+    // Export/Import guides buttons
+    document.getElementById("btn-export-guides").addEventListener("click", () => this.exportGuides());
+    
+    const guidesUpload = document.getElementById("guides-upload");
+    if (guidesUpload) {
+      guidesUpload.addEventListener("change", (e) => {
+        if (e.target.files.length > 0) {
+          this.importGuides(e.target.files[0]);
+        }
+      });
+    }
     
     // Export/Import orders buttons
     document.getElementById("btn-export-orders").addEventListener("click", () => this.exportOrders());
