@@ -270,6 +270,36 @@
             </div>
           </div>
 
+          <!-- Email Settings -->
+          <div class="glass-card admin-card">
+            <h2 class="admin-card-title">Email Integration (EmailJS Settings)</h2>
+            <p style="font-size:12px; color:var(--text-secondary); margin-bottom:20px; line-height:1.4;">
+              Configure EmailJS to send professional, automated order confirmation emails directly to your customers. If left blank, notifications will default to standard FormSubmit notifications to `vapesonlineaustralia@proton.me`.
+            </p>
+            
+            <div class="form-grid">
+              <div class="form-field">
+                <label class="form-label">EmailJS Service ID</label>
+                <input type="text" id="set-emailjs-service" placeholder="e.g. service_xxxxxxx" class="form-input">
+              </div>
+              <div class="form-field">
+                <label class="form-label">EmailJS Public Key</label>
+                <input type="text" id="set-emailjs-public" placeholder="e.g. user_xxxxxxxxxxxxxxxx" class="form-input">
+              </div>
+            </div>
+            
+            <div class="form-grid">
+              <div class="form-field">
+                <label class="form-label">EmailJS Contact Template ID</label>
+                <input type="text" id="set-emailjs-contact-template" placeholder="e.g. template_xxxxxxx" class="form-input">
+              </div>
+              <div class="form-field">
+                <label class="form-label">EmailJS Order Confirmation Template ID</label>
+                <input type="text" id="set-emailjs-order-template" placeholder="e.g. template_xxxxxxx" class="form-input">
+              </div>
+            </div>
+          </div>
+
           <div style="display:flex; justify-content:flex-end; margin-top:20px;">
             <button type="submit" id="btn-save-settings" class="btn-primary">Apply Settings Caches</button>
           </div>

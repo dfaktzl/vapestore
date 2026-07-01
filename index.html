@@ -456,6 +456,40 @@
         <div id="guides-grid" class="guides-grid">
           <!-- Rendered dynamically by store.js -->
         </div>
+    </section>
+
+    <!-- 11B. CONTACT SECTION -->
+    <section class="contact-section" id="contact-us" style="padding: 60px 0; border-top: 1px solid rgba(212, 175, 55, 0.1); background: #060709;">
+      <div class="container" style="max-width: 600px;">
+        <div style="text-align: center; margin-bottom: 35px;">
+          <h2 class="text-gold" style="font-family: var(--font-title); font-size: 28px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; margin: 0;">Contact Our Team</h2>
+          <p style="color: var(--text-secondary); margin: 10px auto 0 auto; font-size: 14px; line-height: 1.5;">
+            Have questions about bulk orders, shipping locations, or stock availability? Send us a message and we'll get back to you shortly.
+          </p>
+        </div>
+        
+        <div class="glass-card" style="padding: 30px; border-radius: var(--radius-lg); border: 1px solid rgba(212, 175, 55, 0.15); background: rgba(15, 17, 21, 0.6); backdrop-filter: blur(10px);">
+          <form id="contact-form" onsubmit="event.preventDefault();">
+            <div style="margin-bottom: 15px;">
+              <label style="display:block; font-size:12px; color:var(--text-secondary); margin-bottom:5px;">Your Name *</label>
+              <input type="text" id="contact-name" required class="search-input" style="padding-left:15px; border-radius:6px; background:rgba(0,0,0,0.4); width:100%; box-sizing:border-box;">
+            </div>
+            <div style="margin-bottom: 15px;">
+              <label style="display:block; font-size:12px; color:var(--text-secondary); margin-bottom:5px;">Your Email *</label>
+              <input type="email" id="contact-email" required class="search-input" style="padding-left:15px; border-radius:6px; background:rgba(0,0,0,0.4); width:100%; box-sizing:border-box;">
+            </div>
+            <div style="margin-bottom: 20px;">
+              <label style="display:block; font-size:12px; color:var(--text-secondary); margin-bottom:5px;">Message *</label>
+              <textarea id="contact-message" required rows="5" class="search-input" style="padding:10px 15px; border-radius:6px; background:rgba(0,0,0,0.4); width:100%; box-sizing:border-box; font-family:var(--font-body); resize:vertical;" placeholder="Write your message here..."></textarea>
+            </div>
+            <button type="submit" id="btn-contact-submit" class="btn-primary" style="width:100%; margin:0; padding:12px;">Send Message</button>
+          </form>
+          <div id="contact-success" style="display:none; text-align:center; padding:20px 0;">
+            <span style="font-size:40px; color:var(--gold-accent);">✓</span>
+            <h3 class="text-gold" style="margin-top:10px; margin-bottom:5px;">Message Sent Successfully!</h3>
+            <p style="color:var(--text-secondary); font-size:13px; margin:0;">Thank you for contacting us. We will respond to your inquiry shortly.</p>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -499,7 +533,7 @@
             <ul class="footer-links">
               <li><a href="admin.html">Merchant Portal</a></li>
               <li><a href="#" id="footer-btn-clear-cookie">Reset Verification Cache</a></li>
-              <li><a href="#">Shipping & Discretion Policies</a></li>
+              <li><a href="#contact-us">Contact Us & Support</a></li>
             </ul>
           </div>
           
@@ -537,6 +571,7 @@
   </div>
 
   <!-- Loading scripts -->
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
   <script src="js/config_default.js"></script>
   <script src="js/store.js"></script>
 </body>

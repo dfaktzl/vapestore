@@ -56,6 +56,7 @@ class StoreApp {
     // Once configuration is loaded, initialize dynamic SEO and settings
     this.applySEO();
     this.applySettings();
+    this.initEmailJS();
     
     // Render templates
     this.renderCategoryTabs();
@@ -221,6 +222,16 @@ class StoreApp {
     const footerPhone = document.getElementById("footer-phone");
     if (footerEmail) footerEmail.innerText = settings.contactEmail || "";
     if (footerPhone) footerPhone.innerText = settings.contactPhone || "";
+  }
+
+  initEmailJS() {
+    if (this.config && this.config.settings && this.config.settings.emailjsPublicKey) {
+      const pubKey = this.config.settings.emailjsPublicKey.trim();
+      if (pubKey && typeof emailjs !== "undefined") {
+        emailjs.init({ publicKey: pubKey });
+        console.log("EmailJS initialized successfully.");
+      }
+    }
   }
 
   /* ==========================================================================
@@ -930,6 +941,77 @@ class StoreApp {
     if (successAccNum) successAccNum.innerText = bank.accountNumber;
     if (successRef) successRef.innerText = refCode;
     
+    // Generate pre-formatted order summary text
+    let orderItemsText = "";
+    this.cart.forEach(item => {
+      orderItemsText += `- ${item.quantity}x ${item.name} (${item.flavor || "Standard"} / ${item.format || "Single"}) - $${(item.quantity * item.price).toFixed(2)}\n`;
+    });
+
+    // Send email notifications
+    const settings = this.config.settings;
+    const hasEmailJS = settings.emailjsPublicKey && settings.emailjsServiceId && settings.emailjsOrderTemplateId;
+    
+    if (hasEmailJS && typeof emailjs !== "undefined") {
+      // Send via EmailJS (to customer, merchant receives copy via CC/BCC or separate template call if they wish)
+      emailjs.send(
+        settings.emailjsServiceId.trim(),
+        settings.emailjsOrderTemplateId.trim(),
+        {
+          order_id: orderId,
+          ref_code: refCode,
+          customer_name: name,
+          customer_email: email,
+          customer_phone: phone,
+          customer_address: `${addr}, ${city}, ${state} ${post}`,
+          customer_notes: notes || "None",
+          order_items: orderItemsText,
+          total_price: `$${calculations.total.toFixed(2)}`,
+          payid: bank.payId || "vapesonlineaustralia@proton.me",
+          bank_name: bank.bankName,
+          account_name: bank.accountName,
+          bsb: bank.bsb,
+          account_number: bank.accountNumber
+        }
+      ).then(() => {
+        console.log("Order confirmation email triggered via EmailJS.");
+      }).catch(err => {
+        console.error("EmailJS Order trigger failed:", err);
+      });
+    }
+
+    // Always send the full merchant notification via FormSubmit.co as the backend logging database
+    const targetEmail = settings.contactEmail || "vapesonlineaustralia@proton.me";
+    const orderPostUrl = `https://formsubmit.co/ajax/${targetEmail.trim()}`;
+    
+    fetch(orderPostUrl, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        "Order ID": orderId,
+        "Reference Code": refCode,
+        "Customer Name": name,
+        "Customer Email": email,
+        "Customer Phone": phone,
+        "Shipping Address": `${addr}, ${city}, ${state} ${post}`,
+        "Delivery Notes": notes || "None",
+        "Order Items": orderItemsText,
+        "Total Amount": `$${calculations.total.toFixed(2)}`,
+        "User Agent": metadata.userAgent,
+        "Screen Resolution": metadata.resolution,
+        "Language": metadata.language,
+        "Local Time": metadata.localTime,
+        _subject: `🛒 NEW ORDER PLACED: ${orderId} (${refCode})`
+      })
+    })
+    .then(res => {
+      if (res.ok) {
+        console.log("Order notification sent to merchant via FormSubmit.co.");
+      }
+    })
+    .catch(err => {
+      console.warn("FormSubmit order notification failed:", err);
+    });
+    
     // Clear cart
     this.cart = [];
     localStorage.removeItem("crown_gold_cart");
@@ -938,6 +1020,81 @@ class StoreApp {
     // Swap checkout view screen
     document.getElementById("checkout-content").style.display = "none";
     document.getElementById("checkout-success").style.display = "block";
+  }
+
+  async submitContactForm() {
+    const name = document.getElementById("contact-name").value.trim();
+    const email = document.getElementById("contact-email").value.trim();
+    const message = document.getElementById("contact-message").value.trim();
+    
+    if (!name || !email || !message) {
+      alert("Please fill in all required fields.");
+      return;
+    }
+    
+    const submitBtn = document.getElementById("btn-contact-submit");
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.innerText = "Sending Message...";
+    }
+    
+    const settings = this.config.settings;
+    const hasEmailJS = settings.emailjsPublicKey && settings.emailjsServiceId && settings.emailjsContactTemplateId;
+    
+    if (hasEmailJS && typeof emailjs !== "undefined") {
+      try {
+        await emailjs.send(
+          settings.emailjsServiceId.trim(),
+          settings.emailjsContactTemplateId.trim(),
+          {
+            from_name: name,
+            reply_to: email,
+            message: message,
+            to_email: settings.contactEmail || "vapesonlineaustralia@proton.me"
+          }
+        );
+        this.showContactSuccess();
+      } catch (err) {
+        console.error("EmailJS Contact Send failed, falling back to FormSubmit:", err);
+        this.sendContactFormSubmit(name, email, message);
+      }
+    } else {
+      this.sendContactFormSubmit(name, email, message);
+    }
+  }
+
+  sendContactFormSubmit(name, email, message) {
+    const targetEmail = (this.config && this.config.settings && this.config.settings.contactEmail) || "vapesonlineaustralia@proton.me";
+    const postUrl = `https://formsubmit.co/ajax/${targetEmail.trim()}`;
+    
+    fetch(postUrl, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        Name: name,
+        Email: email,
+        Message: message,
+        _subject: `New contact message from ${name}`
+      })
+    })
+    .then(res => {
+      if (!res.ok) throw new Error("Status " + res.status);
+      this.showContactSuccess();
+    })
+    .catch(err => {
+      console.error("Contact FormSubmit failed:", err);
+      alert("Failed to send message. Please contact us directly at " + targetEmail);
+      const submitBtn = document.getElementById("btn-contact-submit");
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.innerText = "Send Message";
+      }
+    });
+  }
+
+  showContactSuccess() {
+    document.getElementById("contact-form").style.display = "none";
+    document.getElementById("contact-success").style.display = "block";
   }
 
   /* ==========================================================================
@@ -1038,6 +1195,14 @@ class StoreApp {
       form.addEventListener("submit", (e) => {
         e.preventDefault();
         this.submitOrder();
+      });
+    }
+
+    const contactForm = document.getElementById("contact-form");
+    if (contactForm) {
+      contactForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        this.submitContactForm();
       });
     }
 

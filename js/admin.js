@@ -270,6 +270,12 @@ class AdminApp {
     document.getElementById("set-bank-holder").value = bank.accountName || "";
     document.getElementById("set-bank-bsb").value = bank.bsb || "";
     document.getElementById("set-bank-account").value = bank.accountNumber || "";
+
+    // EmailJS Settings
+    document.getElementById("set-emailjs-service").value = this.config.settings.emailjsServiceId || "";
+    document.getElementById("set-emailjs-public").value = this.config.settings.emailjsPublicKey || "";
+    document.getElementById("set-emailjs-contact-template").value = this.config.settings.emailjsContactTemplateId || "";
+    document.getElementById("set-emailjs-order-template").value = this.config.settings.emailjsOrderTemplateId || "";
   }
 
   saveSettings() {
@@ -291,6 +297,11 @@ class AdminApp {
       bsb: document.getElementById("set-bank-bsb").value,
       accountNumber: document.getElementById("set-bank-account").value
     };
+
+    this.config.settings.emailjsServiceId = document.getElementById("set-emailjs-service").value.trim();
+    this.config.settings.emailjsPublicKey = document.getElementById("set-emailjs-public").value.trim();
+    this.config.settings.emailjsContactTemplateId = document.getElementById("set-emailjs-contact-template").value.trim();
+    this.config.settings.emailjsOrderTemplateId = document.getElementById("set-emailjs-order-template").value.trim();
     
     this.saveConfigPreview();
     alert("Settings saved in local browser cache. Click 'Export config.json' to generate deploy files.");

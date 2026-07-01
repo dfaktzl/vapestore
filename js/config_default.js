@@ -16,6 +16,10 @@ const CONFIG_DEFAULT = {
     announcement: "🔥 VAPE 'R' AUS: FREE EXPRESS SHIPPING ON ALL ORDERS OVER $200! PAYID & BANK XFER ACCEPTED 🔥",
     ageLimit: 18,
     orderSyncUrl: "",
+    emailjsServiceId: "",
+    emailjsPublicKey: "",
+    emailjsContactTemplateId: "",
+    emailjsOrderTemplateId: "",
     bankDetails: {
       payId: "vapesonlineaustralia@proton.me",
       bankName: "NAB - National Australia Bank",
