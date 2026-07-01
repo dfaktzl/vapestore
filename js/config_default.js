@@ -18,7 +18,7 @@ const CONFIG_DEFAULT = {
     orderSyncUrl: "https://vapes-99ad2--default-rtdb.asia-southeast1.firebasedatabase.app/",
     emailjsServiceId: "NKPHTNJE2GJBRIVF",
     emailjsPublicKey: "07hCgPLcSvImHfeNk",
-    emailjsContactTemplateId: "template_2r5x2an",
+    emailjsContactTemplateId: "template_ner135t",
     emailjsOrderTemplateId: "template_l5hhw7n",
     bankDetails: {
       payId: "vapesonlineaustralia@proton.me",
