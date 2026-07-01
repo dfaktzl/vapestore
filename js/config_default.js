@@ -18,8 +18,8 @@ const CONFIG_DEFAULT = {
     orderSyncUrl: "https://vapes-99ad2--default-rtdb.asia-southeast1.firebasedatabase.app/",
     emailjsServiceId: "NKPHTNJE2GJBRIVF",
     emailjsPublicKey: "07hCgPLcSvImHfeNk",
-    emailjsContactTemplateId: "template_l5hhw7n",
-    emailjsOrderTemplateId: "",
+    emailjsContactTemplateId: "template_2r5x2an",
+    emailjsOrderTemplateId: "template_l5hhw7n",
     bankDetails: {
       payId: "vapesonlineaustralia@proton.me",
       bankName: "NAB - National Australia Bank",
