@@ -46,6 +46,13 @@ const CONFIG_DEFAULT = {
       "flavors": ["Blue Razz Ice", "Double Apple", "Strawberry Kiwi", "Watermelon Bubblegum", "Lush Ice", "Grape Mint", "Peach Mango", "Tropical Ice", "Kiwi Passionfruit"],
       "image": "img/alibarbar_toybox_8k.webp",
       "description": "The Alibarbar Toybox 8000 packs an impressive 8,000 puffs into a compact, distinctive design. Powered by a robust 2000mAh non-rechargeable battery with 20mL of premium 5% (50mg/mL) nicotine salt e-liquid. Features a 1.1Ω mesh coil for consistent, flavour-rich vapour from the first draw to the very last. Sold as single units or in bulk boxes of 10.",
+      "specs": {
+        "Puffs": "~8,000 Puffs",
+        "E-Liquid": "20mL Salt Nic",
+        "Battery": "2000mAh (Built-in)",
+        "Coil Type": "1.1Ω Mesh Coil",
+        "Nicotine": "5% (50mg/mL)"
+      },
       "inStock": true,
       "popular": true
     },
@@ -60,6 +67,14 @@ const CONFIG_DEFAULT = {
       "flavors": ["Peach Mango Watermelon", "Triple Berry Ice", "Strawberry Banana", "Cool Mint", "Cherry Lemonade", "Watermelon Ice", "Lychee Ice", "Blueberry Raspberry"],
       "image": "img/alibarbar_link_12k.webp",
       "description": "The Alibarbar Link 12000 is a premium rechargeable disposable delivering up to 12,000 puffs. Features an intelligent smart display screen showing real-time e-liquid level and battery percentage. Powered by a rechargeable 1800mAh cobalt battery (USB Type-C), 25mL of 5% nicotine salt e-liquid, and triple titanium mesh coils for ultra-smooth, consistent flavour. Adjustable ice cooling switch included.",
+      "specs": {
+        "Puffs": "~12,000 Puffs",
+        "E-Liquid": "25mL Salt Nic",
+        "Battery": "1800mAh (Type-C Recharge)",
+        "Coil Type": "Triple Titanium Mesh",
+        "Nicotine": "5% (50mg/mL)",
+        "Features": "Smart LCD Screen"
+      },
       "inStock": true,
       "popular": false
     },
@@ -74,6 +89,13 @@ const CONFIG_DEFAULT = {
       "flavors": ["Blackberry Raspberry Ice", "Strawberry Watermelon", "Double Apple", "Banana Ice", "Grape Ice", "Blueberry Ice", "Mango Ice", "Passion Fruit Grape", "Strawberry Kiwi", "Peach Ice", "Watermelon Ice", "Lush Ice"],
       "image": "img/iget_bar_3500.webp",
       "description": "Australia's most popular disposable vape. The IGET Bar 3500 delivers up to 3,500 puffs from 12mL of premium 5% (50mg/mL) nicotine salt e-liquid. Powered by a 1500mAh built-in non-rechargeable battery and a 1.2Ω mesh coil for smooth, consistent draws and rich flavour from start to finish. Ergonomic, pocket-friendly design. Available as single units or cartons of 10.",
+      "specs": {
+        "Puffs": "3,500 Puffs",
+        "E-Liquid": "12mL Salt Nic",
+        "Battery": "1500mAh (Built-in)",
+        "Coil Type": "1.2Ω Mesh Coil",
+        "Nicotine": "5% (50mg/mL)"
+      },
       "inStock": true,
       "popular": true
     },
@@ -88,6 +110,13 @@ const CONFIG_DEFAULT = {
       "flavors": ["Lush Ice", "Mango Banana Ice", "Passion Fruit Melon Ice", "Grape Blue Razz", "Pink Lemonade", "Pineapple Coconut Ice", "Blackcurrant Ice", "Watermelon Mint", "Strawberry Mango"],
       "image": "img/iget_legend_4000.webp",
       "description": "Elegantly built with a translucent PCTG shell and an ergonomic flat mouthpiece for a comfortable, refined draw. The IGET Legend 4000 delivers up to 4,000 puffs from 12mL of 5% (50mg/mL) nicotine salt e-liquid. Powered by a 1350mAh non-rechargeable battery and a precision mesh coil that extracts deep, layered flavour profiles. A step up in quality from the standard Bar.",
+      "specs": {
+        "Puffs": "4,000 Puffs",
+        "E-Liquid": "12mL Salt Nic",
+        "Battery": "1350mAh (Built-in)",
+        "Coil Type": "Precision Mesh Coil",
+        "Nicotine": "5% (50mg/mL)"
+      },
       "inStock": true,
       "popular": false
     },
@@ -102,6 +131,13 @@ const CONFIG_DEFAULT = {
       "flavors": ["Watermelon Ice", "Strawberry Mint", "Double Apple Ice", "Aloe Grape", "Cola Ice", "Blueberry Blackberry", "Mango Passionfruit", "Peach Berry Lemonade"],
       "image": "img/iget_hot_5500.webp",
       "description": "IGET's most powerful single-unit disposable. The IGET Hot 5500 delivers up to 5,500 puffs from 12mL of premium 5% (50mg/mL) nicotine salt e-liquid. Housed in a high-quality aluminium shell with a transparent visual tank, it uses a 1.4Ω ceramic-mesh coil for fast, even vapourisation with intense flavour and throat hit. Features a breathing LED indicator and integrated short-circuit, overcharge, and overheat protection.",
+      "specs": {
+        "Puffs": "5,500 Puffs",
+        "E-Liquid": "12mL Salt Nic",
+        "Battery": "1600mAh (Built-in)",
+        "Coil Type": "1.4Ω Ceramic-Mesh",
+        "Nicotine": "5% (50mg/mL)"
+      },
       "inStock": true,
       "popular": true
     },
@@ -116,6 +152,13 @@ const CONFIG_DEFAULT = {
       "flavors": ["Standard Smooth"],
       "image": "img/marlboro_gold.webp",
       "description": "The world-famous Marlboro Gold. Renowned for its refined, smooth Virginia tobacco blend and consistently exceptional quality. A lighter, smoother alternative to Marlboro Red. Each carton contains 10 packs of 20 cigarettes (200 cigarettes total). Sold as a full carton only.",
+      "specs": {
+        "Format": "Carton (10 Packs)",
+        "Quantity": "200 Cigarettes Total",
+        "Blend": "Virginia Smooth Blend",
+        "Strength": "Light / Smooth Draw",
+        "Packaging": "Sealed cellophane box"
+      },
       "inStock": true,
       "popular": true
     },
@@ -130,6 +173,13 @@ const CONFIG_DEFAULT = {
       "flavors": ["Classic Blue Blend"],
       "image": "img/winfield_blue.webp",
       "description": "An absolute Australian classic. Winfield Blue is one of the country's most-loved cigarette brands, offering a signature rich domestic tobacco blend with a satisfying, medium-strength draw. Each carton contains 10 packs of 25 cigarettes (250 cigarettes total). Sold as a full carton only.",
+      "specs": {
+        "Format": "Carton (10 Packs)",
+        "Quantity": "250 Cigarettes Total",
+        "Blend": "Winfield Classic Blue",
+        "Strength": "Medium Draw / Full Aroma",
+        "Packaging": "Sealed cellophane box"
+      },
       "inStock": true,
       "popular": true
     },
@@ -144,6 +194,13 @@ const CONFIG_DEFAULT = {
       "flavors": ["Smooth Blue"],
       "image": "img/jps_blue.webp",
       "description": "John Player Special Blue — a quality, affordable cigarette favoured across Australia for its smooth, mellow draw and consistent fine-cut tobacco blend. Ideal for those seeking a lighter smoke at an accessible price point. Each carton contains 10 packs of 20 cigarettes (200 cigarettes total). Sold as a full carton only.",
+      "specs": {
+        "Format": "Carton (10 Packs)",
+        "Quantity": "200 Cigarettes Total",
+        "Blend": "JPS Smooth Cut",
+        "Strength": "Mellow / Light Draw",
+        "Packaging": "Sealed cellophane box"
+      },
       "inStock": true,
       "popular": false
     },
@@ -158,6 +215,13 @@ const CONFIG_DEFAULT = {
       "flavors": ["Classic Rich Tobacco"],
       "image": "img/bh_classic.webp",
       "description": "Benson & Hedges Classic — a premium cigarette with heritage dating back over 150 years. Crafted from a distinguished gold-leaf Virginia tobacco blend, delivering a full-flavoured, luxurious, and consistently clean smoke. Favoured by those who appreciate quality and tradition. Each carton contains 10 packs of 20 cigarettes (200 cigarettes total). Sold as a full carton only.",
+      "specs": {
+        "Format": "Carton (10 Packs)",
+        "Quantity": "200 Cigarettes Total",
+        "Blend": "Premium Virginia Gold-Leaf",
+        "Strength": "Full Flavor / Rich Draw",
+        "Packaging": "Sealed cellophane box"
+      },
       "inStock": true,
       "popular": false
     },
@@ -172,6 +236,13 @@ const CONFIG_DEFAULT = {
       "flavors": ["Black Ice", "Grapey", "Lush Ice", "Strawberry Banana", "Mango Peach", "Double Apple", "Watermelon Ice", "Blueberry Mint", "Peach Ice"],
       "image": "img/hqd_cuvie_box.png",
       "description": "WHOLESALE BOX — Our cheapest box deal. Each box contains 10 x HQD Cuvie Bar disposables. Each unit delivers up to 7,000 puffs from 18mL of 5% (50mg/mL) nicotine salt e-liquid. Features a 1.2Ω mesh coil, draw-activated firing, and a 550mAh rechargeable battery (USB Type-C) for extended use. Compact, square design with a wide range of flavours available. No singles sold.",
+      "specs": {
+        "Puffs": "~7,000 Puffs (per unit)",
+        "Box Qty": "10x Disposables",
+        "E-Liquid": "18mL per unit",
+        "Battery": "550mAh (Type-C Recharge)",
+        "Coil Type": "1.2Ω Mesh Coil"
+      },
       "inStock": true,
       "popular": true
     },
@@ -186,6 +257,14 @@ const CONFIG_DEFAULT = {
       "flavors": ["Watermelon Chill", "Triple Mango", "Strawberry Burst", "Blueberry Splash", "Minty Mint", "Raspberry Watermelon", "Peach Ice", "Passion Fruit Lychee"],
       "image": "img/waka_sopro_box.webp",
       "description": "WHOLESALE BOX — Each box contains 10 x Waka SoPro DM8000 disposables. The DM8000 is a premium rechargeable device delivering up to 8,000 puffs from 14mL of 5% nicotine salt e-liquid. Powered by an 850mAh battery (USB Type-C, 80% charge in ~45 mins) with DUALMESH™ dual coil technology. Two intelligent modes: Boost Mode (both coils active for max clouds) and Regular Mode (single coil for extended lifespan). Includes a smart digital screen showing live battery & e-liquid levels, plus full overcharge and short-circuit protection.",
+      "specs": {
+        "Puffs": "~8,000 Puffs (per unit)",
+        "Box Qty": "10x Disposables",
+        "E-Liquid": "14mL per unit",
+        "Battery": "850mAh (Type-C Recharge)",
+        "Coil Type": "DUALMESH™ Dual Coil",
+        "Screen": "Battery & E-Liquid Display"
+      },
       "inStock": true,
       "popular": true
     }

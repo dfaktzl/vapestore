@@ -516,6 +516,7 @@ class StoreApp {
     const mBrand = document.getElementById("modal-brand");
     const mName = document.getElementById("modal-name");
     const mDesc = document.getElementById("modal-description");
+    const mSpecs = document.getElementById("modal-specs-container");
     
     const mFlavorSelect = document.getElementById("modal-flavor-select");
     const mFormatSelect = document.getElementById("modal-format-select");
@@ -527,6 +528,26 @@ class StoreApp {
     mBrand.innerText = product.brand;
     mName.innerText = product.name;
     mDesc.innerText = product.description;
+
+    if (mSpecs) {
+      mSpecs.innerHTML = "";
+      if (product.specs) {
+        Object.keys(product.specs).forEach(key => {
+          const specItem = document.createElement("div");
+          specItem.style.background = "rgba(255,255,255,0.03)";
+          specItem.style.padding = "6px 10px";
+          specItem.style.borderRadius = "4px";
+          specItem.style.border = "1px solid rgba(255,255,255,0.05)";
+          specItem.style.display = "flex";
+          specItem.style.justifyContent = "space-between";
+          specItem.innerHTML = `<span style="color: var(--text-secondary); font-weight:600;">${key}:</span> <span style="color: #fff;">${product.specs[key]}</span>`;
+          mSpecs.appendChild(specItem);
+        });
+        mSpecs.style.display = "grid";
+      } else {
+        mSpecs.style.display = "none";
+      }
+    }
     
     // Render flavor select options
     mFlavorSelect.innerHTML = "";
