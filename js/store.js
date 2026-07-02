@@ -112,13 +112,13 @@ class StoreApp {
     if (!promoCountEl) return;
 
     // Use a reference date of July 2nd (today's campaign start date)
-    // To ensure the number starts at 50 today, and decreases deterministically every 3.5 hours on average.
+    // To ensure the number starts at 49 today, and decreases deterministically every 3.5 hours on average.
     const baseTime = new Date("2026-07-02T00:00:00").getTime();
     const currentTime = Date.now();
     const diffHours = (currentTime - baseTime) / (1000 * 60 * 60);
 
     // Let's decrement every 3.5 hours on average.
-    let currentSpots = 50;
+    let currentSpots = 49;
     
     // Calculate the total steps elapsed since baseTime (only positive values count)
     const stepSizeHours = 3.5;
@@ -141,28 +141,17 @@ class StoreApp {
   }
 
   async loadConfig() {
-    // 1. Load base configuration from local cache, config.json, or fallback JS defaults
+    // 1. Load base configuration from config.json, or fallback JS defaults
     let baseConfig = null;
-    const localConfig = localStorage.getItem("crown_gold_config");
-    if (localConfig) {
-      try {
-        baseConfig = JSON.parse(localConfig);
-        console.log("Loaded base configuration from local preview storage.");
-      } catch (e) {
-        console.error("Failed parsing localStorage config, falling back.", e);
-      }
-    }
 
-    if (!baseConfig) {
-      try {
-        const response = await fetch("config.json");
-        if (response.ok) {
-          baseConfig = await response.json();
-          console.log("Loaded base configuration from config.json.");
-        }
-      } catch (e) {
-        console.warn("Could not load config.json. Falling back to default script.");
+    try {
+      const response = await fetch("config.json");
+      if (response.ok) {
+        baseConfig = await response.json();
+        console.log("Loaded base configuration from config.json.");
       }
+    } catch (e) {
+      console.warn("Could not load config.json. Falling back to default script.");
     }
 
     if (!baseConfig && window.CONFIG_DEFAULT) {
@@ -197,28 +186,17 @@ class StoreApp {
   }
 
   async loadGuides() {
-    // 1. Load base guides from local cache, guides.json, or default guides
+    // 1. Load base guides from guides.json, or default guides
     let baseGuides = null;
-    const localGuides = localStorage.getItem("crown_gold_guides");
-    if (localGuides) {
-      try {
-        baseGuides = JSON.parse(localGuides);
-        console.log("Loaded base guides from local preview storage.");
-      } catch (e) {
-        console.error("Failed parsing localStorage guides, falling back.", e);
-      }
-    }
 
-    if (!baseGuides) {
-      try {
-        const response = await fetch("guides.json");
-        if (response.ok) {
-          baseGuides = await response.json();
-          console.log("Loaded base guides from guides.json.");
-        }
-      } catch (e) {
-        console.warn("Could not load guides.json. Using fallback default.");
+    try {
+      const response = await fetch("guides.json");
+      if (response.ok) {
+        baseGuides = await response.json();
+        console.log("Loaded base guides from guides.json.");
       }
+    } catch (e) {
+      console.warn("Could not load guides.json. Using fallback default.");
     }
 
     this.guides = baseGuides || [];
