@@ -145,7 +145,7 @@ class StoreApp {
     let baseConfig = null;
 
     try {
-      const response = await fetch("config.json");
+      const response = await fetch("config.json?v=2");
       if (response.ok) {
         baseConfig = await response.json();
         console.log("Loaded base configuration from config.json.");
@@ -190,7 +190,7 @@ class StoreApp {
     let baseGuides = null;
 
     try {
-      const response = await fetch("guides.json");
+      const response = await fetch("guides.json?v=2");
       if (response.ok) {
         baseGuides = await response.json();
         console.log("Loaded base guides from guides.json.");
@@ -443,7 +443,7 @@ class StoreApp {
       card.innerHTML = `
         ${badgeHTML}
         <div class="product-card-image-wrap" style="cursor: pointer;">
-          <img class="product-card-image" src="${prod.image}" alt="${prod.name}">
+          <img class="product-card-image" src="${prod.image}?v=2" alt="${prod.name}">
         </div>
         <div class="product-card-brand">${prod.brand}</div>
         <a href="#" class="product-card-name" id="name-${prod.id}">${prod.name}</a>
@@ -524,7 +524,7 @@ class StoreApp {
     const mPriceLabel = document.getElementById("modal-price-label");
     
     // Fill text
-    mImg.src = product.image;
+    mImg.src = product.image + "?v=2";
     mBrand.innerText = product.brand;
     mName.innerText = product.name;
     mDesc.innerText = product.description;
@@ -804,7 +804,7 @@ class StoreApp {
       
       cartItem.innerHTML = `
         <div class="cart-item-image-wrap">
-          <img class="cart-item-image" src="${item.image}" alt="${item.name}">
+          <img class="cart-item-image" src="${item.image}?v=2" alt="${item.name}">
         </div>
         <div class="cart-item-info">
           <div class="cart-item-brand">${item.brand}</div>
