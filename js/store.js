@@ -111,22 +111,21 @@ class StoreApp {
     const promoCountEl = document.getElementById("promo-spots-count");
     if (!promoCountEl) return;
 
-    // Use a reference date in the past (e.g. July 1, 2026, 00:00:00 GMT+10)
-    // To ensure the number decreases deterministically but looks random across page loads:
-    const baseTime = new Date("2026-07-01T00:00:00+10:00").getTime();
+    // Use a reference date of July 2nd (today's campaign start date)
+    // To ensure the number starts at 50 today, and decreases deterministically every 3.5 hours on average.
+    const baseTime = new Date("2026-07-02T00:00:00").getTime();
     const currentTime = Date.now();
     const diffHours = (currentTime - baseTime) / (1000 * 60 * 60);
 
     // Let's decrement every 3.5 hours on average.
     let currentSpots = 50;
     
-    // Calculate the total steps elapsed since baseTime
+    // Calculate the total steps elapsed since baseTime (only positive values count)
     const stepSizeHours = 3.5;
-    const totalSteps = Math.floor(diffHours / stepSizeHours);
+    const totalSteps = diffHours > 0 ? Math.floor(diffHours / stepSizeHours) : 0;
 
     for (let i = 0; i < totalSteps; i++) {
       // Deterministically pick 1 or 2 based on step index i.
-      // We use a simple formula that returns 1 or 2 so it is predictable but looks random.
       const deduction = ((i * 17 + 5) % 2 === 0) ? 2 : 1;
       currentSpots -= deduction;
     }
