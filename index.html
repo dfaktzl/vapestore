@@ -54,6 +54,12 @@
   </div>
 
   <div class="main-wrapper">
+    <!-- PROMO BANNER -->
+    <div class="promo-banner" style="background: linear-gradient(90deg, #12141c 0%, #1e1b12 50%, #12141c 100%); border-bottom: 1px solid rgba(212, 175, 55, 0.15); color: #fff; padding: 8px 10px; font-size: 12px; font-family: var(--font-body); display: flex; justify-content: center; align-items: center; gap: 8px; z-index: 1000; position: relative;">
+      <span class="promo-badge" style="background: var(--gold-accent); color: #000; font-weight: 700; padding: 2px 8px; border-radius: 4px; font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px;">PROMO</span>
+      <span>First 50 orders over $200 get 2 free Alibarbar 8000 (mixed flavours). Only <strong id="promo-spots-count" style="color: var(--gold-light);">--</strong> spots remaining!</span>
+    </div>
+
     <!-- 2. ANNOUNCEMENT BAR -->
     <div class="announcement-bar">
       <p id="announcement-text">Loading premium announcements...</p>
@@ -103,7 +109,7 @@
         </div>
         <div class="hero-visual">
           <div class="hero-glow-ring"></div>
-          <div class="hero-floating-card">
+          <div class="hero-floating-card" style="cursor: pointer;" onclick="event.preventDefault(); if (window.store &amp;&amp; window.store.config) { const p = window.store.config.products.find(x => x.id === 'hqd-cuvie-box'); if (p) window.store.openModal(p); }">
             <div>
               <div class="hero-card-header">Cheapest Box Deal</div>
               <div class="hero-card-title">HQD Cuvie Box</div>

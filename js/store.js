@@ -57,6 +57,7 @@ class StoreApp {
     this.applySEO();
     this.applySettings();
     this.initEmailJS();
+    this.initPromoBanner();
     
     // Render templates
     this.renderCategoryTabs();
@@ -104,6 +105,40 @@ class StoreApp {
         location.reload();
       });
     }
+  }
+
+  initPromoBanner() {
+    const promoCountEl = document.getElementById("promo-spots-count");
+    if (!promoCountEl) return;
+
+    // Use a reference date in the past (e.g. July 1, 2026, 00:00:00 GMT+10)
+    // To ensure the number decreases deterministically but looks random across page loads:
+    const baseTime = new Date("2026-07-01T00:00:00+10:00").getTime();
+    const currentTime = Date.now();
+    const diffHours = (currentTime - baseTime) / (1000 * 60 * 60);
+
+    // Let's decrement every 3.5 hours on average.
+    let currentSpots = 50;
+    
+    // Calculate the total steps elapsed since baseTime
+    const stepSizeHours = 3.5;
+    const totalSteps = Math.floor(diffHours / stepSizeHours);
+
+    for (let i = 0; i < totalSteps; i++) {
+      // Deterministically pick 1 or 2 based on step index i.
+      // We use a simple formula that returns 1 or 2 so it is predictable but looks random.
+      const deduction = ((i * 17 + 5) % 2 === 0) ? 2 : 1;
+      currentSpots -= deduction;
+    }
+
+    // Keep the number wrapping in a realistic loop (so it never hits 0 or looks expired).
+    // Let's wrap around to stay between 4 and 15 spots left.
+    if (currentSpots < 4) {
+      currentSpots = 15 - (Math.abs(currentSpots) % 12);
+      if (currentSpots < 4) currentSpots = 4;
+    }
+
+    promoCountEl.innerText = currentSpots;
   }
 
   async loadConfig() {
