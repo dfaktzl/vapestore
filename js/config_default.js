@@ -171,7 +171,7 @@ const CONFIG_DEFAULT = {
       "boxPrice": 343.20,
       "isBoxOnly": true,
       "flavors": ["Classic Blue Blend"],
-      "image": "img/winfield_blue.webp",
+      "image": "img/winfield_blue.png",
       "description": "An absolute Australian classic. Winfield Blue is one of the country's most-loved cigarette brands, offering a signature rich domestic tobacco blend with a satisfying, medium-strength draw. Each carton contains 10 packs of 25 cigarettes (250 cigarettes total). Sold as a full carton only.",
       "specs": {
         "Format": "Carton (10 Packs)",
@@ -192,7 +192,7 @@ const CONFIG_DEFAULT = {
       "boxPrice": 250.80,
       "isBoxOnly": true,
       "flavors": ["Smooth Blue"],
-      "image": "img/jps_blue.webp",
+      "image": "img/jps_blue.png",
       "description": "John Player Special Blue — a quality, affordable cigarette favoured across Australia for its smooth, mellow draw and consistent fine-cut tobacco blend. Ideal for those seeking a lighter smoke at an accessible price point. Each carton contains 10 packs of 20 cigarettes (200 cigarettes total). Sold as a full carton only.",
       "specs": {
         "Format": "Carton (10 Packs)",
@@ -213,7 +213,7 @@ const CONFIG_DEFAULT = {
       "boxPrice": 323.40,
       "isBoxOnly": true,
       "flavors": ["Classic Rich Tobacco"],
-      "image": "img/bh_classic.webp",
+      "image": "img/bh_classic.png",
       "description": "Benson & Hedges Classic — a premium cigarette with heritage dating back over 150 years. Crafted from a distinguished gold-leaf Virginia tobacco blend, delivering a full-flavoured, luxurious, and consistently clean smoke. Favoured by those who appreciate quality and tradition. Each carton contains 10 packs of 20 cigarettes (200 cigarettes total). Sold as a full carton only.",
       "specs": {
         "Format": "Carton (10 Packs)",
@@ -255,7 +255,7 @@ const CONFIG_DEFAULT = {
       "boxPrice": 277.20,
       "isBoxOnly": true,
       "flavors": ["Watermelon Chill", "Triple Mango", "Strawberry Burst", "Blueberry Splash", "Minty Mint", "Raspberry Watermelon", "Peach Ice", "Passion Fruit Lychee"],
-      "image": "img/waka_sopro_box.webp",
+      "image": "img/waka_sopro_box.png",
       "description": "WHOLESALE BOX — Each box contains 10 x Waka SoPro DM8000 disposables. The DM8000 is a premium rechargeable device delivering up to 8,000 puffs from 14mL of 5% nicotine salt e-liquid. Powered by an 850mAh battery (USB Type-C, 80% charge in ~45 mins) with DUALMESH™ dual coil technology. Two intelligent modes: Boost Mode (both coils active for max clouds) and Regular Mode (single coil for extended lifespan). Includes a smart digital screen showing live battery & e-liquid levels, plus full overcharge and short-circuit protection.",
       "specs": {
         "Puffs": "~8,000 Puffs (per unit)",
