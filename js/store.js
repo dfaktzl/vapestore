@@ -107,94 +107,105 @@ class StoreApp {
   }
 
   async loadConfig() {
-    // 1. Check preview settings in localStorage
+    // 1. Load base configuration from local cache, config.json, or fallback JS defaults
+    let baseConfig = null;
     const localConfig = localStorage.getItem("crown_gold_config");
     if (localConfig) {
       try {
-        this.config = JSON.parse(localConfig);
-        console.log("Loaded configuration from local preview storage.");
-        return;
+        baseConfig = JSON.parse(localConfig);
+        console.log("Loaded base configuration from local preview storage.");
       } catch (e) {
         console.error("Failed parsing localStorage config, falling back.", e);
       }
     }
 
-    // 2. Fetch deployed config.json
-    try {
-      const response = await fetch("config.json");
-      if (response.ok) {
-        this.config = await response.json();
-        console.log("Loaded configuration from config.json.");
-        return;
+    if (!baseConfig) {
+      try {
+        const response = await fetch("config.json");
+        if (response.ok) {
+          baseConfig = await response.json();
+          console.log("Loaded base configuration from config.json.");
+        }
+      } catch (e) {
+        console.warn("Could not load config.json. Falling back to default script.");
       }
-    } catch (e) {
-      console.warn("Could not load config.json. Falling back to default script.");
     }
 
-    // 3. Fallback to JS config default
-    if (window.CONFIG_DEFAULT) {
-      this.config = window.CONFIG_DEFAULT;
-      console.log("Loaded configuration from config_default.js fallback.");
-    } else {
+    if (!baseConfig && window.CONFIG_DEFAULT) {
+      baseConfig = JSON.parse(JSON.stringify(window.CONFIG_DEFAULT));
+      console.log("Loaded base configuration from config_default.js fallback.");
+    }
+
+    if (!baseConfig) {
       alert("Error: Core configuration failed to load.");
+      return;
+    }
+
+    this.config = baseConfig;
+
+    // 2. Try fetching live configuration from Firebase if sync URL exists
+    const syncUrl = baseConfig.settings?.orderSyncUrl?.trim();
+    if (syncUrl) {
+      const cleanUrl = syncUrl.endsWith("/") ? syncUrl : syncUrl + "/";
+      try {
+        const fbResponse = await fetch(`${cleanUrl}config.json`);
+        if (fbResponse.ok) {
+          const fbConfig = await fbResponse.json();
+          if (fbConfig && fbConfig.products && fbConfig.settings) {
+            this.config = fbConfig;
+            console.log("Loaded live configuration from Firebase.");
+          }
+        }
+      } catch (e) {
+        console.warn("Could not load live configuration from Firebase. Using base configuration.", e);
+      }
     }
   }
 
   async loadGuides() {
-    // 1. Check preview guides in localStorage
+    // 1. Load base guides from local cache, guides.json, or default guides
+    let baseGuides = null;
     const localGuides = localStorage.getItem("crown_gold_guides");
     if (localGuides) {
       try {
-        this.guides = JSON.parse(localGuides);
-        console.log("Loaded guides from local preview storage.");
-        return;
+        baseGuides = JSON.parse(localGuides);
+        console.log("Loaded base guides from local preview storage.");
       } catch (e) {
         console.error("Failed parsing localStorage guides, falling back.", e);
       }
     }
 
-    // 2. Fetch deployed guides.json
-    try {
-      const response = await fetch("guides.json");
-      if (response.ok) {
-        this.guides = await response.json();
-        console.log("Loaded guides from guides.json.");
-        return;
+    if (!baseGuides) {
+      try {
+        const response = await fetch("guides.json");
+        if (response.ok) {
+          baseGuides = await response.json();
+          console.log("Loaded base guides from guides.json.");
+        }
+      } catch (e) {
+        console.warn("Could not load guides.json. Using fallback default.");
       }
-    } catch (e) {
-      console.warn("Could not load guides.json. Using fallback default.");
     }
 
-    // 3. Fallback default guides (if both files and caches are missing/reset)
-    this.guides = [
-      {
-        id: "how-to-clean-vape-coil",
-        title: "How to Clean a Vape Coil: A Step-by-Step Maintenance Guide",
-        keyword: "how to clean a vape coil",
-        date: "2026-06-25",
-        summary: "Extend the life of your vape coils, improve flavor, and prevent burnt hits with our simple step-by-step coil cleaning guide.",
-        content: "Cleaning your vape coils regularly is one of the best ways to ensure a clean taste and extend their lifespan. Over time, e-liquid residue (commonly known as 'gunk') builds up on the heating coil and wick. This residue can lead to a burnt taste, reduced vapor production, and overall poor performance.\n\n### Why Clean Your Vape Coils?\n1. **Restore Flavor:** A build-up of old sweetener and flavoring can mute new e-liquid profiles.\n2. **Extend Coil Lifespan:** Removing debris prevents the coil from overheating and burning out prematurely.\n3. **Save Money:** Reusing clean coils reduces the frequency of buying replacements.\n\n### Step-by-Step Cleaning Process\n1. **Disassemble the Tank:** Carefully remove the tank from your mod and unscrew the coil head.\n2. **Rinse in Warm Water:** Run warm water through the coil to wash away loose e-liquid. For deep cleaning, submerge the coil in a bowl of warm water for 30 minutes.\n3. **Use an Alcohol Bath (Optional):** For stubborn build-ups, soak the coil in high-proof grain alcohol (like ethanol or vodka) for 2 hours, then rinse thoroughly with warm water.\n4. **Air Dry Completely:** This is the most crucial step. Place the coil on a paper towel and let it dry for at least 24 hours. Placing a coil with water in it back into your vape can cause spitting and short circuits.\n5. **Prime and Reassemble:** Once bone-dry, apply a few drops of e-liquid directly onto the wick, screw the coil back into the tank, and fill it. Let it sit for 5-10 minutes before firing.",
-        author: "Vape 'R' Aus Education"
-      },
-      {
-        id: "understanding-vg-pg-ratios",
-        title: "Understanding VG/PG Ratios: The Complete E-Liquid Guide",
-        keyword: "understanding vg/pg ratios",
-        date: "2026-06-25",
-        summary: "Learn the difference between Vegetable Glycerin (VG) and Propylene Glycol (PG) to optimize vapor production and throat hit for your device.",
-        content: "Every bottle of e-liquid contains two primary base carriers: Vegetable Glycerin (VG) and Propylene Glycol (PG). The ratio between these two fluids determines how your e-liquid behaves, the amount of vapor it produces, the severity of the throat hit, and which devices it is compatible with.\n\n### What is Vegetable Glycerin (VG)?\nVG is a thick, sweet vegetable-derived liquid. \n* **Characteristics:** Produces massive vapor clouds, offers a throat hit, and has a slight natural sweetness.\n* **Best For:** Sub-ohm devices, high-wattage mods, and direct-to-lung (DTL) vaping styles.\n\n### What is Propylene Glycol (PG)?\nPG is a thin, odorless, and tasteless organic compound.\n* **Characteristics:** Carries flavor more effectively, provides a strong 'throat hit' similar to traditional smoking, and has a very thin viscosity.\n* **Best For:** Low-wattage pod devices, starter kits, and mouth-to-lung (MTL) vaping styles.\n\n### Choosing Your Ideal VG/PG Ratio\n* **70% VG / 30% PG:** The gold standard for sub-ohm vaping. Excellent cloud production and smooth inhales.\n* **50% VG / 50% PG:** Perfect for pod systems (like IGET or Alibarbar style systems) and starter kits. Balanced throat hit and sharp flavor delivery.\n* **Max VG:** Best for vapers with PG sensitivities and cloud chasing enthusiasts.",
-        author: "Vape 'R' Aus Education"
-      },
-      {
-        id: "cigarette-carton-storage-guide",
-        title: "How to Store Cigarette Cartons: Keeping Tobacco Fresh",
-        keyword: "how to store cigarette cartons",
-        date: "2026-06-25",
-        summary: "Discover the best techniques to preserve the freshness and flavor of bulk cigarette cartons and loose leaf tobacco.",
-        content: "Buying cigarettes in bulk cartons is a highly cost-effective option, but proper storage is vital to prevent the tobacco from drying out, losing its natural aroma, or becoming stale. Storing your tobacco products correctly preserves their moisture levels and premium smoking quality.\n\n### Environmental Factors Affecting Tobacco\n1. **Humidity:** Excessive humidity can cause mold, while very dry air makes tobacco burn hot and harsh.\n2. **Temperature:** Keep cartons away from high heat sources, which bake the oils out of the leaf.\n3. **Air Exposure:** Once cellophane is opened, oxygen speeds up the drying process.\n\n### Best Storage Practices\n* **Keep Sealed:** Do not open the cellophane wrapping around the carton until you are ready to smoke the individual packs.\n* **Cool, Dark Place:** Store cartons in a drawer, closet, or cabinet away from direct sunlight and temperature fluctuations.\n* **Use Airtight Containers:** For long-term storage of opened packs, placing them in a sealed container or high-quality ziplock bag with a humidity control pack (like Boveda 62%) is highly recommended.\n* **Never Freeze:** Avoid putting cigarettes in the freezer, as freezing cycles dry out the tobacco fibers and ruin the paper wrappers.",
-        author: "Vape 'R' Aus Education"
+    this.guides = baseGuides || [];
+
+    // 2. Try fetching live guides from Firebase if sync URL exists
+    const syncUrl = this.config?.settings?.orderSyncUrl?.trim();
+    if (syncUrl) {
+      const cleanUrl = syncUrl.endsWith("/") ? syncUrl : syncUrl + "/";
+      try {
+        const fbResponse = await fetch(`${cleanUrl}guides.json`);
+        if (fbResponse.ok) {
+          const fbGuides = await fbResponse.json();
+          if (Array.isArray(fbGuides)) {
+            this.guides = fbGuides;
+            console.log("Loaded live guides from Firebase.");
+          }
+        }
+      } catch (e) {
+        console.warn("Could not load live guides from Firebase. Using base guides.", e);
       }
-    ];
+    }
   }
 
   applySEO() {

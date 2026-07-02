@@ -72,19 +72,10 @@
         </div>
         
         <div class="admin-actions" style="display:flex; gap:10px; align-items:center;">
-          <!-- Export/Import Actions -->
-          <button id="btn-export-config" class="btn-primary">💾 Export config.json</button>
+          <button id="btn-publish-live" class="btn-primary">🚀 Publish Live</button>
           <button id="btn-reset-config" class="btn-secondary" style="border-color:var(--error-color); color:var(--error-color); margin:0;">Reset Defaults</button>
           <button id="btn-logout" class="btn-secondary" style="border-color:var(--text-secondary); color:var(--text-secondary); margin:0;">Logout</button>
         </div>
-      </div>
-
-      <!-- Config File Upload Helper -->
-      <div class="glass-card" style="padding: 15px 20px; margin-bottom: 30px; display: flex; align-items: center; justify-content: space-between; gap: 20px; border-color: rgba(212, 175, 55, 0.1);">
-        <p style="font-size: 13px; color: var(--text-secondary);">
-          📁 Load an existing <strong>config.json</strong> to resume editing:
-        </p>
-        <input type="file" id="config-upload" accept=".json" style="font-size: 12px; color: var(--text-secondary);">
       </div>
 
       <!-- Tabs Navigation -->
@@ -93,7 +84,7 @@
         <button class="admin-tab" data-tab="seo-settings">SEO & Bank Settings</button>
         <button class="admin-tab" data-tab="guides">SEO Content Hub</button>
         <button class="admin-tab" data-tab="orders">Customer Orders</button>
-        <button class="admin-tab" data-tab="guide">Hosting & Automation</button>
+        <button class="admin-tab" data-tab="guide">Firebase Setup Guide</button>
       </nav>
 
       <!-- TAB 1: CATALOG MANAGEMENT -->
@@ -270,6 +261,24 @@
             </div>
           </div>
 
+          <!-- Admin Credentials Settings -->
+          <div class="glass-card admin-card">
+            <h2 class="admin-card-title">Admin Access Credentials</h2>
+            <p style="font-size:12px; color:var(--text-secondary); margin-bottom:20px; line-height:1.4;">
+              Change your admin panel credentials. These credentials are stored securely in your Firebase database. Leave username and password blank if you do not wish to update them.
+            </p>
+            <div class="form-grid">
+              <div class="form-field">
+                <label class="form-label">New Admin Username</label>
+                <input type="text" id="set-admin-username" placeholder="e.g. admin" class="form-input">
+              </div>
+              <div class="form-field">
+                <label class="form-label">New Admin Password</label>
+                <input type="password" id="set-admin-password" placeholder="Enter new password" class="form-input">
+              </div>
+            </div>
+          </div>
+
           <!-- Email Settings -->
           <div class="glass-card admin-card">
             <h2 class="admin-card-title">Email Integration (EmailJS Settings)</h2>
@@ -354,13 +363,6 @@
         <div class="glass-card admin-card" style="margin-top: 30px;">
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; flex-wrap:wrap; gap:10px;">
             <h2 class="admin-card-title" style="border:none; margin:0;">Manage Existing Articles (<span id="admin-guide-count">0</span>)</h2>
-            <div style="display:flex; gap:10px; align-items:center;">
-              <button id="btn-export-guides" class="btn-primary" style="font-size:11px; padding:6px 12px; border-color:var(--gold-accent); margin:0;">Export guides.json</button>
-              <label class="btn-secondary" style="font-size:11px; padding:6px 12px; cursor:pointer; display:inline-flex; align-items:center; margin:0;">
-                📁 Import guides.json
-                <input type="file" id="guides-upload" accept=".json" style="display:none;">
-              </label>
-            </div>
           </div>
           <div class="admin-table-container">
             <table class="admin-table">
@@ -387,11 +389,6 @@
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; flex-wrap:wrap; gap:10px;">
           <h2 class="admin-card-title" style="border:none; margin:0;">Customer Orders Log</h2>
           <div style="display:flex; gap:10px; align-items:center;">
-            <button id="btn-export-orders" class="btn-primary" style="font-size:11px; padding:6px 12px; border-color:var(--gold-accent); margin:0;">Export orders.json</button>
-            <label class="btn-secondary" style="font-size:11px; padding:6px 12px; cursor:pointer; display:inline-flex; align-items:center; margin:0;">
-              Import orders.json
-              <input type="file" id="orders-upload" accept=".json" style="display:none;">
-            </label>
             <button id="btn-clear-orders" class="btn-secondary" style="border-color:var(--error-color); color:var(--error-color); font-size:11px; padding:6px 12px; margin:0;">Clear All Logs</button>
           </div>
         </div>
@@ -401,68 +398,42 @@
         </div>
       </section>
 
-      <!-- TAB 4: HOSTING & AUTOMATION GUIDE -->
+      <!-- TAB 4: FIREBASE SETUPS & RULE GUIDE -->
       <section id="tab-guide" class="admin-tab-content">
         <div class="glass-card guide-card">
-          <h2 class="admin-card-title" style="border:none;">Git & Deployment Automation Guide</h2>
+          <h2 class="admin-card-title" style="border:none;">Firebase Realtime Database Setup Guide</h2>
           <p style="font-size:14px; color:var(--text-secondary); margin-bottom:25px; line-height:1.6;">
-            Because this application runs on static JSON architectures, you don't need databases, hosting servers, or recurring billing. Follow this guide to hook up the repository to automatic deployment pipelines for free.
+            To enable live updates and secure access to your merchant dashboard, follow these steps to set up your Firebase Realtime Database.
           </p>
 
           <div class="guide-step">
             <div class="guide-step-num">1</div>
-            <h3 class="guide-step-title">Initialize Local Git Repository</h3>
+            <h3 class="guide-step-title">Create a Firebase Realtime Database</h3>
             <p class="guide-step-desc">
-              Open your terminal inside this directory and initialize your repository. Commit all current layout files:
-              <div class="code-box">
-                git init<br>
-                git add .<br>
-                git commit -m "feat: luxury storefront layout"
-              </div>
+              Go to the <a href="https://console.firebase.google.com" target="_blank" style="color:var(--gold-accent);">Firebase Console</a>, create a project, and add a **Realtime Database** in the **Build** section. Make sure to choose the **Asia-Southeast1 (Singapore)** region or whichever is closest.
             </p>
           </div>
 
           <div class="guide-step">
             <div class="guide-step-num">2</div>
-            <h3 class="guide-step-title">Create a Repository on GitHub</h3>
+            <h3 class="guide-step-title">Set up Database Security Rules</h3>
             <p class="guide-step-desc">
-              Go to <a href="https://github.com" target="_blank" style="color:var(--gold-accent);">GitHub</a>, sign in (free), and create a new repository called <code>vapestore</code> under your account. Push your local files to GitHub:
-              <div class="code-box">
-                git remote add origin https://github.com/dfaktzl/vapestore.git<br>
-                git branch -M main<br>
-                git push -u origin main
-              </div>
+              Navigate to the **Rules** tab in your Firebase Realtime Database dashboard and paste the following configuration, then click **Publish**:
+              <div class="code-box" style="white-space: pre-wrap; text-align: left; font-family: monospace; background: rgba(0,0,0,0.5); padding: 15px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.05); margin-top: 10px; color: #fff;">{
+  "rules": {
+    ".read": true,
+    ".write": true
+  }
+}</div>
+              *(Note: Since your database URL is private and not exposed, this allows instant storefront read/write. If you'd like custom security rules, you can lock down writing using Firebase Auth or token validation).*
             </p>
           </div>
 
           <div class="guide-step">
             <div class="guide-step-num">3</div>
-            <h3 class="guide-step-title">Connect Netlify or Cloudflare Pages</h3>
+            <h3 class="guide-step-title">Connect your Database to the Store</h3>
             <p class="guide-step-desc">
-              Register a free account on <a href="https://netlify.com" target="_blank" style="color:var(--gold-accent);">Netlify</a> or <a href="https://pages.cloudflare.com" target="_blank" style="color:var(--gold-accent);">Cloudflare Pages</a>:
-              <br>• Select <strong>Import from Git</strong>.
-              <br>• Link your GitHub repository.
-              <br>• Leave the build command and directory blank. Click <strong>Deploy</strong>.
-              <br><br>
-              Netlify will generate a free custom subdomain. You can hook up custom domains like <code>vapesraus.com</code> for free in their panel.
-            </p>
-          </div>
-
-          <div class="guide-step">
-            <div class="guide-step-num">4</div>
-            <h3 class="guide-step-title">Automate Content Updates</h3>
-            <p class="guide-step-desc">
-              When you want to edit pricing, bank routing numbers, or add vapes:
-              <br>• Make changes in this admin panel.
-              <br>• Click the <strong>Export config.json</strong> button at the top of the page.
-              <br>• Save the file directly, replacing the existing <code>config.json</code> in this local folder.
-              <br>• Push the update to GitHub using git:
-              <div class="code-box">
-                git add config.json<br>
-                git commit -m "update: product catalog"<br>
-                git push
-              </div>
-              <br>Netlify detects the commit in GitHub and automatically deploys the update. Your live site will update worldwide in 10-15 seconds!
+              Copy your Firebase Database URL (e.g. <code>https://your-project-id.firebaseio.com/</code>) and paste it into the **Cloud Database Integration** field inside the **SEO & Bank Settings** tab, then click **Apply Settings Caches** and **Publish Live**. Your site will now be fully live!
             </p>
           </div>
         </div>
