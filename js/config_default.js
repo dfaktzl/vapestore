@@ -39,7 +39,7 @@ const CONFIG_DEFAULT = {
     {
       id: "alibarbar-toybox-8k",
       brand: "Alibarbar",
-      name: "Alibarbar Toybox 8000 Puffs",
+      name: "Alibarbar 8000 Puffs",
       category: "vapes-single",
       price: 36.00,
       boxPrice: 290.00, // Box of 10
@@ -53,7 +53,7 @@ const CONFIG_DEFAULT = {
     {
       id: "alibarbar-link-12k",
       brand: "Alibarbar",
-      name: "Alibarbar Link 12000 Puffs (Smart Display)",
+      name: "Alibarbar 12000 Rechargeable",
       category: "vapes-single",
       price: 42.00,
       boxPrice: 340.00,
