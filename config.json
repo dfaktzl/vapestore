@@ -11,7 +11,7 @@
     "contactPhone": "0402 179 489",
     "announcement": "🔥 VAPE 'R' AUS: FREE EXPRESS SHIPPING ON ALL ORDERS OVER $200! PAYID & BANK XFER ACCEPTED 🔥",
     "ageLimit": 18,
-    "orderSyncUrl": "https://vapes-99ad2--default-rtdb.asia-southeast1.firebasedatabase.app/",
+    "orderSyncUrl": "https://vapes-99ad2-default-rtdb.asia-southeast1.firebasedatabase.app/",
     "emailjsServiceId": "NKPHTNJE2GJBRIVF",
     "emailjsPublicKey": "07hCgPLcSvImHfeNk",
     "emailjsContactTemplateId": "template_ner135t",
