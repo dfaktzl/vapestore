@@ -28,7 +28,8 @@
     { "id": "all", "name": "All Products" },
     { "id": "cigarettes", "name": "Cigarette Cartons" },
     { "id": "vapes-single", "name": "IGET & Alibarbar (Singles/Cartons)" },
-    { "id": "vapes-boxes", "name": "Waka & HQD Boxes (Wholesale 10x)" }
+    { "id": "vapes-boxes", "name": "Waka & HQD Boxes (Wholesale 10x)" },
+    { "id": "jnr", "name": "JNR Vapes" }
   ],
   "products": [
     {
@@ -263,6 +264,51 @@
       },
       "inStock": true,
       "popular": true
+    },
+    {
+      "id": "jnr-falcon-x-18000",
+      "brand": "JNR",
+      "name": "JNR Falcon X 18000 Puffs",
+      "category": "jnr",
+      "price": 59.40,
+      "boxPrice": 475.20,
+      "isBoxOnly": false,
+      "flavors": ["Blue Razz Ice", "Strawberry Watermelon Ice", "Mango Peach Ice", "Grape Ice", "Watermelon Ice", "Lush Ice", "Miami Mint", "Black Mamba", "Strawberry Kiwi", "Peach Mango", "Blue Razz Cherry", "Passion Fruit Mango"],
+      "image": "img/jnr_falcon_x_18000.webp",
+      "description": "JNR's flagship high-capacity device. The Falcon X 18000 delivers an extraordinary 18,000 puffs from 24mL of premium 5% (50mg/mL) nicotine salt e-liquid. Features a distinctive crystal-clear translucent shell with an engraved falcon emblem, a smart color digital screen displaying real-time battery percentage and e-liquid level, and a powerful dual mesh coil for rich, consistent flavour throughout. Adjustable airflow and USB-C fast charging (950mAh battery). The ultimate long-lasting disposable.",
+      "specs": {
+        "Puffs": "~18,000 Puffs",
+        "E-Liquid": "24mL Salt Nic",
+        "Battery": "950mAh (Type-C Recharge)",
+        "Coil Type": "Dual Mesh Coil",
+        "Nicotine": "5% (50mg/mL)",
+        "Screen": "Smart Digital Display",
+        "Airflow": "Adjustable"
+      },
+      "inStock": true,
+      "popular": true
+    },
+    {
+      "id": "jnr-vapro-7000",
+      "brand": "JNR",
+      "name": "JNR Vapro 7000 Puffs",
+      "category": "jnr",
+      "price": 39.60,
+      "boxPrice": 316.80,
+      "isBoxOnly": false,
+      "flavors": ["Watermelon Ice", "Mango Ice", "Blue Razz Ice", "Strawberry Banana", "Grape Mint", "Peach Ice", "Lush Ice", "Double Apple", "Miami Mint", "Sour Apple Ice", "Strawberry Kiwi"],
+      "image": "img/jnr_vapro_7000.webp",
+      "description": "The JNR Vapro 7000 is JNR's reliable everyday carry — a compact, slim rechargeable disposable delivering 7,000 puffs from 15mL of 5% (50mg/mL) nicotine salt e-liquid. Features a premium gradient soft-touch finish, precision mesh coil for clean consistent flavour, and USB-C recharging (650mAh battery) to ensure you drain every last drop of e-liquid. Draw-activated, no buttons, no fuss. Perfect entry into the JNR range.",
+      "specs": {
+        "Puffs": "~7,000 Puffs",
+        "E-Liquid": "15mL Salt Nic",
+        "Battery": "650mAh (Type-C Recharge)",
+        "Coil Type": "Precision Mesh Coil",
+        "Nicotine": "5% (50mg/mL)",
+        "Activation": "Draw-Activated"
+      },
+      "inStock": true,
+      "popular": false
     }
   ]
 }

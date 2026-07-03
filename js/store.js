@@ -288,18 +288,16 @@ class StoreApp {
     
     container.innerHTML = "";
     brands.forEach(brand => {
-      const li = document.createElement("li");
-      li.className = "filter-item";
+      const label = document.createElement("label");
+      label.className = "filter-chip";
       
       const isChecked = this.selectedBrands.includes(brand);
-      li.innerHTML = `
-        <label class="filter-checkbox-label">
-          <input type="checkbox" name="brand-filter" value="${brand}" class="filter-checkbox" ${isChecked ? "checked" : ""}>
-          ${brand}
-        </label>
+      label.innerHTML = `
+        <input type="checkbox" name="brand-filter" value="${brand}" class="filter-checkbox" ${isChecked ? "checked" : ""}>
+        ${brand}
       `;
       
-      li.querySelector("input").addEventListener("change", (e) => {
+      label.querySelector("input").addEventListener("change", (e) => {
         if (e.target.checked) {
           this.selectedBrands.push(brand);
         } else {
@@ -308,7 +306,7 @@ class StoreApp {
         this.renderProducts();
       });
       
-      container.appendChild(li);
+      container.appendChild(label);
     });
   }
 

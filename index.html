@@ -137,86 +137,89 @@
 
     <!-- 6. PRODUCT CATALOG & GRID -->
     <main class="catalog-section" id="catalog">
-      <div class="container catalog-grid-layout">
-        
-        <!-- Sidebar Filters -->
-        <aside class="filter-sidebar glass-card">
-          <div class="filter-group">
-            <h3 class="filter-title">Brands</h3>
-            <ul id="brand-filters" class="filter-list">
-              <!-- Rendered dynamically -->
-            </ul>
-          </div>
-          
-          <div class="filter-group">
-            <h3 class="filter-title">Price Range</h3>
-            <ul id="price-filters" class="filter-list">
-              <li class="filter-item">
-                <label class="filter-checkbox-label">
-                  <input type="checkbox" name="price-filter" value="under-50" class="filter-checkbox">
-                  Under $50 (Singles)
-                </label>
-              </li>
-              <li class="filter-item">
-                <label class="filter-checkbox-label">
-                  <input type="checkbox" name="price-filter" value="50-250" class="filter-checkbox">
-                  $50 - $250 (Wholesale Boxes)
-                </label>
-              </li>
-              <li class="filter-item">
-                <label class="filter-checkbox-label">
-                  <input type="checkbox" name="price-filter" value="over-250" class="filter-checkbox">
-                  Over $250 (Premium Cartons)
-                </label>
-              </li>
-            </ul>
-          </div>
+      <div class="container">
 
-          <div class="filter-group">
-            <h3 class="filter-title">Format</h3>
-            <ul id="format-filters" class="filter-list">
-              <li class="filter-item">
-                <label class="filter-checkbox-label">
-                  <input type="checkbox" name="format-filter" value="single" class="filter-checkbox">
-                  Singles / Cartons
+        <!-- Compact Filter Bar (mobile-friendly horizontal chips) -->
+        <div class="filter-bar-wrap">
+          <div class="filter-bar">
+            <span class="filter-bar-label">Filter:</span>
+            <div class="filter-chips-scroll">
+              <!-- Brand chips rendered dynamically -->
+              <div id="brand-filters" class="filter-chips-group"></div>
+              <!-- Price chips -->
+              <label class="filter-chip">
+                <input type="checkbox" name="price-filter" value="under-50" class="filter-checkbox"> Under $50
+              </label>
+              <label class="filter-chip">
+                <input type="checkbox" name="price-filter" value="50-250" class="filter-checkbox"> $50–$250
+              </label>
+              <label class="filter-chip">
+                <input type="checkbox" name="price-filter" value="over-250" class="filter-checkbox"> $250+
+              </label>
+              <!-- Format chips -->
+              <div id="format-filters" class="filter-chips-group">
+                <label class="filter-chip">
+                  <input type="checkbox" name="format-filter" value="single" class="filter-checkbox"> Singles
                 </label>
-              </li>
-              <li class="filter-item">
-                <label class="filter-checkbox-label">
-                  <input type="checkbox" name="format-filter" value="box-only" class="filter-checkbox">
-                  Wholesale Bulk Boxes Only
+                <label class="filter-chip">
+                  <input type="checkbox" name="format-filter" value="box-only" class="filter-checkbox"> Bulk Boxes
                 </label>
-              </li>
-            </ul>
-          </div>
-
-          <button id="btn-clear-filters" class="btn-secondary btn-clear-filters">Clear All Filters</button>
-        </aside>
-
-        <!-- Product Listings -->
-        <section class="products-panel">
-          <div class="products-panel-header">
-            <div class="results-count">
-              Showing <span id="displayed-products-count">0</span> products
+              </div>
             </div>
+            <button id="btn-clear-filters" class="filter-clear-btn">✕ Clear</button>
+          </div>
+          <div class="filter-bar-meta">
+            <span class="results-count">Showing <strong id="displayed-products-count">0</strong> products</span>
             <div class="sort-selector-container">
-              <span class="sort-label">Sort By</span>
+              <span class="sort-label">Sort:</span>
               <select id="sort-select" class="sort-select">
                 <option value="featured">Featured</option>
-                <option value="price-asc">Price: Low to High</option>
-                <option value="price-desc">Price: High to Low</option>
-                <option value="name-asc">Alphabetical: A-Z</option>
+                <option value="price-asc">Price ↑</option>
+                <option value="price-desc">Price ↓</option>
+                <option value="name-asc">A–Z</option>
               </select>
             </div>
           </div>
+        </div>
 
-          <div id="products-grid" class="products-grid">
-            <!-- Rendered dynamically by store.js -->
-          </div>
-        </section>
+        <!-- Product Grid -->
+        <div id="products-grid" class="products-grid" style="margin-top:0;">
+          <!-- Rendered dynamically by store.js -->
+        </div>
 
       </div>
     </main>
+
+    <!-- FAQ SECTION -->
+    <section class="faq-section" id="faq">
+      <div class="container">
+        <h2 class="faq-title">Frequently Asked Questions</h2>
+        <div class="faq-list">
+
+          <details class="faq-item" open>
+            <summary class="faq-question">How do I pay for my order?</summary>
+            <div class="faq-answer">
+              <p>We accept <strong>PayID</strong> and <strong>Direct Bank Transfer</strong> only. After placing your order, you'll receive full payment instructions including our BSB, account number, and PayID email. Orders are dispatched once payment is confirmed — usually within minutes for PayID.</p>
+            </div>
+          </details>
+
+          <details class="faq-item">
+            <summary class="faq-question">How fast is delivery?</summary>
+            <div class="faq-answer">
+              <p>We ship via <strong>Express Post</strong> Australia-wide. Most orders arrive within <strong>1–3 business days</strong> after payment is confirmed. Orders over $200 receive <strong>free express shipping</strong>. You'll receive a tracking number once dispatched.</p>
+            </div>
+          </details>
+
+          <details class="faq-item">
+            <summary class="faq-question">Are there any minimum order quantities?</summary>
+            <div class="faq-answer">
+              <p>No minimum for single vapes or cigarette cartons — you can order just one. Wholesale box products (HQD Cuvie Bar, Waka SoPro) are sold as <strong>full boxes of 10 units only</strong>. Mix and match any products in one order to hit the $200 free shipping threshold.</p>
+            </div>
+          </details>
+
+        </div>
+      </div>
+    </section>
 
     <!-- 7. SECURE CHECKOUT PAGE / OVERLAY (Toggled by clicking Checkout) -->
     <div id="checkout-section" class="modal-overlay">
@@ -548,9 +551,11 @@
           <div>
             <h3 class="footer-col-title">Bulk Products</h3>
             <ul class="footer-links">
-              <li><a href="#" onclick="event.preventDefault(); window.store.setCategory('vapes-single')">IGET & Alibarbar (Singles)</a></li>
+              <li><a href="#" onclick="event.preventDefault(); window.store.setCategory('vapes-single')">IGET &amp; Alibarbar (Singles)</a></li>
+              <li><a href="#" onclick="event.preventDefault(); window.store.setCategory('jnr')">JNR Vapes</a></li>
               <li><a href="#" onclick="event.preventDefault(); window.store.setCategory('vapes-boxes')">Wholesale Vape Boxes (10x)</a></li>
-              <li><a href="#" onclick="event.preventDefault(); window.store.setCategory('cigarettes')">Cigarette Cartons (Cartons)</a></li>
+              <li><a href="#" onclick="event.preventDefault(); window.store.setCategory('cigarettes')">Cigarette Cartons</a></li>
+              <li><a href="#faq">FAQ</a></li>
             </ul>
           </div>
           
