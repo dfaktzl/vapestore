@@ -30,6 +30,7 @@ class AdminApp {
     this.config = null;
     this.guides = [];
     this.orders = [];
+    this.visitors = [];
     this.firebaseUrl = null; // Resolved on init from config
     this.init();
   }
@@ -805,6 +806,199 @@ class AdminApp {
   }
 
   /* ==========================================================================
+     6B. VISITOR ANALYTICS CONTROLLER
+     ========================================================================== */
+
+  async loadVisitors() {
+    const tbody = document.getElementById("visitors-log-tbody");
+    if (!tbody) return;
+
+    if (!this.firebaseUrl) {
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="7" style="padding:30px; text-align:center; color:var(--error-color);">
+            ⚠️ No Cloud Database configured. Geolocation and visitor logs require Firebase Database URL in Settings.
+          </td>
+        </tr>
+      `;
+      return;
+    }
+
+    tbody.innerHTML = `
+      <tr>
+        <td colspan="7" style="padding:30px; text-align:center; color:var(--text-secondary);">
+          Loading visitor logs from database...
+        </td>
+      </tr>
+    `;
+
+    try {
+      const response = await fetch(`${this.firebaseUrl}visits.json`);
+      if (response.ok) {
+        const data = await response.json();
+        this.visitors = data ? Object.values(data) : [];
+        // Sort visitors by timestamp descending (newest first)
+        this.visitors.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
+        this.renderVisitors();
+      } else {
+        throw new Error("HTTP " + response.status);
+      }
+    } catch (err) {
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="7" style="padding:30px; text-align:center; color:var(--error-color);">
+            ❌ Failed to load visitor logs: ${err.message}
+          </td>
+        </tr>
+      `;
+    }
+  }
+
+  renderVisitors() {
+    const tbody = document.getElementById("visitors-log-tbody");
+    if (!tbody) return;
+
+    if (!this.visitors || this.visitors.length === 0) {
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="7" style="padding:30px; text-align:center; color:var(--text-muted); font-size:13px;">
+            No visitor logs available.
+          </td>
+        </tr>
+      `;
+      // Reset metrics
+      document.getElementById("metric-total-sessions").innerText = "0";
+      document.getElementById("metric-unique-visitors").innerText = "0";
+      document.getElementById("metric-mobile-sessions").innerText = "0";
+      document.getElementById("metric-desktop-sessions").innerText = "0";
+      return;
+    }
+
+    // Calculate metrics
+    const totalSessions = this.visitors.length;
+    const uniqueIPs = new Set(this.visitors.map(v => v.ip).filter(ip => ip && ip !== "Unknown")).size;
+    const mobileSessions = this.visitors.filter(v => v.device === "Mobile/Tablet").length;
+    const desktopSessions = this.visitors.filter(v => v.device === "Desktop").length;
+
+    document.getElementById("metric-total-sessions").innerText = totalSessions;
+    document.getElementById("metric-unique-visitors").innerText = uniqueIPs;
+    document.getElementById("metric-mobile-sessions").innerText = mobileSessions;
+    document.getElementById("metric-desktop-sessions").innerText = desktopSessions;
+
+    tbody.innerHTML = "";
+    this.visitors.forEach(visitor => {
+      const dateStr = new Date(visitor.timestamp).toLocaleString("en-AU", {
+        day: "2-digit",
+        month: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit"
+      });
+
+      const location = (visitor.city !== "Unknown" || visitor.country !== "Unknown")
+        ? `${visitor.city || ""}, ${visitor.country || ""}`
+        : "Unknown / Blocked";
+
+      const tr = document.createElement("tr");
+      tr.style.borderBottom = "1px solid rgba(255,255,255,0.05)";
+      
+      // Calculate activity items count
+      const activityCount = visitor.activity ? Object.keys(visitor.activity).length : 0;
+
+      tr.innerHTML = `
+        <td style="padding:12px 15px; font-size:13px; color:var(--text-secondary);">${dateStr}</td>
+        <td style="padding:12px 15px; font-size:13px; font-family:monospace; color:var(--text-primary); font-weight:600;">${visitor.ip || "Unknown"}</td>
+        <td style="padding:12px 15px; font-size:13px; color:#fff;">📍 ${location}</td>
+        <td style="padding:12px 15px; font-size:12px; color:var(--text-secondary); max-width:140px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="${visitor.isp || ""}">📶 ${visitor.isp || "Unknown"}</td>
+        <td style="padding:12px 15px; font-size:12px; color:var(--text-secondary); max-width:140px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="${visitor.userAgent || ""}">🖥️ [${visitor.device || "Desktop"}]</td>
+        <td style="padding:12px 15px; font-size:12px; color:var(--text-secondary); max-width:140px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="${visitor.referrer || ""}">🔗 ${visitor.referrer || "Direct"}</td>
+        <td style="padding:12px 15px; text-align:center;">
+          <button class="btn-primary btn-view-journey" data-id="${visitor.visitId}" style="font-size:10px; padding:4px 8px; margin:0; min-height:auto; height:24px; line-height:22px; width:auto; border-radius:4px; font-weight:700;">
+            Flow (${activityCount})
+          </button>
+        </td>
+      `;
+
+      tr.querySelector(".btn-view-journey").addEventListener("click", () => {
+        this.viewVisitorActivity(visitor);
+      });
+
+      tbody.appendChild(tr);
+    });
+  }
+
+  viewVisitorActivity(visitor) {
+    const modal = document.getElementById("visitor-detail-modal");
+    const metaContainer = document.getElementById("visitor-modal-meta");
+    const timelineContainer = document.getElementById("visitor-activity-timeline");
+    if (!modal || !metaContainer || !timelineContainer) return;
+
+    metaContainer.innerHTML = `
+      <div><strong>IP:</strong> ${visitor.ip || "Unknown"}</div>
+      <div><strong>ISP:</strong> ${visitor.isp || "Unknown"}</div>
+      <div><strong>Location:</strong> ${visitor.city || ""}, ${visitor.region || ""}, ${visitor.country || ""}</div>
+      <div><strong>Referrer:</strong> ${visitor.referrer || "Direct"}</div>
+      <div><strong>Landing:</strong> ${visitor.landingPage || "/"}</div>
+      <div><strong>Screen Size:</strong> ${visitor.screen || "Unknown"}</div>
+      <div style="grid-column: span 2; word-break: break-all;"><strong>User Agent:</strong> ${visitor.userAgent || "Unknown"}</div>
+    `;
+
+    timelineContainer.innerHTML = "";
+
+    // Parse activity list
+    let activities = [];
+    if (visitor.activity) {
+      if (Array.isArray(visitor.activity)) {
+        activities = visitor.activity;
+      } else {
+        activities = Object.values(visitor.activity);
+      }
+    }
+
+    // Sort timeline ascending by timestamp
+    activities.sort((a, b) => (a.timestamp || 0) - (b.timestamp || 0));
+
+    if (activities.length === 0) {
+      timelineContainer.innerHTML = `<li style="font-size:13px; color:var(--text-muted);">No activity logged.</li>`;
+    } else {
+      activities.forEach((act) => {
+        const timeStr = new Date(act.timestamp).toLocaleTimeString("en-AU", {
+          hour: "2-digit",
+          minute: "2-digit",
+          second: "2-digit"
+        });
+
+        const li = document.createElement("li");
+        li.style.position = "relative";
+        li.style.fontSize = "13px";
+        li.style.color = "#fff";
+        li.innerHTML = `
+          <div style="position:absolute; left:-25px; top:5px; width:10px; height:10px; border-radius:50%; background:var(--gold-accent); box-shadow:0 0 5px var(--gold-accent);"></div>
+          <span style="font-size:10px; color:var(--text-muted); font-family:monospace; margin-right:8px;">[${timeStr}]</span>
+          <strong>${act.action || ""}</strong>
+        `;
+        timelineContainer.appendChild(li);
+      });
+    }
+
+    modal.style.display = "flex";
+  }
+
+  async clearVisitors() {
+    if (!confirm("Are you sure you want to delete all visitor history tracking logs? This cannot be undone.")) return;
+    if (this.firebaseUrl) {
+      try {
+        await fetch(`${this.firebaseUrl}visits.json`, { method: "DELETE" });
+        alert("Visitor analytics logs cleared successfully!");
+        await this.loadVisitors();
+      } catch (err) {
+        console.error("Cloud database clear failed:", err);
+        alert("Failed to clear visitor logs: " + err.message);
+      }
+    }
+  }
+
+  /* ==========================================================================
      7. TABS & EVENT BINDING
      ========================================================================== */
 
@@ -817,6 +1011,10 @@ class AdminApp {
         tab.classList.add("active");
         const targetContent = document.getElementById(`tab-${tab.dataset.tab}`);
         if (targetContent) targetContent.classList.add("active");
+
+        if (tab.dataset.tab === "visitors") {
+          this.loadVisitors();
+        }
       });
     });
   }
@@ -850,6 +1048,20 @@ class AdminApp {
     // Orders
     const clearOrdersBtn = document.getElementById("btn-clear-orders");
     if (clearOrdersBtn) clearOrdersBtn.addEventListener("click", () => this.clearOrders());
+
+    // Visitors
+    const refreshVisitorsBtn = document.getElementById("btn-refresh-visitors");
+    if (refreshVisitorsBtn) refreshVisitorsBtn.addEventListener("click", () => this.loadVisitors());
+
+    const clearVisitorsBtn = document.getElementById("btn-clear-visitors");
+    if (clearVisitorsBtn) clearVisitorsBtn.addEventListener("click", () => this.clearVisitors());
+
+    const closeVisitorModalBtn = document.getElementById("btn-close-visitor-modal");
+    if (closeVisitorModalBtn) {
+      closeVisitorModalBtn.addEventListener("click", () => {
+        document.getElementById("visitor-detail-modal").style.display = "none";
+      });
+    }
 
     // Logout
     const logoutBtn = document.getElementById("btn-logout");

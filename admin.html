@@ -84,6 +84,7 @@
         <button class="admin-tab" data-tab="seo-settings">SEO & Bank Settings</button>
         <button class="admin-tab" data-tab="guides">SEO Content Hub</button>
         <button class="admin-tab" data-tab="orders">Customer Orders</button>
+        <button class="admin-tab" data-tab="visitors">Visitor Analytics</button>
         <button class="admin-tab" data-tab="guide">Firebase Setup Guide</button>
       </nav>
 
@@ -397,6 +398,82 @@
           <!-- Dynamically populated -->
         </div>
       </section>
+
+      <!-- TAB: VISITOR ANALYTICS -->
+      <section id="tab-visitors" class="admin-tab-content">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; flex-wrap:wrap; gap:10px;">
+          <div>
+            <h2 class="admin-card-title" style="border:none; margin:0;">Visitor Analytics Logs</h2>
+            <p style="font-size:12px; color:var(--text-secondary); margin-top:4px;">
+              Track real-time visitor traffic, geo-location insights, browser details, and navigation flows.
+            </p>
+          </div>
+          <div style="display:flex; gap:10px; align-items:center;">
+            <button id="btn-refresh-visitors" class="btn-primary" style="font-size:11px; padding:6px 12px; margin:0;">🔄 Refresh Logs</button>
+            <button id="btn-clear-visitors" class="btn-secondary" style="border-color:var(--error-color); color:var(--error-color); font-size:11px; padding:6px 12px; margin:0;">Clear All Logs</button>
+          </div>
+        </div>
+
+        <!-- Metrics Grid -->
+        <div class="metrics-grid" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:15px; margin-bottom:25px;">
+          <div class="glass-card" style="padding:15px 20px; text-align:center;">
+            <div style="font-size:11px; text-transform:uppercase; color:var(--text-secondary); letter-spacing:0.5px;">Total Sessions</div>
+            <div id="metric-total-sessions" style="font-size:28px; font-weight:700; color:var(--gold-accent); margin-top:5px;">0</div>
+          </div>
+          <div class="glass-card" style="padding:15px 20px; text-align:center;">
+            <div style="font-size:11px; text-transform:uppercase; color:var(--text-secondary); letter-spacing:0.5px;">Unique Visitors</div>
+            <div id="metric-unique-visitors" style="font-size:28px; font-weight:700; color:var(--gold-accent); margin-top:5px;">0</div>
+          </div>
+          <div class="glass-card" style="padding:15px 20px; text-align:center;">
+            <div style="font-size:11px; text-transform:uppercase; color:var(--text-secondary); letter-spacing:0.5px;">Mobile & Tablet</div>
+            <div id="metric-mobile-sessions" style="font-size:28px; font-weight:700; color:var(--gold-accent); margin-top:5px;">0</div>
+          </div>
+          <div class="glass-card" style="padding:15px 20px; text-align:center;">
+            <div style="font-size:11px; text-transform:uppercase; color:var(--text-secondary); letter-spacing:0.5px;">Desktop Users</div>
+            <div id="metric-desktop-sessions" style="font-size:28px; font-weight:700; color:var(--gold-accent); margin-top:5px;">0</div>
+          </div>
+        </div>
+
+        <!-- Visitor Logs Table -->
+        <div class="glass-card" style="padding:0; overflow-x:auto;">
+          <table class="admin-table" style="width:100%; border-collapse:collapse; text-align:left;">
+            <thead>
+              <tr style="border-bottom:1px solid rgba(255,255,255,0.08); background:rgba(255,255,255,0.02);">
+                <th style="padding:12px 15px; font-size:11px; text-transform:uppercase; color:var(--gold-accent);">Timestamp</th>
+                <th style="padding:12px 15px; font-size:11px; text-transform:uppercase; color:var(--gold-accent);">IP Address</th>
+                <th style="padding:12px 15px; font-size:11px; text-transform:uppercase; color:var(--gold-accent);">Location</th>
+                <th style="padding:12px 15px; font-size:11px; text-transform:uppercase; color:var(--gold-accent);">ISP / Network</th>
+                <th style="padding:12px 15px; font-size:11px; text-transform:uppercase; color:var(--gold-accent);">Device & OS</th>
+                <th style="padding:12px 15px; font-size:11px; text-transform:uppercase; color:var(--gold-accent);">Referrer</th>
+                <th style="padding:12px 15px; font-size:11px; text-transform:uppercase; color:var(--gold-accent); text-align:center;">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="visitors-log-tbody">
+              <tr>
+                <td colspan="7" style="padding:30px; text-align:center; color:var(--text-muted); font-size:13px;">
+                  No visitor logs available. Click refresh or wait for database sync.
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Visitor Activity Detail Modal -->
+      <div id="visitor-detail-modal" class="modal-overlay" style="display:none; align-items:center; justify-content:center;">
+        <div class="modal-container glass-card" style="max-width:550px; padding:30px; position:relative; background:#0e1014;">
+          <button id="btn-close-visitor-modal" class="modal-close-btn" style="position:absolute; right:20px; top:20px; background:none; border:none; color:#fff; font-size:18px; cursor:pointer;">✖</button>
+          <h2 class="modal-name text-gold" style="margin-bottom:15px; text-transform:uppercase; font-size:16px; border-bottom:1px solid rgba(212,175,55,0.2); padding-bottom:10px;">Visitor Journey Timeline</h2>
+          <div id="visitor-modal-meta" style="font-size:12px; color:var(--text-secondary); margin-bottom:20px; padding-bottom:10px; border-bottom:1px solid rgba(255,255,255,0.08); display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+            <!-- Rendered dynamically -->
+          </div>
+          <div style="max-height:350px; overflow-y:auto; padding-right:5px;">
+            <ul id="visitor-activity-timeline" style="list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:12px; position:relative; padding-left:20px; border-left:1px dashed rgba(212,175,55,0.3);">
+              <!-- Rendered dynamically -->
+            </ul>
+          </div>
+        </div>
+      </div>
 
       <!-- TAB 4: FIREBASE SETUPS & RULE GUIDE -->
       <section id="tab-guide" class="admin-tab-content">

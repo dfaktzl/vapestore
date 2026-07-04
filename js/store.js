@@ -71,6 +71,9 @@ class StoreApp {
     
     // Update cart counts
     this.updateCartUI();
+
+    // Log visitor session & details
+    await this.trackVisitor();
   }
 
   /* ==========================================================================
@@ -509,6 +512,8 @@ class StoreApp {
     this.selectedFlavor = product.flavors[0] || "Default";
     this.selectedFormat = "Single";
     
+    this.logActivity(`Opened product details: ${product.brand} ${product.name}`);
+    
     const modal = document.getElementById("product-detail-modal");
     const mImg = document.getElementById("modal-image");
     const mBrand = document.getElementById("modal-brand");
@@ -663,6 +668,7 @@ class StoreApp {
       });
     }
     
+    this.logActivity(`Added to cart: ${product.brand} ${product.name} (${flavor}, ${format}) x${qty}`);
     this.saveCart();
   }
 
@@ -840,6 +846,8 @@ class StoreApp {
       return;
     }
     
+    this.logActivity("Opened checkout form overlay");
+    
     const checkout = document.getElementById("checkout-section");
     const checkList = document.getElementById("checkout-items-list");
     const subtotalText = document.getElementById("checkout-subtotal");
@@ -908,6 +916,8 @@ class StoreApp {
     const orderId = `OCV-${Date.now().toString().slice(-6)}`;
     const randAlpha = Math.random().toString(36).substring(2, 6).toUpperCase();
     const refCode = `REF-${Date.now().toString().slice(-4)}-${randAlpha}`;
+    
+    this.logActivity(`Placed order ${orderId} (Total: $${calculations.total.toFixed(2)})`);
     
     // LOG DETAILED CLIENT INFORMATION & BROWSER METADATA
     const metadata = {
@@ -1413,5 +1423,108 @@ class StoreApp {
     script.text = JSON.stringify(schemas, null, 2);
     document.head.appendChild(script);
     console.log("Dynamically generated SEO Schema Markup injected.");
+  }
+
+  /* ==========================================================================
+     8. VISITOR ANALYTICS & CLIENT TRACKING
+     ========================================================================== */
+
+  async trackVisitor() {
+    try {
+      const syncUrl = this.config?.settings?.orderSyncUrl?.trim();
+      if (!syncUrl) return;
+      const cleanUrl = syncUrl.endsWith("/") ? syncUrl : syncUrl + "/";
+
+      let visitId = sessionStorage.getItem("vapes_visit_id");
+      let visitorId = localStorage.getItem("vapes_visitor_id");
+
+      if (!visitorId) {
+        visitorId = "usr_" + Date.now() + "_" + Math.random().toString(36).substring(2, 11);
+        localStorage.setItem("vapes_visitor_id", visitorId);
+      }
+
+      if (!visitId) {
+        visitId = "vst_" + Date.now() + "_" + Math.random().toString(36).substring(2, 11);
+        sessionStorage.setItem("vapes_visit_id", visitId);
+
+        const userAgent = navigator.userAgent;
+        const referrer = document.referrer || "Direct / Bookmark";
+        const screen = window.screen.width + "x" + window.screen.height;
+        const landingPage = window.location.pathname + window.location.hash;
+        const timestamp = Date.now();
+
+        // Simple device type detection
+        let device = "Desktop";
+        if (/Mobi|Android|iPhone|iPad/i.test(userAgent)) {
+          device = "Mobile/Tablet";
+        }
+
+        // Fetch Location/Geo IP details
+        let geoData = { ip: "Unknown", city: "Unknown", region: "Unknown", country_name: "Unknown", org: "Unknown" };
+        try {
+          const geoResponse = await fetch("https://ipapi.co/json/");
+          if (geoResponse.ok) {
+            const data = await geoResponse.json();
+            if (data && data.ip) {
+              geoData = data;
+            }
+          }
+        } catch (e) {
+          console.warn("Could not retrieve IP geolocation details, logging generic details.", e);
+        }
+
+        const visitRecord = {
+          visitId,
+          visitorId,
+          timestamp,
+          userAgent,
+          device,
+          referrer,
+          screen,
+          landingPage,
+          ip: geoData.ip,
+          city: geoData.city,
+          region: geoData.region,
+          country: geoData.country_name,
+          isp: geoData.org
+        };
+
+        // Write to Firebase
+        await fetch(`${cleanUrl}visits/${visitId}.json`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(visitRecord)
+        });
+
+        // Initialize activity log with Landed event
+        await this.currentLogActivity(cleanUrl, visitId, "Landed on website: " + landingPage);
+      }
+
+      this.currentVisitId = visitId;
+      this.dbSyncUrl = cleanUrl;
+    } catch (e) {
+      console.warn("Visitor tracking encountered an error:", e);
+    }
+  }
+
+  async logActivity(action) {
+    if (!this.currentVisitId || !this.dbSyncUrl) return;
+    await this.currentLogActivity(this.dbSyncUrl, this.currentVisitId, action);
+  }
+
+  async currentLogActivity(dbUrl, visitId, action) {
+    try {
+      const timestamp = Date.now();
+      const activityItem = { timestamp, action };
+
+      // Push activity details under visits/$visitId/activity
+      await fetch(`${dbUrl}visits/${visitId}/activity.json`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(activityItem)
+      });
+    } catch (e) {
+      console.warn("Could not log user activity:", e);
+    }
   }
 }
