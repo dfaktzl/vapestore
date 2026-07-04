@@ -498,11 +498,31 @@
               Navigate to the **Rules** tab in your Firebase Realtime Database dashboard and paste the following configuration, then click **Publish**:
               <div class="code-box" style="white-space: pre-wrap; text-align: left; font-family: monospace; background: rgba(0,0,0,0.5); padding: 15px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.05); margin-top: 10px; color: #fff;">{
   "rules": {
-    ".read": true,
-    ".write": true
+    "config": {
+      ".read": true,
+      ".write": true
+    },
+    "guides": {
+      ".read": true,
+      ".write": true
+    },
+    "orders": {
+      ".read": true,
+      "$orderId": {
+        ".write": "!data.exists() || data.child('status').exists()"
+      }
+    },
+    "adminKey": {
+      ".read": true,
+      ".write": true
+    },
+    "visits": {
+      ".read": true,
+      ".write": true
+    }
   }
 }</div>
-              *(Note: Since your database URL is private and not exposed, this allows instant storefront read/write. If you'd like custom security rules, you can lock down writing using Firebase Auth or token validation).*
+              *(Note: If you are using granular security rules, make sure to add the `"visits"` node configuration above to authorize user traffic logs and analytics updates).*
             </p>
           </div>
 
