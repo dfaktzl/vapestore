@@ -1436,6 +1436,7 @@ class StoreApp {
       const cleanUrl = syncUrl.endsWith("/") ? syncUrl : syncUrl + "/";
 
       let visitId = sessionStorage.getItem("vapes_visit_id");
+      let visitLogged = sessionStorage.getItem("vapes_visit_logged");
       let visitorId = localStorage.getItem("vapes_visitor_id");
 
       if (!visitorId) {
@@ -1446,7 +1447,13 @@ class StoreApp {
       if (!visitId) {
         visitId = "vst_" + Date.now() + "_" + Math.random().toString(36).substring(2, 11);
         sessionStorage.setItem("vapes_visit_id", visitId);
+      }
 
+      this.currentVisitId = visitId;
+      this.dbSyncUrl = cleanUrl;
+
+      // If this session has not been successfully logged to Firebase yet, attempt to write
+      if (visitLogged !== "true") {
         const userAgent = navigator.userAgent;
         const referrer = document.referrer || "Direct / Bookmark";
         const screen = window.screen.width + "x" + window.screen.height;
@@ -1490,18 +1497,18 @@ class StoreApp {
         };
 
         // Write to Firebase
-        await fetch(`${cleanUrl}visits/${visitId}.json`, {
+        const response = await fetch(`${cleanUrl}visits/${visitId}.json`, {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(visitRecord)
         });
 
-        // Initialize activity log with Landed event
-        await this.currentLogActivity(cleanUrl, visitId, "Landed on website: " + landingPage);
+        if (response.ok) {
+          sessionStorage.setItem("vapes_visit_logged", "true");
+          // Initialize activity log with Landed event
+          await this.currentLogActivity(cleanUrl, visitId, "Landed on website: " + landingPage);
+        }
       }
-
-      this.currentVisitId = visitId;
-      this.dbSyncUrl = cleanUrl;
     } catch (e) {
       console.warn("Visitor tracking encountered an error:", e);
     }
