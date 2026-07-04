@@ -111,14 +111,14 @@ class StoreApp {
     const promoCountEl = document.getElementById("promo-spots-count");
     if (!promoCountEl) return;
 
-    // Use a reference date of July 2nd (today's campaign start date)
-    // To ensure the number starts at 49 today, and decreases deterministically every 3.5 hours on average.
-    const baseTime = new Date("2026-07-02T00:00:00").getTime();
+    // Use a reference date of July 4th (campaign start date)
+    // To ensure the number starts at 36 today, and decreases deterministically every 3.5 hours on average.
+    const baseTime = new Date("2026-07-04T00:00:00").getTime();
     const currentTime = Date.now();
     const diffHours = (currentTime - baseTime) / (1000 * 60 * 60);
 
-    // Let's decrement every 3.5 hours on average.
-    let currentSpots = 49;
+    // Let's decrement from 36 every 3.5 hours on average.
+    let currentSpots = 36;
     
     // Calculate the total steps elapsed since baseTime (only positive values count)
     const stepSizeHours = 3.5;
@@ -131,7 +131,7 @@ class StoreApp {
     }
 
     // Keep the number wrapping in a realistic loop (so it never hits 0 or looks expired).
-    // Let's wrap around to stay between 4 and 15 spots left.
+    // Let's wrap around to stay between 4 and 15 spots left once depleted.
     if (currentSpots < 4) {
       currentSpots = 15 - (Math.abs(currentSpots) % 12);
       if (currentSpots < 4) currentSpots = 4;
