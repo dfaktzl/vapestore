@@ -672,21 +672,32 @@ class AdminApp {
       const formattedDate = new Date(order.date).toLocaleString("en-AU");
 
       let itemsHTML = "";
-      order.items.forEach(item => {
-        itemsHTML += `
+      if (order.items && Array.isArray(order.items)) {
+        order.items.forEach(item => {
+          if (item) {
+            const itemTotal = parseFloat(item.total || 0);
+            itemsHTML += `
+              <tr>
+                <td>${item.name || "Unknown Item"} (${item.flavor || "Default"}) [Format: ${item.format || "Single"}]</td>
+                <td style="text-align:center;">${item.quantity || 0}</td>
+                <td style="text-align:right;">$${itemTotal.toFixed(2)}</td>
+              </tr>
+            `;
+          }
+        });
+      } else {
+        itemsHTML = `
           <tr>
-            <td>${item.name} (${item.flavor}) [Format: ${item.format || "Single"}]</td>
-            <td style="text-align:center;">${item.quantity}</td>
-            <td style="text-align:right;">$${item.total.toFixed(2)}</td>
+            <td colspan="3" style="text-align:center; color:var(--text-muted); font-style:italic;">No items in this order.</td>
           </tr>
         `;
-      });
+      }
 
       let metaHTML = "";
-      if (order.metadata) {
+      if (order.metadata && order.metadata.userAgent) {
         metaHTML = `
           <p style="margin-top: 15px; padding-top: 10px; border-top: 1px dashed rgba(255,255,255,0.05); font-size:11px; color:var(--text-muted);">
-            <strong>Client System Log:</strong> UA: ${order.metadata.userAgent.slice(0, 75)}... | Res: ${order.metadata.resolution} | Lang: ${order.metadata.language}
+            <strong>Client System Log:</strong> UA: ${order.metadata.userAgent.slice(0, 75)}... | Res: ${order.metadata.resolution || "N/A"} | Lang: ${order.metadata.language || "N/A"}
           </p>
         `;
       }
@@ -699,25 +710,28 @@ class AdminApp {
       });
       statusSelectHTML += `</select>`;
 
+      const cust = order.customer || {};
+      const orderTotal = parseFloat(order.total || 0);
+
       card.innerHTML = `
         <div class="order-card-header" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
           <div class="order-id-block">
-            <span class="order-id">Order ID: ${order.orderId}</span>
+            <span class="order-id">Order ID: ${order.orderId || "N/A"}</span>
             <span class="order-date">Date: ${formattedDate}</span>
           </div>
           <div style="display:flex; align-items:center; gap:10px;">
-            <span class="order-ref" style="font-size:12px; margin-right:5px;">Ref: <strong>${order.refCode}</strong></span>
+            <span class="order-ref" style="font-size:12px; margin-right:5px;">Ref: <strong>${order.refCode || "N/A"}</strong></span>
             ${statusSelectHTML}
             <button class="btn-icon delete-order-btn" title="Delete Order" data-order-id="${order.orderId}" style="background:none; border:none; cursor:pointer; font-size:16px;">🗑️</button>
           </div>
         </div>
         <div class="order-grid">
           <div class="order-customer-details">
-            <p><strong>Customer Name:</strong> ${order.customer.name}</p>
-            <p><strong>Phone Number:</strong> ${order.customer.phone}</p>
-            <p><strong>Email Address:</strong> ${order.customer.email}</p>
-            <p><strong>Shipping Address:</strong> ${order.customer.address}</p>
-            <p><strong>Delivery Notes:</strong> <span style="font-style:italic; color:var(--text-muted);">${order.customer.notes || "None"}</span></p>
+            <p><strong>Customer Name:</strong> ${cust.name || "N/A"}</p>
+            <p><strong>Phone Number:</strong> ${cust.phone || "N/A"}</p>
+            <p><strong>Email Address:</strong> ${cust.email || "N/A"}</p>
+            <p><strong>Shipping Address:</strong> ${cust.address || "N/A"}</p>
+            <p><strong>Delivery Notes:</strong> <span style="font-style:italic; color:var(--text-muted);">${cust.notes || "None"}</span></p>
             ${metaHTML}
           </div>
           <div>
@@ -733,7 +747,7 @@ class AdminApp {
               <tfoot>
                 <tr style="border-top: 1px dashed rgba(255,255,255,0.1);">
                   <td colspan="2" style="padding-top:15px; font-weight:700; color:var(--text-primary); text-transform:uppercase; font-size:12px;">Total Payable</td>
-                  <td style="padding-top:15px; font-weight:700; text-align:right; color:var(--gold-accent); font-size:16px;">$${order.total.toFixed(2)}</td>
+                  <td style="padding-top:15px; font-weight:700; text-align:right; color:var(--gold-accent); font-size:16px;">$${orderTotal.toFixed(2)}</td>
                 </tr>
               </tfoot>
             </table>
@@ -836,7 +850,7 @@ class AdminApp {
       const response = await fetch(`${this.firebaseUrl}visits.json`);
       if (response.ok) {
         const data = await response.json();
-        this.visitors = data ? Object.values(data) : [];
+        this.visitors = data ? Object.values(data).filter(v => v !== null) : [];
         // Sort visitors by timestamp descending (newest first)
         this.visitors.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
         this.renderVisitors();
