@@ -215,6 +215,8 @@ function Send-SmtpEmail($to, $subject, $htmlBody) {
     $mail.Subject = $subject
     $mail.Body = $htmlBody
     $mail.IsBodyHtml = $true
+    $mail.BodyEncoding = [System.Text.Encoding]::UTF8
+    $mail.SubjectEncoding = [System.Text.Encoding]::UTF8
 
     # Bypass certificate validation for ProtonMail Bridge self-signed certs
     [System.Net.ServicePointManager]::ServerCertificateValidationCallback = { $true }
