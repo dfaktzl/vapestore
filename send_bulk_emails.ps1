@@ -8,7 +8,8 @@
 
 param(
     [string]$TestEmail = "vapesonlineaustralia@proton.me",
-    [switch]$SendAll = $false
+    [switch]$SendAll = $false,
+    [string]$Password = ""
 )
 
 # SMTP Configurations (Defaulting to cPanel mail settings)
@@ -19,13 +20,19 @@ $Username = "admin@vaperaus.com"
 # Set security protocols
 [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.SecurityProtocolType]::Tls12
 
-# Prompt for Password securely
+# Prompt for Password securely if not provided
 Write-Host "==================================================================" -ForegroundColor Yellow
 Write-Host "         Vape 'R' Aus - Bulk Email Confirmation Dispatcher" -ForegroundColor Yellow
 Write-Host "==================================================================" -ForegroundColor Yellow
-Write-Host "Please enter the password for: $Username" -ForegroundColor Cyan
-$Password = Read-Host -AsSecureString
-if ($null -eq $Password) {
+
+if ([string]::IsNullOrEmpty($Password)) {
+    Write-Host "Please enter the password for: $Username" -ForegroundColor Cyan
+    $SecPassword = Read-Host -AsSecureString
+} else {
+    $SecPassword = ConvertTo-SecureString $Password -AsPlainText -Force
+}
+
+if ($null -eq $SecPassword) {
     Write-Error "Password is required to proceed."
     exit
 }
@@ -197,7 +204,6 @@ function Get-EmailBody($Order, $ApologyHtml) {
 }
 
 # Generate credentials object
-$SecPassword = $Password
 $Creds = New-Object System.Management.Automation.PSCredential ($Username, $SecPassword)
 
 if (-not $SendAll) {
