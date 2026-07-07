@@ -20,9 +20,9 @@ $Username = "admin@vaperaus.com"
 [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.SecurityProtocolType]::Tls12
 
 # Prompt for Password securely
-Write-Host "==================================================================" -ForegroundColor Gold
-Write-Host "         Vape 'R' Aus - Bulk Email Confirmation Dispatcher" -ForegroundColor Gold
-Write-Host "==================================================================" -ForegroundColor Gold
+Write-Host "==================================================================" -ForegroundColor Yellow
+Write-Host "         Vape 'R' Aus - Bulk Email Confirmation Dispatcher" -ForegroundColor Yellow
+Write-Host "==================================================================" -ForegroundColor Yellow
 Write-Host "Please enter the password for: $Username" -ForegroundColor Cyan
 $Password = Read-Host -AsSecureString
 if ($null -eq $Password) {
