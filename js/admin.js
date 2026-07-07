@@ -995,7 +995,7 @@ class AdminApp {
       });
     }
 
-    modal.style.display = "flex";
+    modal.classList.add("active");
   }
 
   async clearVisitors() {
@@ -1073,7 +1073,16 @@ class AdminApp {
     const closeVisitorModalBtn = document.getElementById("btn-close-visitor-modal");
     if (closeVisitorModalBtn) {
       closeVisitorModalBtn.addEventListener("click", () => {
-        document.getElementById("visitor-detail-modal").style.display = "none";
+        document.getElementById("visitor-detail-modal").classList.remove("active");
+      });
+    }
+
+    const visitorModal = document.getElementById("visitor-detail-modal");
+    if (visitorModal) {
+      visitorModal.addEventListener("click", (e) => {
+        if (e.target === visitorModal) {
+          visitorModal.classList.remove("active");
+        }
       });
     }
 
