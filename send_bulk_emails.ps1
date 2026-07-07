@@ -15,7 +15,7 @@ param(
 # SMTP Configurations (Configured for local ProtonMail Bridge)
 $SmtpServer = "127.0.0.1"
 $SmtpPort = 1025
-$Username = "admin@vaperaus.com"
+$Username = "vapesonlineaustralia@proton.me"
 
 # Set security protocols
 [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.SecurityProtocolType]::Tls12
@@ -206,6 +206,35 @@ function Get-EmailBody($Order, $ApologyHtml) {
 # Generate credentials object
 $Creds = New-Object System.Management.Automation.PSCredential ($Username, $SecPassword)
 
+# Custom SMTP mailer utilizing .NET SmtpClient to bypass self-signed SSL certificate issues
+function Send-SmtpEmail($to, $subject, $htmlBody) {
+    $mail = New-Object System.Net.Mail.MailMessage
+    $mail.From = New-Object System.Net.Mail.MailAddress($Username)
+    $mail.To.Add($to)
+    $mail.Subject = $subject
+    $mail.Body = $htmlBody
+    $mail.IsBodyHtml = $true
+
+    # Bypass certificate validation for ProtonMail Bridge self-signed certs
+    [System.Net.ServicePointManager]::ServerCertificateValidationCallback = { $true }
+
+    try {
+        $smtp = New-Object System.Net.Mail.SmtpClient($SmtpServer, $SmtpPort)
+        $smtp.EnableSsl = $true
+        $smtp.Credentials = $Creds.GetNetworkCredential()
+        $smtp.Send($mail)
+        $smtp.Dispose()
+    } catch {
+        # Retry without SSL/TLS in case the bridge has SSL disabled
+        $smtp = New-Object System.Net.Mail.SmtpClient($SmtpServer, $SmtpPort)
+        $smtp.EnableSsl = $false
+        $smtp.Credentials = $Creds.GetNetworkCredential()
+        $smtp.Send($mail)
+        $smtp.Dispose()
+    }
+    $mail.Dispose()
+}
+
 if (-not $SendAll) {
     # ------------------ TEST MODE ------------------
     # Send test confirmation using the user's latest test order OCV-224581
@@ -224,7 +253,7 @@ if (-not $SendAll) {
     
     Write-Host "Sending test email to $TestEmail from $Username..." -ForegroundColor Yellow
     try {
-        Send-MailMessage -To $TestEmail -From $Username -Subject "🛒 Order Confirmation #$($TestOrder.orderId)" -Body $HtmlBody -BodyAsHtml -SmtpServer $SmtpServer -Port $SmtpPort -Credential $Creds -UseSsl
+        Send-SmtpEmail $TestEmail "🛒 Order Confirmation #$($TestOrder.orderId)" $HtmlBody
         Write-Host "`nTest email sent successfully! Please check $TestEmail (including the spam/junk folder) to verify formatting and details." -ForegroundColor Green
         Write-Host "To send confirmations to all $($ParsedOrders.Count) customers, run: .\send_bulk_emails.ps1 -SendAll" -ForegroundColor Cyan
     } catch {
@@ -256,7 +285,7 @@ if (-not $SendAll) {
         $HtmlBody = Get-EmailBody $order $ApologyText
         
         try {
-            Send-MailMessage -To $custEmail -From $Username -Subject "🛒 Order Confirmation #$($order.orderId)" -Body $HtmlBody -BodyAsHtml -SmtpServer $SmtpServer -Port $SmtpPort -Credential $Creds -UseSsl
+            Send-SmtpEmail $custEmail "🛒 Order Confirmation #$($order.orderId)" $HtmlBody
             Write-Host "   -> Sent successfully!" -ForegroundColor Green
             $Count++
             # Throttle requests slightly to avoid mail server rate limits
