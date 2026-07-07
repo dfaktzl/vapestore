@@ -9,7 +9,8 @@
 param(
     [string]$TestEmail = "vapesonlineaustralia@proton.me",
     [switch]$SendAll = $false,
-    [string]$Password = ""
+    [string]$Password = "",
+    [switch]$Force = $false
 )
 
 # SMTP Configurations (Configured for local ProtonMail Bridge)
@@ -263,10 +264,12 @@ if (-not $SendAll) {
 } else {
     # ------------------ SEND ALL MODE ------------------
     Write-Host "`n[SEND ALL MODE] Preparing to send emails to all $($ParsedOrders.Count) customers..." -ForegroundColor Yellow
-    $Confirm = Read-Host "Are you sure you want to send order confirmations to all $($ParsedOrders.Count) customers? (y/n)"
-    if ($Confirm -ne "y") {
-        Write-Host "Cancelled." -ForegroundColor Red
-        exit
+    if (-not $Force) {
+        $Confirm = Read-Host "Are you sure you want to send order confirmations to all $($ParsedOrders.Count) customers? (y/n)"
+        if ($Confirm -ne "y") {
+            Write-Host "Cancelled." -ForegroundColor Red
+            exit
+        }
     }
 
     $Count = 0
