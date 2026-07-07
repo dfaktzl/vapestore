@@ -10,13 +10,14 @@ param(
     [string]$TestEmail = "vapesonlineaustralia@proton.me",
     [switch]$SendAll = $false,
     [string]$Password = "",
-    [switch]$Force = $false
+    [switch]$Force = $false,
+    [string]$Sender = "vapesonlineaustralia@proton.me"
 )
 
 # SMTP Configurations (Configured for local ProtonMail Bridge)
 $SmtpServer = "127.0.0.1"
 $SmtpPort = 1025
-$Username = "vapesonlineaustralia@proton.me"
+$Username = $Sender
 
 # Set security protocols
 [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.SecurityProtocolType]::Tls12
