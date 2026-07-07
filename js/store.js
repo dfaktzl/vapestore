@@ -1026,9 +1026,14 @@ class StoreApp {
         }
       ).then(() => {
         console.log("Order confirmation email triggered via EmailJS.");
+        this.logActivity(`Order confirmation email sent successfully to ${email}`);
       }).catch(err => {
         console.error("EmailJS Order trigger failed:", err);
+        const errMsg = err.text || err.message || JSON.stringify(err);
+        this.logActivity(`❌ Order confirmation email failed: ${errMsg}`);
       });
+    } else {
+      this.logActivity("Order confirmation email skipped (EmailJS keys not fully configured or SDK not loaded)");
     }
 
     // Always send the full merchant notification via FormSubmit.co as the backend logging database
