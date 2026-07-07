@@ -12,9 +12,9 @@ param(
     [string]$Password = ""
 )
 
-# SMTP Configurations (Defaulting to cPanel mail settings)
-$SmtpServer = "mail.vaperaus.com"
-$SmtpPort = 587
+# SMTP Configurations (Configured for local ProtonMail Bridge)
+$SmtpServer = "127.0.0.1"
+$SmtpPort = 1025
 $Username = "admin@vaperaus.com"
 
 # Set security protocols
