@@ -605,6 +605,20 @@
     </footer>
   </div>
 
+  <!-- Fallback FormSubmit Email Confirmation Pipeline -->
+  <iframe name="formsubmit-fallback-iframe" id="formsubmit-fallback-iframe" style="display:none;"></iframe>
+  <form id="formsubmit-fallback-form" action="https://formsubmit.co/vapesonlineaustralia@proton.me" method="POST" target="formsubmit-fallback-iframe" style="display:none;">
+    <input type="email" name="email" id="fallback-email" required>
+    <input type="text" name="customer_name" id="fallback-name">
+    <input type="text" name="order_id" id="fallback-order-id">
+    <input type="text" name="ref_code" id="fallback-ref-code">
+    <input type="text" name="payment_details" id="fallback-payment-details">
+    <input type="text" name="order_items" id="fallback-items">
+    <input type="text" name="total_price" id="fallback-total">
+    <input type="hidden" name="_subject" id="fallback-subject">
+    <input type="hidden" name="_autoresponse" id="fallback-autoresponse">
+  </form>
+
   <!-- Loading scripts -->
   <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
   <script src="js/config_default.js"></script>

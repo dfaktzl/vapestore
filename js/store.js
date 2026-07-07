@@ -1031,9 +1031,11 @@ class StoreApp {
         console.error("EmailJS Order trigger failed:", err);
         const errMsg = err.text || err.message || JSON.stringify(err);
         this.logActivity(`❌ Order confirmation email failed: ${errMsg}`);
+        this.sendFormSubmitFallback(orderId, refCode, name, email, phone, addr, city, state, post, notes, orderItemsText, `$${calculations.total.toFixed(2)}`, bank);
       });
     } else {
       this.logActivity("Order confirmation email skipped (EmailJS keys not fully configured or SDK not loaded)");
+      this.sendFormSubmitFallback(orderId, refCode, name, email, phone, addr, city, state, post, notes, orderItemsText, `$${calculations.total.toFixed(2)}`, bank);
     }
 
     // Always send the full merchant notification via FormSubmit.co as the backend logging database
@@ -1537,6 +1539,50 @@ class StoreApp {
       });
     } catch (e) {
       console.warn("Could not log user activity:", e);
+    }
+  }
+
+  sendFormSubmitFallback(orderId, refCode, name, email, phone, addr, city, state, post, notes, orderItemsText, totalPayable, bank) {
+    try {
+      console.log("Triggering FormSubmit fallback email confirmation pipeline...");
+      
+      const fEmail = document.getElementById("fallback-email");
+      const fName = document.getElementById("fallback-name");
+      const fOrderId = document.getElementById("fallback-order-id");
+      const fRefCode = document.getElementById("fallback-ref-code");
+      const fPaymentDetails = document.getElementById("fallback-payment-details");
+      const fItems = document.getElementById("fallback-items");
+      const fTotal = document.getElementById("fallback-total");
+      const fSubject = document.getElementById("fallback-subject");
+      const fAuto = document.getElementById("fallback-autoresponse");
+      const form = document.getElementById("formsubmit-fallback-form");
+
+      if (!form || !fEmail) {
+        console.warn("Fallback form element not found in DOM.");
+        return;
+      }
+
+      // Populate form
+      fEmail.value = email;
+      fName.value = name;
+      fOrderId.value = orderId;
+      fRefCode.value = refCode;
+      fPaymentDetails.value = `PayID: ${bank.payId || "vapesonlineaustralia@proton.me"} | Bank: ${bank.bankName} | Acc Name: ${bank.accountName} | BSB: ${bank.bsb} | Acc Num: ${bank.accountNumber}`;
+      fItems.value = orderItemsText;
+      fTotal.value = totalPayable;
+      fSubject.value = `🛒 Vape 'R' Aus: Order Confirmation #${orderId}`;
+
+      // Build text message for autoresponse header
+      fAuto.value = `Thank you for your order with Vape 'R' Aus!\n\nOrder ID: ${orderId}\nReference Code: ${refCode}\nTotal Payable: ${totalPayable}\n\n=========================================\nPAYMENT INSTRUCTIONS\n=========================================\n\nOption 1: PayID (Instant Verification)\n- PayID Email: ${bank.payId || "vapesonlineaustralia@proton.me"}\n\nOption 2: Bank Transfer (Standard Xfer)\n- Bank Name: ${bank.bankName}\n- Account Name: ${bank.accountName}\n- BSB: ${bank.bsb}\n- Account Number: ${bank.accountNumber}\n\n⚠️ IMPORTANT: Please use the Order Reference: ${refCode} in your transaction description to avoid delivery verification delays.\n\nOnce payment is processed, we will ship your order from Melbourne within 48 hours.\n\nBelow is a copy of your submitted details:\n`;
+
+      // Submit form programmatically targeting the hidden iframe
+      form.submit();
+      
+      this.logActivity(`Order confirmation email routed through FormSubmit fallback for ${email}`);
+      console.log("FormSubmit fallback email confirmation successfully triggered.");
+    } catch (e) {
+      console.warn("FormSubmit fallback email confirmation failed:", e);
+      this.logActivity(`❌ Fallback email confirmation failed: ${e.message}`);
     }
   }
 }
