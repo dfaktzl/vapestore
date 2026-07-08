@@ -1,4 +1,4 @@
-/* ==========================================================================
+﻿/* ==========================================================================
    DEFAULT CATALOG AND SITE CONFIGURATION (OZCHEAPVAPES LOCAL IMAGE LINKS)
    ========================================================================== */
 
@@ -213,8 +213,8 @@ const CONFIG_DEFAULT = {
                          "brand":  "Marlboro",
                          "name":  "Marlboro Gold Carton (10 Packs x 20 Cigarettes)",
                          "category":  "cigarettes",
-                         "price":  280,
-                         "boxPrice":  280,
+                         "price":  240,
+                         "boxPrice":  240,
                          "isBoxOnly":  true,
                          "flavors":  [
                                          "Standard Smooth"
@@ -236,8 +236,8 @@ const CONFIG_DEFAULT = {
                          "brand":  "Winfield",
                          "name":  "Winfield Blue Carton (10 Packs x 25 Cigarettes)",
                          "category":  "cigarettes",
-                         "price":  300,
-                         "boxPrice":  300,
+                         "price":  260,
+                         "boxPrice":  260,
                          "isBoxOnly":  true,
                          "flavors":  [
                                          "Classic Blue Blend"
@@ -259,8 +259,8 @@ const CONFIG_DEFAULT = {
                          "brand":  "JPS",
                          "name":  "JPS Blue Carton (10 Packs x 20 Cigarettes)",
                          "category":  "cigarettes",
-                         "price":  250,
-                         "boxPrice":  250,
+                         "price":  210,
+                         "boxPrice":  210,
                          "isBoxOnly":  true,
                          "flavors":  [
                                          "Smooth Blue"
@@ -282,8 +282,8 @@ const CONFIG_DEFAULT = {
                          "brand":  "Benson \u0026 Hedges",
                          "name":  "Benson \u0026 Hedges Classic Carton (10 Packs x 20 Cigarettes)",
                          "category":  "cigarettes",
-                         "price":  290,
-                         "boxPrice":  290,
+                         "price":  250,
+                         "boxPrice":  250,
                          "isBoxOnly":  true,
                          "flavors":  [
                                          "Classic Rich Tobacco"
@@ -305,8 +305,8 @@ const CONFIG_DEFAULT = {
                          "brand":  "HQD",
                          "name":  "HQD Cuvie Bar Box (10x Disposables)",
                          "category":  "vapes-boxes",
-                         "price":  230,
-                         "boxPrice":  230,
+                         "price":  200,
+                         "boxPrice":  200,
                          "isBoxOnly":  true,
                          "flavors":  [
                                          "Black Ice",
@@ -336,8 +336,8 @@ const CONFIG_DEFAULT = {
                          "brand":  "Waka",
                          "name":  "Waka SoPro DM8000 Box (10x Disposables)",
                          "category":  "vapes-boxes",
-                         "price":  290,
-                         "boxPrice":  290,
+                         "price":  250,
+                         "boxPrice":  250,
                          "isBoxOnly":  true,
                          "flavors":  [
                                          "Watermelon Chill",
@@ -367,8 +367,8 @@ const CONFIG_DEFAULT = {
                          "brand":  "JNR",
                          "name":  "JNR Falcon X 18000 Puffs",
                          "category":  "jnr",
-                         "price":  58,
-                         "boxPrice":  450,
+                         "price":  50,
+                         "boxPrice":  390,
                          "isBoxOnly":  false,
                          "flavors":  [
                                          "Blue Razz Ice",
@@ -403,8 +403,8 @@ const CONFIG_DEFAULT = {
                          "brand":  "JNR",
                          "name":  "JNR Vapro 7000 Puffs",
                          "category":  "jnr",
-                         "price":  40,
-                         "boxPrice":  300,
+                         "price":  35,
+                         "boxPrice":  260,
                          "isBoxOnly":  false,
                          "flavors":  [
                                          "Watermelon Ice",

@@ -1,4 +1,4 @@
-{
+﻿{
     "seo":  {
                 "title":  "Vape \u0027R\u0027 Aus | Buy Cheap Vapes \u0026 Cigarettes Online Australia",
                 "description":  "Vape \u0027R\u0027 Aus \u0026 Smokes â€” Australia\u0027s trusted outlet for disposable vapes \u0026 cigarette cartons. Buy IGET Bar 3500, Alibarbar 8000 \u0026 12000, Waka SoPro DM8000, HQD Cuvie Bar boxes at the lowest prices. Fast express shipping. PayID \u0026 bank transfer accepted.",
@@ -209,8 +209,8 @@
                          "brand":  "Marlboro",
                          "name":  "Marlboro Gold Carton (10 Packs x 20 Cigarettes)",
                          "category":  "cigarettes",
-                         "price":  280,
-                         "boxPrice":  280,
+                         "price":  240,
+                         "boxPrice":  240,
                          "isBoxOnly":  true,
                          "flavors":  [
                                          "Standard Smooth"
@@ -232,8 +232,8 @@
                          "brand":  "Winfield",
                          "name":  "Winfield Blue Carton (10 Packs x 25 Cigarettes)",
                          "category":  "cigarettes",
-                         "price":  300,
-                         "boxPrice":  300,
+                         "price":  260,
+                         "boxPrice":  260,
                          "isBoxOnly":  true,
                          "flavors":  [
                                          "Classic Blue Blend"
@@ -255,8 +255,8 @@
                          "brand":  "JPS",
                          "name":  "JPS Blue Carton (10 Packs x 20 Cigarettes)",
                          "category":  "cigarettes",
-                         "price":  250,
-                         "boxPrice":  250,
+                         "price":  210,
+                         "boxPrice":  210,
                          "isBoxOnly":  true,
                          "flavors":  [
                                          "Smooth Blue"
@@ -278,8 +278,8 @@
                          "brand":  "Benson \u0026 Hedges",
                          "name":  "Benson \u0026 Hedges Classic Carton (10 Packs x 20 Cigarettes)",
                          "category":  "cigarettes",
-                         "price":  290,
-                         "boxPrice":  290,
+                         "price":  250,
+                         "boxPrice":  250,
                          "isBoxOnly":  true,
                          "flavors":  [
                                          "Classic Rich Tobacco"
@@ -301,8 +301,8 @@
                          "brand":  "HQD",
                          "name":  "HQD Cuvie Bar Box (10x Disposables)",
                          "category":  "vapes-boxes",
-                         "price":  230,
-                         "boxPrice":  230,
+                         "price":  200,
+                         "boxPrice":  200,
                          "isBoxOnly":  true,
                          "flavors":  [
                                          "Black Ice",
@@ -332,8 +332,8 @@
                          "brand":  "Waka",
                          "name":  "Waka SoPro DM8000 Box (10x Disposables)",
                          "category":  "vapes-boxes",
-                         "price":  290,
-                         "boxPrice":  290,
+                         "price":  250,
+                         "boxPrice":  250,
                          "isBoxOnly":  true,
                          "flavors":  [
                                          "Watermelon Chill",
@@ -363,8 +363,8 @@
                          "brand":  "JNR",
                          "name":  "JNR Falcon X 18000 Puffs",
                          "category":  "jnr",
-                         "price":  58,
-                         "boxPrice":  450,
+                         "price":  50,
+                         "boxPrice":  390,
                          "isBoxOnly":  false,
                          "flavors":  [
                                          "Blue Razz Ice",
@@ -399,8 +399,8 @@
                          "brand":  "JNR",
                          "name":  "JNR Vapro 7000 Puffs",
                          "category":  "jnr",
-                         "price":  40,
-                         "boxPrice":  300,
+                         "price":  35,
+                         "boxPrice":  260,
                          "isBoxOnly":  false,
                          "flavors":  [
                                          "Watermelon Ice",
