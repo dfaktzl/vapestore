@@ -9,7 +9,7 @@
                      "tagline":  "Best Deals on Vapes \u0026 Smokes in Australia",
                      "contactEmail":  "vapesonlineaustralia@proton.me",
                      "contactPhone":  "0402 179 489",
-                     "announcement":  "ðŸ”¥ VAPE \u0027R\u0027 AUS: FREE EXPRESS SHIPPING ON ALL ORDERS OVER $200! PAYID \u0026 BANK XFER ACCEPTED ðŸ”¥",
+                     "announcement":  "🔥 FREE EXPRESS SHIPPING ON ALL ORDERS OVER $150! PAYID \u0026 BANK XFER ACCEPTED 🔥",
                      "ageLimit":  18,
                      "orderSyncUrl":  "https://vapes-99ad2-default-rtdb.asia-southeast1.firebasedatabase.app/",
                      "emailjsServiceId":  "NKPHTNJE2GJBRIVF",
@@ -52,8 +52,8 @@
                          "brand":  "Alibarbar",
                          "name":  "Alibarbar 8000",
                          "category":  "vapes-single",
-                         "price":  39,
-                         "boxPrice":  310,
+                         "price":  40,
+                         "boxPrice":  300,
                          "isBoxOnly":  false,
                          "flavors":  [
                                          "Blue Razz Ice",
@@ -67,12 +67,12 @@
                                          "Kiwi Passionfruit"
                                      ],
                          "image":  "img/alibarbar_toybox_8k.webp",
-                         "description":  "The Alibarbar Toybox 8000 packs an impressive 8,000 puffs into a compact, distinctive design. Powered by a robust 2000mAh non-rechargeable battery with 20mL of premium 5% (50mg/mL) nicotine salt e-liquid. Features a 1.1Î© mesh coil for consistent, flavour-rich vapour from the first draw to the very last. Sold as single units or in bulk boxes of 10.",
+                         "description":  "The Alibarbar Toybox 8000 packs an impressive 8,000 puffs into a compact, distinctive design. Powered by a robust 2000mAh non-rechargeable battery with 20mL of premium 5% (50mg/mL) nicotine salt e-liquid. Features a 1.1Ω mesh coil for consistent, flavour-rich vapour from the first draw to the very last. Sold as single units or in bulk boxes of 10.",
                          "specs":  {
                                        "Puffs":  "~8,000 Puffs",
                                        "E-Liquid":  "20mL Salt Nic",
                                        "Battery":  "2000mAh (Built-in)",
-                                       "Coil Type":  "1.1Î© Mesh Coil",
+                                       "Coil Type":  "1.1Ω Mesh Coil",
                                        "Nicotine":  "5% (50mg/mL)"
                                    },
                          "inStock":  true,
@@ -83,8 +83,8 @@
                          "brand":  "Alibarbar",
                          "name":  "Alibarbar 12000 Rechargable",
                          "category":  "vapes-single",
-                         "price":  45,
-                         "boxPrice":  360,
+                         "price":  55,
+                         "boxPrice":  400,
                          "isBoxOnly":  false,
                          "flavors":  [
                                          "Peach Mango Watermelon",
@@ -114,8 +114,8 @@
                          "brand":  "IGET",
                          "name":  "IGET Bar 3500 Puffs",
                          "category":  "vapes-single",
-                         "price":  28,
-                         "boxPrice":  220,
+                         "price":  33,
+                         "boxPrice":  260,
                          "isBoxOnly":  false,
                          "flavors":  [
                                          "Blackberry Raspberry Ice",
@@ -132,12 +132,12 @@
                                          "Lush Ice"
                                      ],
                          "image":  "img/iget_bar_3500.webp",
-                         "description":  "Australia\u0027s most popular disposable vape. The IGET Bar 3500 delivers up to 3,500 puffs from 12mL of premium 5% (50mg/mL) nicotine salt e-liquid. Powered by a 1500mAh built-in non-rechargeable battery and a 1.2Î© mesh coil for smooth, consistent draws and rich flavour from start to finish. Ergonomic, pocket-friendly design. Available as single units or cartons of 10.",
+                         "description":  "Australia\u0027s most popular disposable vape. The IGET Bar 3500 delivers up to 3,500 puffs from 12mL of premium 5% (50mg/mL) nicotine salt e-liquid. Powered by a 1500mAh built-in non-rechargeable battery and a 1.2Ω mesh coil for smooth, consistent draws and rich flavour from start to finish. Ergonomic, pocket-friendly design. Available as single units or cartons of 10.",
                          "specs":  {
                                        "Puffs":  "3,500 Puffs",
                                        "E-Liquid":  "12mL Salt Nic",
                                        "Battery":  "1500mAh (Built-in)",
-                                       "Coil Type":  "1.2Î© Mesh Coil",
+                                       "Coil Type":  "1.2Ω Mesh Coil",
                                        "Nicotine":  "5% (50mg/mL)"
                                    },
                          "inStock":  true,
@@ -148,8 +148,8 @@
                          "brand":  "IGET",
                          "name":  "IGET Legend 4000 Puffs",
                          "category":  "vapes-single",
-                         "price":  32,
-                         "boxPrice":  250,
+                         "price":  37,
+                         "boxPrice":  290,
                          "isBoxOnly":  false,
                          "flavors":  [
                                          "Lush Ice",
@@ -179,8 +179,8 @@
                          "brand":  "IGET",
                          "name":  "IGET Hot 5500 Puffs",
                          "category":  "vapes-single",
-                         "price":  36,
-                         "boxPrice":  280,
+                         "price":  42,
+                         "boxPrice":  330,
                          "isBoxOnly":  false,
                          "flavors":  [
                                          "Watermelon Ice",
@@ -193,12 +193,12 @@
                                          "Peach Berry Lemonade"
                                      ],
                          "image":  "img/iget_hot_5500.webp",
-                         "description":  "IGET\u0027s most powerful single-unit disposable. The IGET Hot 5500 delivers up to 5,500 puffs from 12mL of premium 5% (50mg/mL) nicotine salt e-liquid. Housed in a high-quality aluminium shell with a transparent visual tank, it uses a 1.4Î© ceramic-mesh coil for fast, even vapourisation with intense flavour and throat hit. Features a breathing LED indicator and integrated short-circuit, overcharge, and overheat protection.",
+                         "description":  "IGET\u0027s most powerful single-unit disposable. The IGET Hot 5500 delivers up to 5,500 puffs from 12mL of premium 5% (50mg/mL) nicotine salt e-liquid. Housed in a high-quality aluminium shell with a transparent visual tank, it uses a 1.4Ω ceramic-mesh coil for fast, even vapourisation with intense flavour and throat hit. Features a breathing LED indicator and integrated short-circuit, overcharge, and overheat protection.",
                          "specs":  {
                                        "Puffs":  "5,500 Puffs",
                                        "E-Liquid":  "12mL Salt Nic",
                                        "Battery":  "1600mAh (Built-in)",
-                                       "Coil Type":  "1.4Î© Ceramic-Mesh",
+                                       "Coil Type":  "1.4Ω Ceramic-Mesh",
                                        "Nicotine":  "5% (50mg/mL)"
                                    },
                          "inStock":  true,
@@ -209,8 +209,8 @@
                          "brand":  "Marlboro",
                          "name":  "Marlboro Gold Carton (10 Packs x 20 Cigarettes)",
                          "category":  "cigarettes",
-                         "price":  240,
-                         "boxPrice":  240,
+                         "price":  280,
+                         "boxPrice":  280,
                          "isBoxOnly":  true,
                          "flavors":  [
                                          "Standard Smooth"
@@ -232,8 +232,8 @@
                          "brand":  "Winfield",
                          "name":  "Winfield Blue Carton (10 Packs x 25 Cigarettes)",
                          "category":  "cigarettes",
-                         "price":  260,
-                         "boxPrice":  260,
+                         "price":  300,
+                         "boxPrice":  300,
                          "isBoxOnly":  true,
                          "flavors":  [
                                          "Classic Blue Blend"
@@ -255,8 +255,8 @@
                          "brand":  "JPS",
                          "name":  "JPS Blue Carton (10 Packs x 20 Cigarettes)",
                          "category":  "cigarettes",
-                         "price":  210,
-                         "boxPrice":  210,
+                         "price":  250,
+                         "boxPrice":  250,
                          "isBoxOnly":  true,
                          "flavors":  [
                                          "Smooth Blue"
@@ -278,8 +278,8 @@
                          "brand":  "Benson \u0026 Hedges",
                          "name":  "Benson \u0026 Hedges Classic Carton (10 Packs x 20 Cigarettes)",
                          "category":  "cigarettes",
-                         "price":  250,
-                         "boxPrice":  250,
+                         "price":  290,
+                         "boxPrice":  290,
                          "isBoxOnly":  true,
                          "flavors":  [
                                          "Classic Rich Tobacco"
@@ -301,8 +301,8 @@
                          "brand":  "HQD",
                          "name":  "HQD Cuvie Bar Box (10x Disposables)",
                          "category":  "vapes-boxes",
-                         "price":  200,
-                         "boxPrice":  200,
+                         "price":  230,
+                         "boxPrice":  230,
                          "isBoxOnly":  true,
                          "flavors":  [
                                          "Black Ice",
@@ -316,13 +316,13 @@
                                          "Peach Ice"
                                      ],
                          "image":  "img/hqd_cuvie_box.png",
-                         "description":  "WHOLESALE BOX â€” Our cheapest box deal. Each box contains 10 x HQD Cuvie Bar disposables. Each unit delivers up to 7,000 puffs from 18mL of 5% (50mg/mL) nicotine salt e-liquid. Features a 1.2Î© mesh coil, draw-activated firing, and a 550mAh rechargeable battery (USB Type-C) for extended use. Compact, square design with a wide range of flavours available. No singles sold.",
+                         "description":  "WHOLESALE BOX â€” Our cheapest box deal. Each box contains 10 x HQD Cuvie Bar disposables. Each unit delivers up to 7,000 puffs from 18mL of 5% (50mg/mL) nicotine salt e-liquid. Features a 1.2Ω mesh coil, draw-activated firing, and a 550mAh rechargeable battery (USB Type-C) for extended use. Compact, square design with a wide range of flavours available. No singles sold.",
                          "specs":  {
                                        "Puffs":  "~7,000 Puffs (per unit)",
                                        "Box Qty":  "10x Disposables",
                                        "E-Liquid":  "18mL per unit",
                                        "Battery":  "550mAh (Type-C Recharge)",
-                                       "Coil Type":  "1.2Î© Mesh Coil"
+                                       "Coil Type":  "1.2Ω Mesh Coil"
                                    },
                          "inStock":  true,
                          "popular":  true
@@ -332,8 +332,8 @@
                          "brand":  "Waka",
                          "name":  "Waka SoPro DM8000 Box (10x Disposables)",
                          "category":  "vapes-boxes",
-                         "price":  250,
-                         "boxPrice":  250,
+                         "price":  290,
+                         "boxPrice":  290,
                          "isBoxOnly":  true,
                          "flavors":  [
                                          "Watermelon Chill",
@@ -346,13 +346,13 @@
                                          "Passion Fruit Lychee"
                                      ],
                          "image":  "img/waka_sopro_box.png",
-                         "description":  "WHOLESALE BOX â€” Each box contains 10 x Waka SoPro DM8000 disposables. The DM8000 is a premium rechargeable device delivering up to 8,000 puffs from 14mL of 5% nicotine salt e-liquid. Powered by an 850mAh battery (USB Type-C, 80% charge in ~45 mins) with DUALMESHâ„¢ dual coil technology. Two intelligent modes: Boost Mode (both coils active for max clouds) and Regular Mode (single coil for extended lifespan). Includes a smart digital screen showing live battery \u0026 e-liquid levels, plus full overcharge and short-circuit protection.",
+                         "description":  "WHOLESALE BOX â€” Each box contains 10 x Waka SoPro DM8000 disposables. The DM8000 is a premium rechargeable device delivering up to 8,000 puffs from 14mL of 5% nicotine salt e-liquid. Powered by an 850mAh battery (USB Type-C, 80% charge in ~45 mins) with DUALMESH™ dual coil technology. Two intelligent modes: Boost Mode (both coils active for max clouds) and Regular Mode (single coil for extended lifespan). Includes a smart digital screen showing live battery \u0026 e-liquid levels, plus full overcharge and short-circuit protection.",
                          "specs":  {
                                        "Puffs":  "~8,000 Puffs (per unit)",
                                        "Box Qty":  "10x Disposables",
                                        "E-Liquid":  "14mL per unit",
                                        "Battery":  "850mAh (Type-C Recharge)",
-                                       "Coil Type":  "DUALMESHâ„¢ Dual Coil",
+                                       "Coil Type":  "DUALMESH™ Dual Coil",
                                        "Screen":  "Battery \u0026 E-Liquid Display"
                                    },
                          "inStock":  true,
@@ -363,8 +363,8 @@
                          "brand":  "JNR",
                          "name":  "JNR Falcon X 18000 Puffs",
                          "category":  "jnr",
-                         "price":  49,
-                         "boxPrice":  390,
+                         "price":  58,
+                         "boxPrice":  450,
                          "isBoxOnly":  false,
                          "flavors":  [
                                          "Blue Razz Ice",
@@ -399,8 +399,8 @@
                          "brand":  "JNR",
                          "name":  "JNR Vapro 7000 Puffs",
                          "category":  "jnr",
-                         "price":  34,
-                         "boxPrice":  260,
+                         "price":  40,
+                         "boxPrice":  300,
                          "isBoxOnly":  false,
                          "flavors":  [
                                          "Watermelon Ice",

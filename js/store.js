@@ -744,8 +744,8 @@ class StoreApp {
       }
     });
 
-    // Hardcode free shipping on all orders over $200 (updated from $250)
-    const shipping = (total >= 200 || total === 0) ? 0 : 15.00;
+    // Hardcode free shipping on all orders over $150
+    const shipping = (total >= 150 || total === 0) ? 0 : 15.00;
     total += shipping;
 
     return {
@@ -1013,6 +1013,8 @@ class StoreApp {
           ref_code: refCode,
           customer_name: name,
           customer_email: email,
+          reply_to: email,
+          bcc: "admin@vaperaus.com",
           customer_phone: phone,
           customer_address: `${addr}, ${city}, ${state} ${post}`,
           customer_notes: notes || "None",
@@ -1570,10 +1572,10 @@ class StoreApp {
       fPaymentDetails.value = `PayID: ${bank.payId || "vapesonlineaustralia@proton.me"} | Bank: ${bank.bankName} | Acc Name: ${bank.accountName} | BSB: ${bank.bsb} | Acc Num: ${bank.accountNumber}`;
       fItems.value = orderItemsText;
       fTotal.value = totalPayable;
-      fSubject.value = `🛒 Vape 'R' Aus: Order Confirmation #${orderId}`;
+      fSubject.value = `Vape 'R' Aus: Order Confirmation #${orderId}`;
 
       // Build text message for autoresponse header
-      fAuto.value = `Thank you for your order with Vape 'R' Aus!\n\nOrder ID: ${orderId}\nReference Code: ${refCode}\nTotal Payable: ${totalPayable}\n\n=========================================\nPAYMENT INSTRUCTIONS\n=========================================\n\nOption 1: PayID (Instant Verification)\n- PayID Email: ${bank.payId || "vapesonlineaustralia@proton.me"}\n\nOption 2: Bank Transfer (Standard Xfer)\n- Bank Name: ${bank.bankName}\n- Account Name: ${bank.accountName}\n- BSB: ${bank.bsb}\n- Account Number: ${bank.accountNumber}\n\n⚠️ IMPORTANT: Please use the Order Reference: ${refCode} in your transaction description to avoid delivery verification delays.\n\nOnce payment is processed, we will ship your order from Melbourne within 48 hours.\n\nBelow is a copy of your submitted details:\n`;
+      fAuto.value = `Thank you for your order with Vape 'R' Aus!\n\nOrder ID: ${orderId}\nReference Code: ${refCode}\nTotal Payable: ${totalPayable}\n\n=========================================\nPAYMENT INSTRUCTIONS\n=========================================\n\nOption 1: PayID (Instant Verification)\n- PayID Email: ${bank.payId || "vapesonlineaustralia@proton.me"}\n\nOption 2: Bank Transfer (Standard Xfer)\n- Bank Name: ${bank.bankName}\n- Account Name: ${bank.accountName}\n- BSB: ${bank.bsb}\n- Account Number: ${bank.accountNumber}\n\nIMPORTANT: Please use the Order Reference: ${refCode} in your transaction description to avoid delivery verification delays.\n\nOnce payment is processed, we will ship your order from Melbourne within 48 hours.\n\nBelow is a copy of your submitted details:\n`;
 
       // Submit form programmatically targeting the hidden iframe
       form.submit();

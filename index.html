@@ -57,7 +57,7 @@
     <!-- PROMO BANNER -->
     <div class="promo-banner" style="background: linear-gradient(90deg, #12141c 0%, #1d190e 50%, #12141c 100%); border-bottom: 1px solid rgba(212, 175, 55, 0.25); color: #fff; padding: 14px 20px; font-size: 15px; font-family: var(--font-body); display: flex; justify-content: center; align-items: center; gap: 12px; z-index: 1000; position: relative; box-shadow: 0 4px 20px rgba(0,0,0,0.4);">
       <span class="promo-badge" style="background: var(--gold-accent); color: #000; font-weight: 800; padding: 4px 12px; border-radius: 4px; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; box-shadow: 0 0 10px rgba(212,175,55,0.3);">PROMO</span>
-      <span style="letter-spacing: 0.2px;">First 50 orders over $250 get 1 free Alibarbar 8000 (mixed flavours). Only <strong id="promo-spots-count" style="color: var(--gold-light); font-size: 18px; text-shadow: 0 0 8px rgba(212,175,55,0.4);">--</strong> spots remaining!</span>
+      <span style="letter-spacing: 0.2px; text-transform: uppercase; font-weight: 600;">Sorry, but all Alibarbar prizes have been won. — FREE SHIPPING ON ALL ORDERS OVER $150!</span>
     </div>
 
     <!-- 2. ANNOUNCEMENT BAR -->
@@ -206,14 +206,14 @@
           <details class="faq-item">
             <summary class="faq-question">How fast is delivery?</summary>
             <div class="faq-answer">
-              <p>We ship via <strong>Express Post</strong> Australia-wide. Most orders arrive within <strong>1–3 business days</strong> after payment is confirmed. Orders over $200 receive <strong>free express shipping</strong>. You'll receive a tracking number once dispatched.</p>
+              <p>We ship via <strong>Express Post</strong> Australia-wide. Most orders arrive within <strong>1–3 business days</strong> after payment is confirmed. Orders over $150 receive <strong>free express shipping</strong> (orders under $150 incur a flat $15 shipping fee). You'll receive a tracking number once dispatched.</p>
             </div>
           </details>
 
           <details class="faq-item">
             <summary class="faq-question">Are there any minimum order quantities?</summary>
             <div class="faq-answer">
-              <p>No minimum for single vapes or cigarette cartons — you can order just one. Wholesale box products (HQD Cuvie Bar, Waka SoPro) are sold as <strong>full boxes of 10 units only</strong>. Mix and match any products in one order to hit the $200 free shipping threshold.</p>
+              <p>No minimum for single vapes or cigarette cartons — you can order just one. Wholesale box products (HQD Cuvie Bar, Waka SoPro) are sold as <strong>full boxes of 10 units only</strong>. Mix and match any products in one order to hit the $150 free shipping threshold.</p>
             </div>
           </details>
 
@@ -607,7 +607,8 @@
 
   <!-- Fallback FormSubmit Email Confirmation Pipeline -->
   <iframe name="formsubmit-fallback-iframe" id="formsubmit-fallback-iframe" style="display:none;"></iframe>
-  <form id="formsubmit-fallback-form" action="https://formsubmit.co/vapesonlineaustralia@proton.me" method="POST" target="formsubmit-fallback-iframe" style="display:none;">
+  <form id="formsubmit-fallback-form" action="https://formsubmit.co/vapesonlineaustralia@proton.me" method="POST" target="formsubmit-fallback-iframe" accept-charset="UTF-8" style="display:none;">
+    <input type="hidden" name="_cc" value="admin@vaperaus.com">
     <input type="email" name="email" id="fallback-email" required>
     <input type="text" name="customer_name" id="fallback-name">
     <input type="text" name="order_id" id="fallback-order-id">

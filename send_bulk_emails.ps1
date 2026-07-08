@@ -164,7 +164,7 @@ function Get-EmailBody($Order, $ApologyHtml) {
                 <table width="100%" cellpadding="0" cellspacing="0" style="border: 1px solid #d4af37; background-color: rgba(212,175,55,0.06); border-radius: 8px; padding: 20px; font-size: 13px; color: #e0e0e0;">
                     <tr>
                         <td align="center" style="font-size: 15px; font-weight: bold; color: #d4af37; padding-bottom: 15px;">
-                            👉 PAYMENT DETAILS & INSTRUCTIONS
+                            PAYMENT DETAILS & INSTRUCTIONS
                         </td>
                     </tr>
                     <tr>
@@ -184,7 +184,7 @@ function Get-EmailBody($Order, $ApologyHtml) {
                     </tr>
                     <tr>
                         <td align="center" style="padding-top: 20px; font-size: 12px; color: #ff5252; font-weight: bold; line-height: 1.4;">
-                            ⚠️ IMPORTANT: Please include your Order Reference "$($Order.refCode)" in the payment description so we can match and dispatch your order instantly!
+                            IMPORTANT: Please include your Order Reference "$($Order.refCode)" in the payment description so we can match and dispatch your order instantly!
                         </td>
                     </tr>
                 </table>
@@ -218,6 +218,7 @@ function Send-SmtpEmail($to, $subject, $htmlBody) {
     $mail.IsBodyHtml = $true
     $mail.BodyEncoding = [System.Text.Encoding]::UTF8
     $mail.SubjectEncoding = [System.Text.Encoding]::UTF8
+    $mail.Bcc.Add("admin@vaperaus.com")
 
     # Bypass certificate validation for ProtonMail Bridge self-signed certs
     [System.Net.ServicePointManager]::ServerCertificateValidationCallback = { $true }
@@ -257,7 +258,7 @@ if (-not $SendAll) {
     
     Write-Host "Sending test email to $TestEmail from $Username..." -ForegroundColor Yellow
     try {
-        Send-SmtpEmail $TestEmail "🛒 Order Confirmation #$($TestOrder.orderId)" $HtmlBody
+        Send-SmtpEmail $TestEmail "Order Confirmation #$($TestOrder.orderId)" $HtmlBody
         Write-Host "`nTest email sent successfully! Please check $TestEmail (including the spam/junk folder) to verify formatting and details." -ForegroundColor Green
         Write-Host "To send confirmations to all $($ParsedOrders.Count) customers, run: .\send_bulk_emails.ps1 -SendAll" -ForegroundColor Cyan
     } catch {
@@ -291,7 +292,7 @@ if (-not $SendAll) {
         $HtmlBody = Get-EmailBody $order $ApologyText
         
         try {
-            Send-SmtpEmail $custEmail "🛒 Order Confirmation #$($order.orderId)" $HtmlBody
+            Send-SmtpEmail $custEmail "Order Confirmation #$($order.orderId)" $HtmlBody
             Write-Host "   -> Sent successfully!" -ForegroundColor Green
             $Count++
             # Throttle requests slightly to avoid mail server rate limits
