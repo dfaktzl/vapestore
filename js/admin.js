@@ -105,7 +105,7 @@ class AdminApp {
     // Load base config first to get the Firebase URL
     try {
       let baseConfig = null;
-      const resp = await fetch("config.json");
+      const resp = await fetch("config.json?v=3");
       if (resp.ok) baseConfig = await resp.json();
       else if (window.CONFIG_DEFAULT) baseConfig = window.CONFIG_DEFAULT;
 
@@ -137,7 +137,7 @@ class AdminApp {
     // 1. Try Firebase live config
     try {
       let fbBase = null;
-      const resp = await fetch("config.json");
+      const resp = await fetch("config.json?v=3");
       if (resp.ok) {
         const staticConf = await resp.json();
         fbBase = staticConf?.settings?.orderSyncUrl?.trim();
@@ -163,7 +163,7 @@ class AdminApp {
 
     // 2. Fetch config.json from server
     try {
-      const response = await fetch("config.json");
+      const response = await fetch("config.json?v=3");
       if (response.ok) {
         this.config = await response.json();
         console.log("Admin loaded config from config.json.");
@@ -202,7 +202,7 @@ class AdminApp {
 
     // 2. Fetch guides.json from server
     try {
-      const response = await fetch("guides.json");
+      const response = await fetch("guides.json?v=3");
       if (response.ok) {
         this.guides = await response.json();
         console.log("Admin loaded guides from guides.json.");

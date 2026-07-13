@@ -148,7 +148,7 @@ class StoreApp {
     let baseConfig = null;
 
     try {
-      const response = await fetch("config.json?v=2");
+      const response = await fetch("config.json?v=3");
       if (response.ok) {
         baseConfig = await response.json();
         console.log("Loaded base configuration from config.json.");
@@ -193,7 +193,7 @@ class StoreApp {
     let baseGuides = null;
 
     try {
-      const response = await fetch("guides.json?v=2");
+      const response = await fetch("guides.json?v=3");
       if (response.ok) {
         baseGuides = await response.json();
         console.log("Loaded base guides from guides.json.");
