@@ -305,8 +305,8 @@ const CONFIG_DEFAULT = {
                          "brand":  "HQD",
                          "name":  "HQD Cuvie Bar Box (10x Disposables)",
                          "category":  "vapes-boxes",
-                         "price":  200,
-                         "boxPrice":  200,
+                         "price":  195,
+                         "boxPrice":  195,
                          "isBoxOnly":  true,
                          "flavors":  [
                                          "Black Ice",
