@@ -887,7 +887,6 @@ class StoreApp {
     });
     
     document.getElementById("checkout-content").style.display = "block";
-    document.getElementById("checkout-success").style.display = "none";
     checkout.classList.add("active");
   }
 
@@ -1078,9 +1077,25 @@ class StoreApp {
     localStorage.removeItem("crown_gold_cart");
     this.updateCartUI();
     
-    // Swap checkout view screen
-    document.getElementById("checkout-content").style.display = "none";
-    document.getElementById("checkout-success").style.display = "block";
+    // Save order details to localStorage for order-success.html
+    const latestOrder = {
+      orderId: orderId,
+      refCode: refCode,
+      total: calculations.total,
+      shippingFee: calculations.shipping,
+      items: order.items,
+      customer: {
+        name: name,
+        phone: phone,
+        address: order.customer.address,
+        notes: notes || "None"
+      },
+      bankDetails: bank
+    };
+    localStorage.setItem("latest_order", JSON.stringify(latestOrder));
+
+    // Redirect to standalone order-success page
+    window.location.href = "order-success.html";
   }
 
   async submitContactForm() {
