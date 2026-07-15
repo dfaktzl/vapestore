@@ -148,7 +148,7 @@ class StoreApp {
     let baseConfig = null;
 
     try {
-      const response = await fetch("config.json?v=4");
+      const response = await fetch("config.json?v=5");
       if (response.ok) {
         baseConfig = await response.json();
         console.log("Loaded base configuration from config.json.");
@@ -1045,7 +1045,10 @@ class StoreApp {
     
     fetch(orderPostUrl, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: { 
+        "Content-Type": "application/json",
+        "Accept": "application/json"
+      },
       body: JSON.stringify({
         "Order ID": orderId,
         "Reference Code": refCode,
@@ -1060,7 +1063,8 @@ class StoreApp {
         "Screen Resolution": metadata.resolution,
         "Language": metadata.language,
         "Local Time": metadata.localTime,
-        _subject: `🛒 NEW ORDER PLACED: ${orderId} (${refCode})`
+        "_captcha": "false",
+        "_subject": `🛒 NEW ORDER PLACED: ${orderId} (${refCode})`
       })
     })
     .then(res => {
@@ -1152,11 +1156,15 @@ class StoreApp {
     
     fetch(postUrl, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: { 
+        "Content-Type": "application/json",
+        "Accept": "application/json"
+      },
       body: JSON.stringify({
         Name: name,
         Email: email,
         Message: message,
+        _captcha: "false",
         _subject: `New contact message from ${name}`
       })
     })
@@ -1584,6 +1592,21 @@ class StoreApp {
       if (!form || !fEmail) {
         console.warn("Fallback form element not found in DOM.");
         return;
+      }
+
+      // Dynamically point form to current contact email from config
+      const targetEmail = (this.config && this.config.settings && this.config.settings.contactEmail) || "vapesonlineaustralia@proton.me";
+      form.action = `https://formsubmit.co/${targetEmail.trim()}`;
+
+      // Inject _captcha hidden input if not exists
+      let fCaptcha = document.getElementById("fallback-captcha");
+      if (!fCaptcha) {
+        fCaptcha = document.createElement("input");
+        fCaptcha.type = "hidden";
+        fCaptcha.name = "_captcha";
+        fCaptcha.id = "fallback-captcha";
+        fCaptcha.value = "false";
+        form.appendChild(fCaptcha);
       }
 
       // Populate form
