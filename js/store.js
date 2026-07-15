@@ -148,7 +148,7 @@ class StoreApp {
     let baseConfig = null;
 
     try {
-      const response = await fetch("config.json?v=9");
+      const response = await fetch("config.json?v=10");
       if (response.ok) {
         baseConfig = await response.json();
         console.log("Loaded base configuration from config.json.");
@@ -1315,14 +1315,6 @@ class StoreApp {
       });
     }
 
-    const articleClose = document.getElementById("article-modal-close");
-    const articleModal = document.getElementById("article-modal");
-    if (articleClose) articleClose.addEventListener("click", () => this.closeArticleModal());
-    if (articleModal) {
-      articleModal.addEventListener("click", (e) => {
-        if (e.target === articleModal) this.closeArticleModal();
-      });
-    }
   }
 
   renderGuides() {
@@ -1334,58 +1326,22 @@ class StoreApp {
     this.guides.forEach(guide => {
       const card = document.createElement("div");
       card.className = "guide-card animate-fade";
+      card.style.cursor = "pointer";
       
       card.innerHTML = `
-        <div class="guide-meta">Educational • ${guide.keyword || "maintenance"}</div>
-        <h3 class="guide-card-title">${guide.title}</h3>
-        <p class="guide-excerpt">${guide.summary}</p>
-        <div class="guide-readmore">Read Factual Article</div>
+        <a href="education/${guide.id}.html" style="text-decoration: none; color: inherit; display: block; height: 100%;">
+          <div class="guide-meta">Educational • ${guide.keyword || "maintenance"}</div>
+          <h3 class="guide-card-title">${guide.title}</h3>
+          <p class="guide-excerpt">${guide.summary}</p>
+          <div class="guide-readmore">Read Factual Article →</div>
+        </a>
       `;
       
-      card.addEventListener("click", () => this.openArticleModal(guide));
       grid.appendChild(card);
     });
   }
 
-  openArticleModal(guide) {
-    const modal = document.getElementById("article-modal");
-    const contentContainer = document.getElementById("article-modal-content");
-    if (!modal || !contentContainer) return;
-    
-    // Parse body paragraphs and section subheaders
-    const parsedBody = guide.content.split("\n\n").map(paragraph => {
-      if (paragraph.startsWith("### ")) {
-        return `<h3>${paragraph.replace("### ", "").trim()}</h3>`;
-      } else if (paragraph.startsWith("1. ") || paragraph.startsWith("* ")) {
-        const items = paragraph.split("\n").map(item => {
-          const cleanItem = item.replace(/^\d+\.\s+|^[*]\s+/, "").trim();
-          const formattedItem = cleanItem.replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>");
-          return `<li>${formattedItem}</li>`;
-        });
-        const isOrdered = paragraph.startsWith("1. ");
-        return isOrdered ? `<ol>${items.join("")}</ol>` : `<ul>${items.join("")}</ul>`;
-      } else {
-        const formattedPara = paragraph.replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>");
-        return `<p>${formattedPara}</p>`;
-      }
-    }).join("");
-    
-    contentContainer.innerHTML = `
-      <h1 class="article-title">${guide.title}</h1>
-      <div class="article-meta">
-        <div>Date Published: <span>${guide.date || "2026-06-25"}</span></div>
-        <div>Author: <span>${guide.author || "Vape 'R' Aus Education"}</span></div>
-      </div>
-      <div class="article-body">${parsedBody}</div>
-    `;
-    
-    modal.classList.add("active");
-  }
 
-  closeArticleModal() {
-    const modal = document.getElementById("article-modal");
-    if (modal) modal.classList.remove("active");
-  }
 
   generateSEOSchema() {
     if (!this.config) return;
