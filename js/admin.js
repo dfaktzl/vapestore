@@ -148,7 +148,7 @@ class AdminApp {
     // 1. Try Firebase live config
     try {
       let fbBase = null;
-      const resp = await fetch("config.json?v=5");
+      const resp = await fetch("config.json?v=6");
       if (resp.ok) {
         const staticConf = await resp.json();
         fbBase = staticConf?.settings?.orderSyncUrl?.trim();
@@ -174,7 +174,7 @@ class AdminApp {
 
     // 2. Fetch config.json from server
     try {
-      const response = await fetch("config.json?v=5");
+      const response = await fetch("config.json?v=6");
       if (response.ok) {
         this.config = await response.json();
         console.log("Admin loaded config from config.json.");

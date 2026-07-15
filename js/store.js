@@ -148,7 +148,7 @@ class StoreApp {
     let baseConfig = null;
 
     try {
-      const response = await fetch("config.json?v=5");
+      const response = await fetch("config.json?v=6");
       if (response.ok) {
         baseConfig = await response.json();
         console.log("Loaded base configuration from config.json.");
@@ -954,6 +954,15 @@ class StoreApp {
     ordersList.unshift(order);
     localStorage.setItem("crown_gold_orders", JSON.stringify(ordersList));
 
+    // Disable submit button during processing to prevent multiple submissions
+    const submitBtn = document.querySelector("#checkout-form button[type=submit]");
+    const originalBtnText = submitBtn ? submitBtn.innerText : "Confirm Order";
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.innerText = "Processing Order...";
+    }
+
+    let firebaseSyncPromise = Promise.resolve();
     // Optional Cloud Sync to Firebase
     if (this.config && this.config.settings && this.config.settings.orderSyncUrl) {
       let dbUrl = this.config.settings.orderSyncUrl.trim();
@@ -961,7 +970,7 @@ class StoreApp {
         if (!dbUrl.endsWith("/")) dbUrl += "/";
         const postUrl = `${dbUrl}orders.json`;
         
-        fetch(postUrl, {
+        firebaseSyncPromise = fetch(postUrl, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(order)
@@ -969,9 +978,6 @@ class StoreApp {
         .then(res => {
           if (!res.ok) throw new Error("Sync server returned error status " + res.status);
           console.log("Order successfully pushed to real-time cloud database.");
-        })
-        .catch(err => {
-          console.warn("Cloud sync failed (will remain local only):", err);
         });
       }
     }
@@ -1002,9 +1008,12 @@ class StoreApp {
     const settings = this.config.settings;
     const hasEmailJS = settings.emailjsPublicKey && settings.emailjsServiceId && settings.emailjsOrderTemplateId;
     
+    let usedFallbackForm = false;
+    let emailPromise = Promise.resolve();
+
     if (hasEmailJS && typeof emailjs !== "undefined") {
-      // Send via EmailJS (to customer, merchant receives copy via CC/BCC or separate template call if they wish)
-      emailjs.send(
+      // Send via EmailJS (to customer)
+      emailPromise = emailjs.send(
         settings.emailjsServiceId.trim(),
         settings.emailjsOrderTemplateId.trim(),
         {
@@ -1032,10 +1041,12 @@ class StoreApp {
         console.error("EmailJS Order trigger failed:", err);
         const errMsg = err.text || err.message || JSON.stringify(err);
         this.logActivity(`❌ Order confirmation email failed: ${errMsg}`);
+        usedFallbackForm = true;
         this.sendFormSubmitFallback(orderId, refCode, name, email, phone, addr, city, state, post, notes, orderItemsText, `$${calculations.total.toFixed(2)}`, bank);
       });
     } else {
       this.logActivity("Order confirmation email skipped (EmailJS keys not fully configured or SDK not loaded)");
+      usedFallbackForm = true;
       this.sendFormSubmitFallback(orderId, refCode, name, email, phone, addr, city, state, post, notes, orderItemsText, `$${calculations.total.toFixed(2)}`, bank);
     }
 
@@ -1043,7 +1054,7 @@ class StoreApp {
     const targetEmail = settings.contactEmail || "vapesonlineaustralia@proton.me";
     const orderPostUrl = `https://formsubmit.co/ajax/${targetEmail.trim()}`;
     
-    fetch(orderPostUrl, {
+    const merchantNotificationPromise = fetch(orderPostUrl, {
       method: "POST",
       headers: { 
         "Content-Type": "application/json",
@@ -1071,35 +1082,51 @@ class StoreApp {
       if (res.ok) {
         console.log("Order notification sent to merchant via FormSubmit.co.");
       }
+    });
+
+    // Wait for all critical async tasks to complete before redirecting
+    Promise.all([
+      firebaseSyncPromise.catch(err => console.warn("Firebase sync failed:", err)),
+      emailPromise.catch(err => console.warn("Customer email trigger failed:", err)),
+      merchantNotificationPromise.catch(err => console.warn("Merchant notification failed:", err))
+    ])
+    .then(async () => {
+      // If we triggered the background fallback form, wait 800ms to allow browser to dispatch the POST request
+      if (usedFallbackForm) {
+        console.log("Waiting for FormSubmit fallback iframe to dispatch...");
+        await new Promise(resolve => setTimeout(resolve, 800));
+      }
+      
+      // Clear cart
+      this.cart = [];
+      localStorage.removeItem("crown_gold_cart");
+      this.updateCartUI();
+      
+      // Save order details to localStorage for order-success.html
+      const latestOrder = {
+        orderId: orderId,
+        refCode: refCode,
+        total: calculations.total,
+        shippingFee: calculations.shipping,
+        items: order.items,
+        customer: {
+          name: name,
+          phone: phone,
+          address: order.customer.address,
+          notes: notes || "None"
+        },
+        bankDetails: bank
+      };
+      localStorage.setItem("latest_order", JSON.stringify(latestOrder));
+
+      // Redirect to standalone order-success page
+      window.location.href = "order-success.html";
     })
     .catch(err => {
-      console.warn("FormSubmit order notification failed:", err);
+      console.error("Order finalization encountered errors:", err);
+      // Fallback redirect anyway so the customer sees the instructions card
+      window.location.href = "order-success.html";
     });
-    
-    // Clear cart
-    this.cart = [];
-    localStorage.removeItem("crown_gold_cart");
-    this.updateCartUI();
-    
-    // Save order details to localStorage for order-success.html
-    const latestOrder = {
-      orderId: orderId,
-      refCode: refCode,
-      total: calculations.total,
-      shippingFee: calculations.shipping,
-      items: order.items,
-      customer: {
-        name: name,
-        phone: phone,
-        address: order.customer.address,
-        notes: notes || "None"
-      },
-      bankDetails: bank
-    };
-    localStorage.setItem("latest_order", JSON.stringify(latestOrder));
-
-    // Redirect to standalone order-success page
-    window.location.href = "order-success.html";
   }
 
   async submitContactForm() {
