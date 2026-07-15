@@ -21,6 +21,17 @@ const localStorage = (() => {
   }
 })();
 
+// HTML escaping helper to prevent DOM XSS
+function escapeHTML(str) {
+  if (str === null || str === undefined) return "";
+  return String(str)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   window.adminApp = new AdminApp();
 });
@@ -137,7 +148,7 @@ class AdminApp {
     // 1. Try Firebase live config
     try {
       let fbBase = null;
-      const resp = await fetch("config.json?v=3");
+      const resp = await fetch("config.json?v=4");
       if (resp.ok) {
         const staticConf = await resp.json();
         fbBase = staticConf?.settings?.orderSyncUrl?.trim();
@@ -163,7 +174,7 @@ class AdminApp {
 
     // 2. Fetch config.json from server
     try {
-      const response = await fetch("config.json?v=3");
+      const response = await fetch("config.json?v=4");
       if (response.ok) {
         this.config = await response.json();
         console.log("Admin loaded config from config.json.");
@@ -695,9 +706,12 @@ class AdminApp {
 
       let metaHTML = "";
       if (order.metadata && order.metadata.userAgent) {
+        const escapedUA = escapeHTML(order.metadata.userAgent.slice(0, 75));
+        const escapedRes = escapeHTML(order.metadata.resolution || "N/A");
+        const escapedLang = escapeHTML(order.metadata.language || "N/A");
         metaHTML = `
           <p style="margin-top: 15px; padding-top: 10px; border-top: 1px dashed rgba(255,255,255,0.05); font-size:11px; color:var(--text-muted);">
-            <strong>Client System Log:</strong> UA: ${order.metadata.userAgent.slice(0, 75)}... | Res: ${order.metadata.resolution || "N/A"} | Lang: ${order.metadata.language || "N/A"}
+            <strong>Client System Log:</strong> UA: ${escapedUA}... | Res: ${escapedRes} | Lang: ${escapedLang}
           </p>
         `;
       }
@@ -716,22 +730,22 @@ class AdminApp {
       card.innerHTML = `
         <div class="order-card-header" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
           <div class="order-id-block">
-            <span class="order-id">Order ID: ${order.orderId || "N/A"}</span>
+            <span class="order-id">Order ID: ${escapeHTML(order.orderId) || "N/A"}</span>
             <span class="order-date">Date: ${formattedDate}</span>
           </div>
           <div style="display:flex; align-items:center; gap:10px;">
-            <span class="order-ref" style="font-size:12px; margin-right:5px;">Ref: <strong>${order.refCode || "N/A"}</strong></span>
+            <span class="order-ref" style="font-size:12px; margin-right:5px;">Ref: <strong>${escapeHTML(order.refCode) || "N/A"}</strong></span>
             ${statusSelectHTML}
             <button class="btn-icon delete-order-btn" title="Delete Order" data-order-id="${order.orderId}" style="background:none; border:none; cursor:pointer; font-size:16px;">🗑️</button>
           </div>
         </div>
         <div class="order-grid">
           <div class="order-customer-details">
-            <p><strong>Customer Name:</strong> ${cust.name || "N/A"}</p>
-            <p><strong>Phone Number:</strong> ${cust.phone || "N/A"}</p>
-            <p><strong>Email Address:</strong> ${cust.email || "N/A"}</p>
-            <p><strong>Shipping Address:</strong> ${cust.address || "N/A"}</p>
-            <p><strong>Delivery Notes:</strong> <span style="font-style:italic; color:var(--text-muted);">${cust.notes || "None"}</span></p>
+            <p><strong>Customer Name:</strong> ${escapeHTML(cust.name) || "N/A"}</p>
+            <p><strong>Phone Number:</strong> ${escapeHTML(cust.phone) || "N/A"}</p>
+            <p><strong>Email Address:</strong> ${escapeHTML(cust.email) || "N/A"}</p>
+            <p><strong>Shipping Address:</strong> ${escapeHTML(cust.address) || "N/A"}</p>
+            <p><strong>Delivery Notes:</strong> <span style="font-style:italic; color:var(--text-muted);">${escapeHTML(cust.notes) || "None"}</span></p>
             ${metaHTML}
           </div>
           <div>
@@ -927,11 +941,11 @@ class AdminApp {
 
       tr.innerHTML = `
         <td style="padding:12px 15px; font-size:13px; color:var(--text-secondary);">${dateStr}</td>
-        <td style="padding:12px 15px; font-size:13px; font-family:monospace; color:var(--text-primary); font-weight:600;">${visitor.ip || "Unknown"}</td>
-        <td style="padding:12px 15px; font-size:13px; color:#fff;">📍 ${location}</td>
-        <td style="padding:12px 15px; font-size:12px; color:var(--text-secondary); max-width:140px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="${visitor.isp || ""}">📶 ${visitor.isp || "Unknown"}</td>
-        <td style="padding:12px 15px; font-size:12px; color:var(--text-secondary); max-width:140px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="${visitor.userAgent || ""}">🖥️ [${visitor.device || "Desktop"}]</td>
-        <td style="padding:12px 15px; font-size:12px; color:var(--text-secondary); max-width:140px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="${visitor.referrer || ""}">🔗 ${visitor.referrer || "Direct"}</td>
+        <td style="padding:12px 15px; font-size:13px; font-family:monospace; color:var(--text-primary); font-weight:600;">${escapeHTML(visitor.ip) || "Unknown"}</td>
+        <td style="padding:12px 15px; font-size:13px; color:#fff;">📍 ${escapeHTML(location)}</td>
+        <td style="padding:12px 15px; font-size:12px; color:var(--text-secondary); max-width:140px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="${escapeHTML(visitor.isp) || ""}">${escapeHTML(visitor.isp) || "Unknown"}</td>
+        <td style="padding:12px 15px; font-size:12px; color:var(--text-secondary); max-width:140px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="${escapeHTML(visitor.userAgent) || ""}">🖥️ [${escapeHTML(visitor.device) || "Desktop"}]</td>
+        <td style="padding:12px 15px; font-size:12px; color:var(--text-secondary); max-width:140px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="${escapeHTML(visitor.referrer) || ""}">🔗 ${escapeHTML(visitor.referrer) || "Direct"}</td>
         <td style="padding:12px 15px; text-align:center;">
           <button class="btn-primary btn-view-journey" data-id="${visitor.visitId}" style="font-size:10px; padding:4px 8px; margin:0; min-height:auto; height:24px; line-height:22px; width:auto; border-radius:4px; font-weight:700;">
             Flow (${activityCount})
@@ -954,13 +968,13 @@ class AdminApp {
     if (!modal || !metaContainer || !timelineContainer) return;
 
     metaContainer.innerHTML = `
-      <div><strong>IP:</strong> ${visitor.ip || "Unknown"}</div>
-      <div><strong>ISP:</strong> ${visitor.isp || "Unknown"}</div>
-      <div><strong>Location:</strong> ${visitor.city || ""}, ${visitor.region || ""}, ${visitor.country || ""}</div>
-      <div><strong>Referrer:</strong> ${visitor.referrer || "Direct"}</div>
-      <div><strong>Landing:</strong> ${visitor.landingPage || "/"}</div>
-      <div><strong>Screen Size:</strong> ${visitor.screen || "Unknown"}</div>
-      <div style="grid-column: span 2; word-break: break-all;"><strong>User Agent:</strong> ${visitor.userAgent || "Unknown"}</div>
+      <div><strong>IP:</strong> ${escapeHTML(visitor.ip) || "Unknown"}</div>
+      <div><strong>ISP:</strong> ${escapeHTML(visitor.isp) || "Unknown"}</div>
+      <div><strong>Location:</strong> ${escapeHTML(visitor.city) || ""}, ${escapeHTML(visitor.region) || ""}, ${escapeHTML(visitor.country) || ""}</div>
+      <div><strong>Referrer:</strong> ${escapeHTML(visitor.referrer) || "Direct"}</div>
+      <div><strong>Landing:</strong> ${escapeHTML(visitor.landingPage) || "/"}</div>
+      <div><strong>Screen Size:</strong> ${escapeHTML(visitor.screen) || "Unknown"}</div>
+      <div style="grid-column: span 2; word-break: break-all;"><strong>User Agent:</strong> ${escapeHTML(visitor.userAgent) || "Unknown"}</div>
     `;
 
     timelineContainer.innerHTML = "";
@@ -995,7 +1009,7 @@ class AdminApp {
         li.innerHTML = `
           <div style="position:absolute; left:-25px; top:5px; width:10px; height:10px; border-radius:50%; background:var(--gold-accent); box-shadow:0 0 5px var(--gold-accent);"></div>
           <span style="font-size:10px; color:var(--text-muted); font-family:monospace; margin-right:8px;">[${timeStr}]</span>
-          <strong>${act.action || ""}</strong>
+          <strong>${escapeHTML(act.action) || ""}</strong>
         `;
         timelineContainer.appendChild(li);
       });

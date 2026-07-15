@@ -92,6 +92,18 @@ $refCode = $selectedOrder.refCode
 
 Write-Host "`nSelected Order: $orderId for $custName ($custEmail)" -ForegroundColor Green
 
+# Escape HTML helper function for safety
+function Escape-Html($str) {
+    if ($null -eq $str) { return "" }
+    return [string]$str -replace '&', '&amp;' -replace '<', '&lt;' -replace '>', '&gt;' -replace '"', '&quot;' -replace "'", '&#39;'
+}
+
+# Apply HTML escaping for email safety
+$custName = Escape-Html $custName
+$custEmail = Escape-Html $custEmail
+$orderId = Escape-Html $orderId
+$refCode = Escape-Html $refCode
+
 # ------------------ GENERATE HTML EMAIL BODY ------------------
 $bankPayId = "vapesonlineaustralia@proton.me"
 $bankName = "NAB (National Australia Bank)"
@@ -108,7 +120,7 @@ foreach ($item in $selectedOrder.items) {
     $subtotal += $itemTotal
     $flavorText = if ($item.flavor) { " ($($item.flavor))" } else { "" }
     $formatText = if ($item.format) { " [$($item.format)]" } else { "" }
-    $desc = "$($item.name)$flavorText$formatText"
+    $desc = Escape-Html "$($item.name)$flavorText$formatText"
     
     $itemsRows += @"
         <tr>
