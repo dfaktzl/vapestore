@@ -148,7 +148,7 @@ class AdminApp {
     // 1. Try Firebase live config
     try {
       let fbBase = null;
-      const resp = await fetch("config.json?v=7");
+      const resp = await fetch("config.json?v=8");
       if (resp.ok) {
         const staticConf = await resp.json();
         fbBase = staticConf?.settings?.orderSyncUrl?.trim();
@@ -174,7 +174,7 @@ class AdminApp {
 
     // 2. Fetch config.json from server
     try {
-      const response = await fetch("config.json?v=7");
+      const response = await fetch("config.json?v=8");
       if (response.ok) {
         this.config = await response.json();
         console.log("Admin loaded config from config.json.");
@@ -1334,37 +1334,8 @@ Vape 'R' Aus Team`;
           );
           console.log("Test order confirmation sent via EmailJS.");
         } catch (emailErr) {
-          console.warn("EmailJS test send failed, will trigger FormSubmit fallback:", emailErr);
-          emailJSFailed = true;
+          console.warn("EmailJS test send failed:", emailErr);
         }
-      } else {
-        emailJSFailed = true;
-      }
-
-      // If EmailJS skipped/failed, trigger FormSubmit Fallback
-      if (emailJSFailed) {
-        const fallbackUrl = `https://formsubmit.co/ajax/${email}`;
-        await fetch(fallbackUrl, {
-          method: "POST",
-          headers: { 
-            "Content-Type": "application/json",
-            "Accept": "application/json"
-          },
-          body: JSON.stringify({
-            order_id: orderId,
-            ref_code: refCode,
-            customer_name: name,
-            customer_email: email,
-            customer_phone: phone,
-            customer_address: address,
-            customer_notes: notes,
-            order_items: orderItemsText,
-            total_price: `$${total.toFixed(2)}`,
-            _captcha: "false",
-            _subject: `Vape 'R' Aus: Test Order Confirmation #${orderId} (Fallback)`
-          })
-        });
-        console.log("Test order fallback sent via FormSubmit.");
       }
 
       // Merchant FormSubmit notification
