@@ -126,9 +126,9 @@ $htmlBody = @"
         <!-- Apology & Intro -->
         <tr>
             <td style="padding: 30px 25px; line-height: 1.6; font-size: 14px; color: #e0e0e0;">
-                Hello <strong>$custName</strong>,<br><br>
-                We have received your order with Vape 'R' Aus. Since automatic email receipts sometimes get delayed or blocked by spam filters, we are manually sending this confirmation to ensure you have your payment instructions and reference code.<br><br>
-                To secure your products and dispatch your order immediately, please process payment via PayID or bank transfer using the instructions below. Once payment is received, your order will be shipped from Melbourne within 48 hours.
+                G'day <strong>$custName</strong>,<br><br>
+                We're so glad you chose Vape 'R' Aus &mdash; thank you for your order! Since automatic email receipts can sometimes be delayed or blocked by spam filters, we're personally sending this confirmation so you have everything you need to complete your payment and get your order on the way.<br><br>
+                Please process payment via PayID or bank transfer using the instructions below. Once payment is received, we'll have your order packed and shipped from Melbourne within 48 hours.
             </td>
         </tr>
 
@@ -196,17 +196,22 @@ $htmlBody = @"
                     </tr>
                     <tr>
                         <td style="padding-bottom: 15px; border-bottom: 1px dashed rgba(212,175,55,0.2);">
-                            <strong style="color: #fff; display: block; margin-bottom: 5px; font-size: 14px;">Option 1: PayID (Instant Transfer)</strong>
-                            • PayID Email: <strong style="color: #d4af37; font-family: monospace;">$bankPayId</strong>
+                            <strong style="color: #fff; display: block; margin-bottom: 5px; font-size: 14px;">Option 1: PayID (Instant Verification)</strong>
+                            &bull; PayID Email: <strong style="color: #d4af37; font-family: monospace;">$bankPayId</strong>
                         </td>
                     </tr>
                     <tr>
-                        <td style="padding-top: 15px;">
-                            <strong style="color: #fff; display: block; margin-bottom: 5px; font-size: 14px;">Option 2: Bank Transfer (Standard Xfer)</strong>
-                            • Account Name: <strong>$bankAccountName</strong><br>
-                            • BSB: <strong>$bankBsb</strong><br>
-                            • Account Number: <strong>$bankAccountNumber</strong><br>
-                            • Bank Name: <strong>$bankName</strong>
+                        <td style="padding-top: 15px; padding-bottom: 15px; border-bottom: 1px dashed rgba(212,175,55,0.2);">
+                            <strong style="color: #fff; display: block; margin-bottom: 5px; font-size: 14px;">Option 2: Bank Transfer (Standard Transfer)</strong>
+                            &bull; Bank Name: <strong>$bankName</strong><br>
+                            &bull; Account Name: <strong>$bankAccountName</strong><br>
+                            &bull; BSB: <strong>$bankBsb</strong><br>
+                            &bull; Account Number: <strong>$bankAccountNumber</strong>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding-top: 15px; font-size: 13px; color: #cccccc; line-height: 1.6;">
+                            We apologise &mdash; due to regulation and other legal requirements, we are unable to accept Visa/Mastercard/Amex payments at this time. We'll be sure to let you know if that changes in the future!
                         </td>
                     </tr>
                     <tr>
@@ -220,9 +225,10 @@ $htmlBody = @"
 
         <!-- Footer -->
         <tr>
-            <td align="center" style="padding: 20px; background-color: #0c0d12; border-bottom-left-radius: 11px; border-bottom-right-radius: 11px; font-size: 11px; color: #666; border-top: 1px solid rgba(255,255,255,0.05);">
-                Thank you for choosing Vape 'R' Aus.<br>
-                For support, reply to this email or contact us at $contactEmail.
+            <td align="center" style="padding: 20px; background-color: #0c0d12; border-bottom-left-radius: 11px; border-bottom-right-radius: 11px; font-size: 13px; color: #aaaaaa; border-top: 1px solid rgba(255,255,255,0.05); line-height: 1.8;">
+                Thank you so much for supporting Vape 'R' Aus &mdash; we truly appreciate it!<br>
+                For any questions, feel free to reply to this email or reach us at $contactEmail.<br><br>
+                <strong style="color: #d4af37;">Warm Regards,<br>Vape 'R' Aus Team</strong>
             </td>
         </tr>
     </table>
@@ -272,7 +278,7 @@ $subject = "Order Confirmation & Payment Instructions - #$orderId"
 
 # Execute compose process
 try {
-    Start-Process $tbExe -ArgumentList "-compose `"to='$custEmail',subject='$subject',bcc='admin@vaperaus.com',message='$tempHtmlPath',format=1`""
+    Start-Process $tbExe -ArgumentList "-compose `"to='$custEmail',subject='$subject',message='$tempHtmlPath',format=1`""
     Write-Host "`nSuccess! Thunderbird compose window has been opened with your pre-written rich email." -ForegroundColor Green
     Write-Host "You can make final edits and click 'Send' inside Thunderbird." -ForegroundColor Cyan
 } catch {
