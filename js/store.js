@@ -1118,20 +1118,27 @@ class StoreApp {
     const hasEmailJS = settings.emailjsPublicKey && settings.emailjsServiceId && settings.emailjsContactTemplateId;
     
     if (hasEmailJS && typeof emailjs !== "undefined") {
+      const emailPromise = emailjs.send(
+        settings.emailjsServiceId.trim(),
+        settings.emailjsContactTemplateId.trim(),
+        {
+          from_name: name,
+          reply_to: email,
+          message: message,
+          to_email: settings.contactEmail || "vapesonlineaustralia@proton.me"
+        }
+      );
+
+      // Create a 4-second timeout to prevent form submission from freezing
+      const timeoutPromise = new Promise((_, reject) => 
+        setTimeout(() => reject(new Error("EmailJS contact request timed out")), 4000)
+      );
+
       try {
-        await emailjs.send(
-          settings.emailjsServiceId.trim(),
-          settings.emailjsContactTemplateId.trim(),
-          {
-            from_name: name,
-            reply_to: email,
-            message: message,
-            to_email: settings.contactEmail || "vapesonlineaustralia@proton.me"
-          }
-        );
+        await Promise.race([emailPromise, timeoutPromise]);
         this.showContactSuccess();
       } catch (err) {
-        console.error("EmailJS Contact Send failed, falling back to FormSubmit:", err);
+        console.warn("EmailJS Contact Send failed or timed out, falling back to FormSubmit:", err);
         this.sendContactFormSubmit(name, email, message);
       }
     } else {
