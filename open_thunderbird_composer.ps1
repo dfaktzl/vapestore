@@ -10,37 +10,53 @@
 Write-Host "Fetching orders from Firebase Realtime Database..." -ForegroundColor Yellow
 $DbUrl = "https://vapes-99ad2-default-rtdb.asia-southeast1.firebasedatabase.app/orders.json"
 try {
-    $ordersData = Invoke-RestMethod -Uri $DbUrl -TimeoutSec 10
+    $ordersData = Invoke-RestMethod -Uri $DbUrl -TimeoutSec 15
+    Write-Host "Firebase fetch OK." -ForegroundColor Green
 } catch {
-    Write-Error "Failed to fetch orders from database: $_"
+    Write-Host ""
+    Write-Host "[ERROR] Failed to fetch orders from Firebase database." -ForegroundColor Red
+    Write-Host "URL tried: $DbUrl" -ForegroundColor Yellow
+    Write-Host "Error detail: $_" -ForegroundColor Red
+    Write-Host ""
+    Read-Host "Press Enter to close"
     exit
 }
 
 if ($null -eq $ordersData) {
-    Write-Error "No orders found in the database."
+    Write-Host "[ERROR] Firebase returned empty data. Check your database URL and rules." -ForegroundColor Red
+    Read-Host "Press Enter to close"
     exit
 }
 
 # Parse and sort orders descending by date
 $ordersList = @()
-foreach ($key in $ordersData.Keys) {
-    $item = $ordersData[$key]
-    if ($null -ne $item.orderId) {
-        $ordersList += $item
+if ($ordersData -is [System.Array]) {
+    foreach ($item in $ordersData) {
+        if ($null -ne $item -and $null -ne $item.orderId) {
+            $ordersList += $item
+        }
+    }
+} else {
+    foreach ($prop in $ordersData.psobject.properties) {
+        $item = $prop.value
+        if ($null -ne $item -and $null -ne $item.orderId) {
+            $ordersList += $item
+        }
     }
 }
 
 $ordersList = $ordersList | Sort-Object { [datetime]$_.date } -Descending
 
 if ($ordersList.Count -eq 0) {
-    Write-Error "No valid orders found."
+    Write-Host "[ERROR] No valid orders found in the database (orders may be empty or in unexpected format)." -ForegroundColor Red
+    Read-Host "Press Enter to close"
     exit
 }
 
 # Display recent orders menu
-Write-Host "`n==================================================================" -ForegroundColor Gold
-Write-Host "                SELECT AN ORDER TO COMPOSE EMAIL" -ForegroundColor Gold
-Write-Host "==================================================================" -ForegroundColor Gold
+Write-Host "`n==================================================================" -ForegroundColor Yellow
+Write-Host "                SELECT AN ORDER TO COMPOSE EMAIL" -ForegroundColor Yellow
+Write-Host "==================================================================" -ForegroundColor Yellow
 Write-Host ("{0,-5} {1,-15} {2,-20} {3,-12} {4,-10}" -f "Index", "Order ID", "Customer Name", "Total Price", "Ref Code") -ForegroundColor Cyan
 Write-Host ("{0,-5} {1,-15} {2,-20} {3,-12} {4,-10}" -f "-----", "--------", "-------------", "-----------", "--------") -ForegroundColor Cyan
 
@@ -63,7 +79,8 @@ if ($selection -eq 'q' -or [string]::IsNullOrEmpty($selection)) {
 
 $index = [int]$selection - 1
 if ($index -lt 0 -or $index -ge $limit) {
-    Write-Error "Invalid selection."
+    Write-Host "[ERROR] Invalid selection. Please run the script again and enter a number between 1 and $limit." -ForegroundColor Red
+    Read-Host "Press Enter to close"
     exit
 }
 
