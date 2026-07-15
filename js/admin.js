@@ -969,9 +969,9 @@ class AdminApp {
     let activities = [];
     if (visitor.activity) {
       if (Array.isArray(visitor.activity)) {
-        activities = visitor.activity;
+        activities = visitor.activity.filter(a => a !== null && a !== undefined);
       } else {
-        activities = Object.values(visitor.activity);
+        activities = Object.values(visitor.activity).filter(a => a !== null && a !== undefined);
       }
     }
 
