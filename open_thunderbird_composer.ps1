@@ -169,11 +169,11 @@ $htmlBody = @"
                     </tbody>
                     <tfoot>
                         <tr>
-                            <td colspan="2" style="padding: 10px; color: #888;">Subtotal</td>
+                            <td colspan="2" style="padding: 10px; color: #888;"><strong style="color: #cccccc;">Subtotal</strong></td>
                             <td align="right" style="padding: 10px; color: #fff; font-weight: bold;">$($subtotal.ToString("C"))</td>
                         </tr>
                         <tr>
-                            <td colspan="2" style="padding: 5px 10px; color: #888;">Shipping Fee</td>
+                            <td colspan="2" style="padding: 5px 10px; color: #888;"><strong style="color: #cccccc;">Shipping Fee</strong></td>
                             <td align="right" style="padding: 5px 10px; color: #fff; font-weight: bold;">$(if ($shippingFee -eq 0.0) { "Free Express" } else { $shippingFee.ToString("C") })</td>
                         </tr>
                         <tr>
@@ -216,7 +216,7 @@ $htmlBody = @"
                     </tr>
                     <tr>
                         <td align="center" style="padding-top: 20px; font-size: 12px; color: #ff5252; font-weight: bold; line-height: 1.4;">
-                            IMPORTANT: Please include your Order Reference "$refCode" in the payment description so we can match and dispatch your order instantly!
+                            <strong>IMPORTANT:</strong> Please include your Order Reference "$refCode" in the payment description so we can match and dispatch your order instantly!
                         </td>
                     </tr>
                 </table>
@@ -226,7 +226,7 @@ $htmlBody = @"
         <!-- Footer -->
         <tr>
             <td align="center" style="padding: 20px; background-color: #0c0d12; border-bottom-left-radius: 11px; border-bottom-right-radius: 11px; font-size: 13px; color: #aaaaaa; border-top: 1px solid rgba(255,255,255,0.05); line-height: 1.8;">
-                Thank you so much for supporting Vape 'R' Aus &mdash; we truly appreciate it!<br>
+                <strong>Thank you so much for supporting Vape 'R' Aus &mdash; we truly appreciate it!</strong><br>
                 For any questions, feel free to reply to this email or reach us at $contactEmail.<br><br>
                 <strong style="color: #d4af37;">Warm Regards,<br>Vape 'R' Aus Team</strong>
             </td>
