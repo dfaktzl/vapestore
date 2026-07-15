@@ -1031,18 +1031,18 @@ class AdminApp {
     const orderTotal = parseFloat(order.total || 0);
     const shippingFee = orderTotal >= 150 ? 0 : 15;
 
-    const bodyText = `Hello ${order.customer.name},
+    const bodyText = `G'day ${order.customer.name},
 
-We have received your order with Vape 'R' Aus. Since automatic email receipts sometimes get delayed or blocked by spam filters, we are manually sending this confirmation to ensure you have your payment instructions and reference code.
+We're so glad you chose Vape 'R' Aus — thank you for your order! Since automatic email receipts can sometimes be delayed or blocked by spam filters, we're personally sending this confirmation so you have everything you need to complete your payment and get your order on the way.
 
-=========================================
+- - - - - - - - - - - - - - - - - - - - - - - - - - - -
 PAYMENT INSTRUCTIONS
-=========================================
+- - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 Option 1: PayID (Instant Verification)
-- PayID Email: ${bank.payId}
+PayID Email: ${bank.payId}
 
-Option 2: Bank Transfer (Standard Xfer)
+Option 2: Bank Transfer (Standard Transfer)
 - Bank Name: ${bank.bankName}
 - Account Name: ${bank.accountName}
 - BSB: ${bank.bsb}
@@ -1050,11 +1050,12 @@ Option 2: Bank Transfer (Standard Xfer)
 
 IMPORTANT: Please use the Order Reference: ${order.refCode} in your transaction description to avoid delivery verification delays.
 
-Once payment is processed, we will ship your order from Melbourne within 48 hours.
+We apologise — due to regulation and other legal requirements, we are unable to accept Visa/Mastercard/Amex payments at this time. We'll be sure to let you know if that changes in the future! Once payment is processed, we'll have your order packed and shipped from Melbourne within 48 hours.
 
-=========================================
+- - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ORDER SUMMARY
-=========================================
+- - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 Order ID: #${order.orderId}
 Reference Code: ${order.refCode}
 
@@ -1064,11 +1065,14 @@ Subtotal: $${subtotal.toFixed(2)}
 Shipping: ${shippingFee === 0 ? "Free Express" : `$${shippingFee.toFixed(2)}`}
 Total Payable: $${orderTotal.toFixed(2)}
 
-Thank you for choosing Vape 'R' Aus.
-For support, reply to this email or contact us at ${this.config.settings.contactEmail || "vapesonlineaustralia@proton.me"}.`;
+Thank you so much for supporting Vape 'R' Aus — we truly appreciate it!
+For any questions, feel free to reply to this email or reach us at ${this.config.settings.contactEmail || "vapesonlineaustralia@proton.me"}.
 
-    const subject = `Order Confirmation & Payment Instructions #${order.orderId}`;
-    const mailtoUrl = `mailto:${order.customer.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(bodyText)}&bcc=admin@vaperaus.com`;
+Warm Regards,
+Vape 'R' Aus Team`;
+
+    const subject = `Order Confirmation & Payment Instructions — #${order.orderId}`;
+    const mailtoUrl = `mailto:${order.customer.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(bodyText)}`;
     
     // Open in user's default email client (Thunderbird)
     window.location.href = mailtoUrl;

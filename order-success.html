@@ -56,75 +56,79 @@
       box-shadow: 0 0 20px rgba(46, 196, 182, 0.2);
     }
 
-    .copy-grid {
+    .pay-detail-row {
       display: flex;
-      flex-direction: column;
+      justify-content: space-between;
+      align-items: baseline;
       gap: 12px;
-      margin-top: 15px;
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
     }
 
-    .copy-row {
-      display: grid;
-      grid-template-columns: 1.5fr 3fr auto;
-      align-items: center;
-      gap: 15px;
-      padding: 12px 16px;
-      background: rgba(255, 255, 255, 0.02);
-      border: 1px solid rgba(255, 255, 255, 0.05);
-      border-radius: 8px;
-      transition: all 0.25s ease;
+    .pay-detail-row:last-child {
+      border-bottom: none;
     }
 
-    .copy-row:hover {
-      background: rgba(212, 175, 55, 0.02);
-      border-color: rgba(212, 175, 55, 0.15);
-    }
-
-    .copy-label {
-      font-size: 13px;
-      color: var(--text-secondary);
-      font-weight: 500;
+    .pay-label {
+      font-size: 12px;
+      color: var(--text-muted);
       text-transform: uppercase;
       letter-spacing: 0.5px;
+      font-weight: 500;
+      white-space: nowrap;
+      flex-shrink: 0;
     }
 
-    .copy-value {
-      font-size: 15px;
+    .pay-value {
+      font-size: 14px;
       color: var(--text-primary);
       font-weight: 600;
+      text-align: right;
       word-break: break-all;
     }
 
-    .copy-value.highlight-gold {
+    .pay-value.gold {
       color: var(--gold-accent);
+      font-size: 16px;
       font-family: var(--font-title);
-      font-size: 18px;
     }
 
-    .btn-copy {
-      background: rgba(212, 175, 55, 0.1);
-      border: 1px solid rgba(212, 175, 55, 0.3);
-      color: var(--gold-light);
-      padding: 6px 12px;
-      font-size: 12px;
+    .pay-section-title {
+      font-size: 11px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 1px;
       font-weight: 600;
-      border-radius: 4px;
+      margin: 16px 0 6px 0;
+      padding-bottom: 4px;
+      border-bottom: 1px dashed rgba(255,255,255,0.08);
+    }
+
+    .btn-copy-all {
+      display: block;
+      width: 100%;
+      margin-top: 20px;
+      padding: 14px;
+      background: linear-gradient(135deg, rgba(212,175,55,0.15) 0%, rgba(212,175,55,0.05) 100%);
+      border: 1px solid rgba(212,175,55,0.4);
+      color: var(--gold-light);
+      font-size: 15px;
+      font-weight: 700;
+      border-radius: 8px;
       cursor: pointer;
       transition: all 0.2s ease;
-      min-width: 80px;
-      text-align: center;
       text-transform: uppercase;
-      letter-spacing: 0.5px;
+      letter-spacing: 1px;
     }
 
-    .btn-copy:hover {
+    .btn-copy-all:hover {
       background: var(--gold-accent);
       color: #000;
       border-color: var(--gold-accent);
-      box-shadow: 0 0 10px rgba(212, 175, 55, 0.2);
+      box-shadow: 0 0 16px rgba(212, 175, 55, 0.25);
     }
 
-    .btn-copy.copied {
+    .btn-copy-all.copied {
       background: #2ec4b6 !important;
       color: #fff !important;
       border-color: #2ec4b6 !important;
@@ -179,14 +183,12 @@
       .details-grid {
         grid-template-columns: 1fr;
       }
-      .copy-row {
-        grid-template-columns: 1fr;
-        gap: 8px;
-        text-align: center;
+      .pay-detail-row {
+        flex-direction: column;
+        gap: 2px;
       }
-      .btn-copy {
-        width: 100%;
-        margin-top: 5px;
+      .pay-value {
+        text-align: left;
       }
     }
 
@@ -264,63 +266,61 @@
         </p>
       </div>
 
-      <!-- 2. Payment details card with copy buttons -->
+      <!-- 2. Payment details card -->
       <div class="glass-card" style="padding:25px; margin-bottom:25px; border-color:rgba(212,175,55,0.25);">
-        <h2 class="text-gold" style="font-size:18px; margin-bottom:15px; text-transform:uppercase; letter-spacing:1px; text-align:center; font-family:var(--font-title); font-weight:700;">Payment Instructions</h2>
-        
-        <div class="copy-grid">
-          
-          <div class="copy-row">
-            <span class="copy-label">Total Payable</span>
-            <span class="copy-value highlight-gold" id="val-total">$0.00</span>
-            <button class="btn-copy" onclick="copyField('val-total', this)">Copy</button>
+        <h2 class="text-gold" style="font-size:18px; margin-bottom:4px; text-transform:uppercase; letter-spacing:1px; text-align:center; font-family:var(--font-title); font-weight:700;">Payment Instructions</h2>
+        <p style="text-align:center; font-size:12px; color:var(--text-muted); margin:0 0 16px 0;">Please complete payment using one of the options below to confirm your order.</p>
+
+        <!-- Amount & Reference -->
+        <div style="background:rgba(212,175,55,0.06); border:1px solid rgba(212,175,55,0.2); border-radius:8px; padding:14px 16px; margin-bottom:16px;">
+          <div class="pay-detail-row">
+            <span class="pay-label">Total Payable</span>
+            <span class="pay-value gold" id="val-total">$0.00</span>
           </div>
-
-          <div class="copy-row">
-            <span class="copy-label">Order Reference</span>
-            <span class="copy-value highlight-gold" id="val-ref">REF-XXXX</span>
-            <button class="btn-copy" onclick="copyField('val-ref', this)">Copy</button>
+          <div class="pay-detail-row">
+            <span class="pay-label">Order Reference</span>
+            <span class="pay-value gold" id="val-ref">REF-XXXX</span>
           </div>
-
-          <div style="margin: 10px 0; border-bottom: 1px dashed rgba(255,255,255,0.08);"></div>
-
-          <div class="copy-row">
-            <span class="copy-label">Option 1: PayID</span>
-            <span class="copy-value" id="val-payid">vapesonlineaustralia@proton.me</span>
-            <button class="btn-copy" onclick="copyField('val-payid', this)">Copy</button>
-          </div>
-
-          <div style="margin: 10px 0; border-bottom: 1px dashed rgba(255,255,255,0.08);"></div>
-
-          <div class="copy-row">
-            <span class="copy-label">Option 2: BSB</span>
-            <span class="copy-value" id="val-bsb">086-724</span>
-            <button class="btn-copy" onclick="copyField('val-bsb', this)">Copy</button>
-          </div>
-
-          <div class="copy-row">
-            <span class="copy-label">Account Number</span>
-            <span class="copy-value" id="val-accnum">91-591-6658</span>
-            <button class="btn-copy" onclick="copyField('val-accnum', this)">Copy</button>
-          </div>
-
-          <div class="copy-row">
-            <span class="copy-label">Account Name</span>
-            <span class="copy-value" id="val-accname">Vapes Discount Australia</span>
-            <button class="btn-copy" onclick="copyField('val-accname', this)">Copy</button>
-          </div>
-          
-          <div class="copy-row">
-            <span class="copy-label">Bank Name</span>
-            <span class="copy-value" id="val-bank">NAB (National Australia Bank)</span>
-            <button class="btn-copy" onclick="copyField('val-bank', this)">Copy</button>
-          </div>
-
         </div>
 
-        <div style="margin-top:20px; padding:12px; border-radius:6px; background:rgba(255, 82, 82, 0.08); border:1px solid rgba(255, 82, 82, 0.2); font-size:12px; color:#ff8a8a; line-height:1.5; text-align:center;">
-          <strong>CRITICAL:</strong> You MUST put the Order Reference code above (<strong id="ref-reminder">REF-XXXX</strong>) in your transaction's description/comment field so we can automatically match and dispatch your order.
+        <!-- Option 1: PayID -->
+        <p class="pay-section-title">Option 1 — PayID (Instant, Recommended)</p>
+        <div style="background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.06); border-radius:8px; padding:14px 16px; margin-bottom:16px;">
+          <div class="pay-detail-row" style="border:none; padding:0;">
+            <span class="pay-label">PayID Email</span>
+            <span class="pay-value" id="val-payid">vapesonlineaustralia@proton.me</span>
+          </div>
         </div>
+
+        <!-- Option 2: Bank Transfer -->
+        <p class="pay-section-title">Option 2 — Bank Transfer</p>
+        <div style="background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.06); border-radius:8px; padding:14px 16px; margin-bottom:16px;">
+          <div class="pay-detail-row">
+            <span class="pay-label">Bank</span>
+            <span class="pay-value" id="val-bank">NAB (National Australia Bank)</span>
+          </div>
+          <div class="pay-detail-row">
+            <span class="pay-label">Account Name</span>
+            <span class="pay-value" id="val-accname">Vapes Discount Australia</span>
+          </div>
+          <div class="pay-detail-row">
+            <span class="pay-label">BSB</span>
+            <span class="pay-value" id="val-bsb">086-724</span>
+          </div>
+          <div class="pay-detail-row">
+            <span class="pay-label">Account Number</span>
+            <span class="pay-value" id="val-accnum">91-591-6658</span>
+          </div>
+        </div>
+
+        <!-- Reference reminder -->
+        <div style="padding:12px 16px; border-radius:6px; background:rgba(255,82,82,0.08); border:1px solid rgba(255,82,82,0.2); font-size:12px; color:#ff8a8a; line-height:1.6; text-align:center;">
+          <strong>IMPORTANT:</strong> You must include your reference code <strong id="ref-reminder">REF-XXXX</strong> in the payment description so we can match and dispatch your order immediately.
+        </div>
+
+        <!-- Single copy button -->
+        <button class="btn-copy-all" id="btn-copy-all" onclick="copyAllDetails(this)">📋 &nbsp;Copy All Payment Details</button>
+        <p style="text-align:center; font-size:11px; color:var(--text-muted); margin:10px 0 0 0;">💡 Tip: Paste into Notepad first for easy reference when making your payment.</p>
       </div>
 
       <!-- 3. Details grid (Items summary & shipping destination) -->
@@ -417,28 +417,8 @@
   </footer>
 
   <script>
-    // Copy specific field to clipboard
-    function copyField(elementId, btn) {
-      const el = document.getElementById(elementId);
-      if (!el) return;
-      
-      let text = el.innerText;
-
-      navigator.clipboard.writeText(text).then(() => {
-        const originalText = btn.innerText;
-        btn.innerText = "Copied!";
-        btn.classList.add("copied");
-        setTimeout(() => {
-          btn.innerText = originalText;
-          btn.classList.remove("copied");
-        }, 2000);
-      }).catch(err => {
-        console.error("Clipboard copy failed:", err);
-      });
-    }
-
-    // Copy all payment details summarized
-    function copyAllDetails() {
+    // Copy all payment details to clipboard
+    function copyAllDetails(btn) {
       const ref = document.getElementById("val-ref").innerText;
       const total = document.getElementById("val-total").innerText;
       const payid = document.getElementById("val-payid").innerText;
@@ -447,12 +427,34 @@
       const accname = document.getElementById("val-accname").innerText;
       const bank = document.getElementById("val-bank").innerText;
 
-      const summary = `Vape 'R' Aus Payment Details:\n-----------------------------------\nOrder Reference: ${ref}\nTotal Payable: ${total}\n\nOption 1: PayID Email\n${payid}\n\nOption 2: Bank Details\nBank Name: ${bank}\nAccount Name: ${accname}\nBSB: ${bsb}\nAccount Number: ${accnum}`;
+      const summary =
+`Vape 'R' Aus — Payment Details
+================================
+Order Reference: ${ref}
+Total Payable:   ${total}
+
+Option 1: PayID (Instant)
+PayID Email: ${payid}
+
+Option 2: Bank Transfer
+Bank:           ${bank}
+Account Name:   ${accname}
+BSB:            ${bsb}
+Account No:     ${accnum}
+================================
+Paste your Order Reference (${ref}) into the payment description so we can match and dispatch your order!`;
 
       navigator.clipboard.writeText(summary).then(() => {
-        alert("All payment instructions copied to clipboard successfully!");
-      }).catch(err => {
-        console.error("Failed to copy summary:", err);
+        const orig = btn.innerHTML;
+        btn.innerHTML = "✓ &nbsp;Copied to Clipboard!";
+        btn.classList.add("copied");
+        setTimeout(() => {
+          btn.innerHTML = orig;
+          btn.classList.remove("copied");
+        }, 3000);
+      }).catch(() => {
+        // Fallback for browsers that block clipboard on non-HTTPS
+        prompt("Copy the text below and paste it into Notepad:", summary);
       });
     }
 
