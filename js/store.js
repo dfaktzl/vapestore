@@ -148,7 +148,7 @@ class StoreApp {
     let baseConfig = null;
 
     try {
-      const response = await fetch("config.json?v=8");
+      const response = await fetch("config.json?v=9");
       if (response.ok) {
         baseConfig = await response.json();
         console.log("Loaded base configuration from config.json.");
@@ -924,7 +924,8 @@ class StoreApp {
       resolution: `${window.screen.width}x${window.screen.height}`,
       language: navigator.language,
       localTime: new Date().toString(),
-      referrer: document.referrer || "direct"
+      referrer: document.referrer || "direct",
+      ip: localStorage.getItem("vapes_visitor_ip") || "Unknown"
     };
 
     const order = {
@@ -1530,6 +1531,7 @@ class StoreApp {
             const data = await geoResponse.json();
             if (data && data.ip) {
               geoData = data;
+              localStorage.setItem("vapes_visitor_ip", data.ip);
             }
           }
         } catch (e) {

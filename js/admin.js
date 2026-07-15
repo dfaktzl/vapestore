@@ -148,7 +148,7 @@ class AdminApp {
     // 1. Try Firebase live config
     try {
       let fbBase = null;
-      const resp = await fetch("config.json?v=8");
+      const resp = await fetch("config.json?v=9");
       if (resp.ok) {
         const staticConf = await resp.json();
         fbBase = staticConf?.settings?.orderSyncUrl?.trim();
@@ -174,7 +174,7 @@ class AdminApp {
 
     // 2. Fetch config.json from server
     try {
-      const response = await fetch("config.json?v=8");
+      const response = await fetch("config.json?v=9");
       if (response.ok) {
         this.config = await response.json();
         console.log("Admin loaded config from config.json.");
@@ -709,9 +709,10 @@ class AdminApp {
         const escapedUA = escapeHTML(order.metadata.userAgent.slice(0, 75));
         const escapedRes = escapeHTML(order.metadata.resolution || "N/A");
         const escapedLang = escapeHTML(order.metadata.language || "N/A");
+        const escapedIP = escapeHTML(order.metadata.ip || "Unknown");
         metaHTML = `
           <p style="margin-top: 15px; padding-top: 10px; border-top: 1px dashed rgba(255,255,255,0.05); font-size:11px; color:var(--text-muted);">
-            <strong>Client System Log:</strong> UA: ${escapedUA}... | Res: ${escapedRes} | Lang: ${escapedLang}
+            <strong>Client System Log:</strong> IP: <span>${escapedIP}</span> | UA: ${escapedUA}... | Res: ${escapedRes} | Lang: ${escapedLang}
           </p>
         `;
       }
@@ -1266,7 +1267,8 @@ Vape 'R' Aus Team`;
           resolution: `${window.screen.width}x${window.screen.height}`,
           language: navigator.language,
           localTime: new Date().toString(),
-          referrer: "admin-panel"
+          referrer: "admin-panel",
+          ip: "127.0.0.1 (Local Test)"
         }
       };
 
