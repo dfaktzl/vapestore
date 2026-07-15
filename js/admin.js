@@ -751,8 +751,8 @@ class AdminApp {
                 </tr>
               </tfoot>
             </table>
-            <button class="btn-primary copy-email-btn" data-order-id="${order.orderId}" style="margin-top: 15px; width: 100%; font-size: 11px; height: 32px; padding: 0 10px; display: flex; align-items: center; justify-content: center; gap: 6px; font-weight: 700;">
-              ✉️ Generate Manual Email Receipt
+            <button class="btn-primary compose-email-btn" data-order-id="${order.orderId}" style="margin-top: 15px; width: 100%; font-size: 11px; height: 32px; padding: 0 10px; display: flex; align-items: center; justify-content: center; gap: 6px; font-weight: 700;">
+              ✉️ Open Thunderbird / Mail Compose
             </button>
           </div>
         </div>
@@ -767,8 +767,8 @@ class AdminApp {
     container.querySelectorAll(".delete-order-btn").forEach(btn => {
       btn.addEventListener("click", (e) => this.deleteOrder(e.currentTarget.dataset.orderId));
     });
-    container.querySelectorAll(".copy-email-btn").forEach(btn => {
-      btn.addEventListener("click", (e) => this.openEmailGenerator(e.currentTarget.dataset.orderId));
+    container.querySelectorAll(".compose-email-btn").forEach(btn => {
+      btn.addEventListener("click", (e) => this.composeThunderbirdMail(e.currentTarget.dataset.orderId));
     });
   }
 
@@ -1004,253 +1004,13 @@ class AdminApp {
     modal.classList.add("active");
   }
 
-  openEmailGenerator(orderId) {
+  composeThunderbirdMail(orderId) {
     const order = this.orders.find(o => o.orderId === orderId);
     if (!order) return;
 
-    const modal = document.getElementById("email-generator-modal");
-    const recipientEl = document.getElementById("email-recipient");
-    const subjectEl = document.getElementById("email-subject");
-    const previewEl = document.getElementById("email-body-preview");
-    
-    if (!modal || !recipientEl || !subjectEl || !previewEl) return;
-
-    recipientEl.innerText = order.customer.email;
-    const subjectText = `Order Confirmation & Payment Instructions #${order.orderId}`;
-    subjectEl.innerText = subjectText;
-
-    const htmlContent = this.generateManualEmailHtml(order);
-    const plainText = this.generateManualEmailText(order);
-
-    // Render the visual preview inside the preview box
-    previewEl.innerHTML = htmlContent;
-
-    // Reset button states
-    const resetBtn = (btn) => {
-      btn.innerText = btn.dataset.originalText || "Copy";
-      btn.classList.remove("copied");
-    };
-    
-    const copyRecipientBtn = document.getElementById("btn-copy-recipient");
-    const copySubjectBtn = document.getElementById("btn-copy-subject");
-    const copyHtmlBtn = document.getElementById("btn-copy-html-body");
-    const copyTextBtn = document.getElementById("btn-copy-text-body");
-
-    // Copy event listeners (cleaning up previous ones first by replacing clone)
-    const setupCopyBtn = (btn, textToCopy, isRich = false) => {
-      if (!btn) return;
-      if (!btn.dataset.originalText) btn.dataset.originalText = btn.innerText;
-      resetBtn(btn);
-      
-      const newBtn = btn.cloneNode(true);
-      btn.parentNode.replaceChild(newBtn, btn);
-      
-      newBtn.addEventListener("click", () => {
-        if (isRich) {
-          // Copy rich HTML text to clipboard
-          if (navigator.clipboard && window.ClipboardItem) {
-            const htmlBlob = new Blob([htmlContent], { type: "text/html" });
-            const textBlob = new Blob([plainText], { type: "text/plain" });
-            const item = new ClipboardItem({
-              "text/html": htmlBlob,
-              "text/plain": textBlob
-            });
-            navigator.clipboard.write([item]).then(() => {
-              newBtn.innerText = "Copied!";
-              newBtn.classList.add("copied");
-              setTimeout(() => { resetBtn(newBtn); }, 2000);
-            }).catch(err => {
-              console.error("Rich copy failed:", err);
-              // fallback to plain text
-              navigator.clipboard.writeText(plainText).then(() => {
-                newBtn.innerText = "Copied (Text Only)!";
-                setTimeout(() => { resetBtn(newBtn); }, 2000);
-              });
-            });
-          } else {
-            // fallback
-            navigator.clipboard.writeText(plainText).then(() => {
-              newBtn.innerText = "Copied (Text Only)!";
-              setTimeout(() => { resetBtn(newBtn); }, 2000);
-            });
-          }
-        } else {
-          navigator.clipboard.writeText(textToCopy).then(() => {
-            newBtn.innerText = "Copied!";
-            newBtn.classList.add("copied");
-            setTimeout(() => { resetBtn(newBtn); }, 2000);
-          }).catch(err => console.error("Copy failed:", err));
-        }
-      });
-    };
-
-    setupCopyBtn(copyRecipientBtn, order.customer.email);
-    setupCopyBtn(copySubjectBtn, subjectText);
-    setupCopyBtn(copyHtmlBtn, htmlContent, true);
-    setupCopyBtn(copyTextBtn, plainText);
-
-    modal.classList.add("active");
-  }
-
-  generateManualEmailHtml(order) {
     const bank = this.config.settings.bankDetails || {
       payId: "vapesonlineaustralia@proton.me",
-      bankName: "NAB - National Australia Bank",
-      accountName: "Vapes Discount Australia",
-      bsb: "086-724",
-      accountNumber: "91-591-6658"
-    };
-
-    let itemsRows = "";
-    let subtotal = 0;
-    
-    if (order.items && Array.isArray(order.items)) {
-      order.items.forEach(item => {
-        const itemTotal = parseFloat(item.total || 0);
-        subtotal += itemTotal;
-        const flavorText = item.flavor ? ` (${item.flavor})` : "";
-        const formatText = item.format ? ` [${item.format}]` : "";
-        itemsRows += `
-          <tr>
-            <td style="padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.05); color: #ffffff;">${item.name}${flavorText}${formatText}</td>
-            <td align="center" style="padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.05); color: #cccccc;">${item.quantity}</td>
-            <td align="right" style="padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.05); color: #d4af37; font-weight: bold;">$${itemTotal.toFixed(2)}</td>
-          </tr>
-        `;
-      });
-    }
-
-    const orderTotal = parseFloat(order.total || 0);
-    const shippingFee = orderTotal >= 150 ? 0 : 15;
-    const formattedDate = new Date(order.date).toLocaleString("en-AU");
-
-    return `<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8">
-    <title>Order Confirmation #${order.orderId}</title>
-</head>
-<body style="margin: 0; padding: 0; background-color: #090a0c; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; color: #ffffff;">
-    <table align="center" border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px; margin: 0 auto; background-color: #0e1014; border: 1px solid rgba(212,175,55,0.15); border-radius: 12px; margin-top: 30px; margin-bottom: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.6);">
-        <!-- Header -->
-        <tr>
-            <td align="center" style="padding: 30px 0; border-bottom: 1px solid rgba(212,175,55,0.15); background: linear-gradient(90deg, #12141c 0%, #1d190e 100%); border-top-left-radius: 11px; border-top-right-radius: 11px;">
-                <span style="font-size: 24px; font-weight: bold; letter-spacing: 2px; color: #d4af37;">VAPE 'R' AUS</span><br>
-                <span style="font-size: 11px; color: #888; text-transform: uppercase; letter-spacing: 1px; margin-top: 5px; display: inline-block;">Premium Vapes & Smokes</span>
-            </td>
-        </tr>
-        
-        <!-- Apology & Intro -->
-        <tr>
-            <td style="padding: 30px 25px; line-height: 1.6; font-size: 14px; color: #e0e0e0;">
-                Hello <strong>${order.customer.name}</strong>,<br><br>
-                We have received your order with Vape 'R' Aus. Since automatic email receipts sometimes get delayed or blocked by spam filters, we are manually sending this confirmation to ensure you have your payment instructions and reference code.<br><br>
-                To secure your products and dispatch your order immediately, please process payment via PayID or bank transfer using the instructions below. Once payment is received, your order will be shipped from Melbourne within 48 hours.
-            </td>
-        </tr>
-
-        <!-- Order details card -->
-        <tr>
-            <td style="padding: 0 25px;">
-                <table width="100%" cellpadding="0" cellspacing="0" style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 8px; padding: 15px; font-size: 13px;">
-                    <tr>
-                        <td style="color: #888; padding-bottom: 8px;">Order ID:</td>
-                        <td style="font-weight: bold; color: #fff; padding-bottom: 8px; text-align: right;">#${order.orderId}</td>
-                    </tr>
-                    <tr>
-                        <td style="color: #888; padding-bottom: 8px;">Date:</td>
-                        <td style="color: #ccc; padding-bottom: 8px; text-align: right;">${formattedDate}</td>
-                    </tr>
-                    <tr>
-                        <td style="color: #888;">Order Reference:</td>
-                        <td style="font-weight: bold; color: #d4af37; text-align: right; font-size: 15px;">${order.refCode}</td>
-                    </tr>
-                </table>
-            </td>
-        </tr>
-
-        <!-- Items Table -->
-        <tr>
-            <td style="padding: 25px 25px 15px 25px;">
-                <h3 style="font-size: 14px; color: #d4af37; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px; border-bottom: 1px solid rgba(212,175,55,0.2); padding-bottom: 5px; margin-top: 0;">Your Ordered Items</h3>
-                <table width="100%" cellpadding="0" cellspacing="0" style="font-size: 13px;">
-                    <thead>
-                        <tr style="color: #888; text-transform: uppercase; font-size: 11px;">
-                            <th align="left" style="padding: 5px 10px; border-bottom: 2px solid rgba(255,255,255,0.08);">Item</th>
-                            <th align="center" style="padding: 5px 10px; width: 60px; border-bottom: 2px solid rgba(255,255,255,0.08);">Qty</th>
-                            <th align="right" style="padding: 5px 10px; width: 80px; border-bottom: 2px solid rgba(255,255,255,0.08);">Total</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        ${itemsRows}
-                    </tbody>
-                    <tfoot>
-                        <tr>
-                            <td colspan="2" style="padding: 10px; color: #888;">Subtotal</td>
-                            <td align="right" style="padding: 10px; color: #fff; font-weight: bold;">$${subtotal.toFixed(2)}</td>
-                        </tr>
-                        <tr>
-                            <td colspan="2" style="padding: 5px 10px; color: #888;">Shipping Fee</td>
-                            <td align="right" style="padding: 5px 10px; color: #fff; font-weight: bold;">${shippingFee === 0 ? "Free Express" : `$${shippingFee.toFixed(2)}`}</td>
-                        </tr>
-                        <tr>
-                            <td colspan="2" style="padding: 15px 10px; font-weight: bold; color: #fff; text-transform: uppercase; font-size: 12px; border-top: 1px solid rgba(255,255,255,0.08)">Total Payable</td>
-                            <td align="right" style="padding: 15px 10px; font-weight: bold; color: #d4af37; font-size: 16px; border-top: 1px solid rgba(255,255,255,0.08)">$${orderTotal.toFixed(2)}</td>
-                        </tr>
-                    </tfoot>
-                </table>
-            </td>
-        </tr>
-
-        <!-- Payment Instructions Callout -->
-        <tr>
-            <td style="padding: 0 25px 25px 25px;">
-                <table width="100%" cellpadding="0" cellspacing="0" style="border: 1px solid #d4af37; background-color: rgba(212,175,55,0.06); border-radius: 8px; padding: 20px; font-size: 13px; color: #e0e0e0;">
-                    <tr>
-                        <td align="center" style="font-size: 15px; font-weight: bold; color: #d4af37; padding-bottom: 15px;">
-                            PAYMENT DETAILS & INSTRUCTIONS
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="padding-bottom: 15px; border-bottom: 1px dashed rgba(212,175,55,0.2);">
-                            <strong style="color: #fff; display: block; margin-bottom: 5px; font-size: 14px;">Option 1: PayID (Instant Transfer)</strong>
-                            • PayID Email: <strong style="color: #d4af37; font-family: monospace;">${bank.payId}</strong>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="padding-top: 15px;">
-                            <strong style="color: #fff; display: block; margin-bottom: 5px; font-size: 14px;">Option 2: Bank Transfer (Standard Xfer)</strong>
-                            • Account Name: <strong>${bank.accountName}</strong><br>
-                            • BSB: <strong>${bank.bsb}</strong><br>
-                            • Account Number: <strong>${bank.accountNumber}</strong><br>
-                            • Bank Name: <strong>${bank.bankName}</strong>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td align="center" style="padding-top: 20px; font-size: 12px; color: #ff5252; font-weight: bold; line-height: 1.4;">
-                            IMPORTANT: Please include your Order Reference "${order.refCode}" in the payment description so we can match and dispatch your order instantly!
-                        </td>
-                    </tr>
-                </table>
-            </td>
-        </tr>
-
-        <!-- Footer -->
-        <tr>
-            <td align="center" style="padding: 20px; background-color: #0c0d12; border-bottom-left-radius: 11px; border-bottom-right-radius: 11px; font-size: 11px; color: #666; border-top: 1px solid rgba(255,255,255,0.05);">
-                Thank you for choosing Vape 'R' Aus.<br>
-                For support, reply to this email or contact us at ${this.config.settings.contactEmail}.
-            </td>
-        </tr>
-    </table>
-</body>
-</html>`;
-  }
-
-  generateManualEmailText(order) {
-    const bank = this.config.settings.bankDetails || {
-      payId: "vapesonlineaustralia@proton.me",
-      bankName: "NAB - National Australia Bank",
+      bankName: "NAB (National Australia Bank)",
       accountName: "Vapes Discount Australia",
       bsb: "086-724",
       accountNumber: "91-591-6658"
@@ -1271,7 +1031,47 @@ class AdminApp {
     const orderTotal = parseFloat(order.total || 0);
     const shippingFee = orderTotal >= 150 ? 0 : 15;
 
-    return `Hello ${order.customer.name},\n\nWe have received your order with Vape 'R' Aus. Since automatic email receipts sometimes get delayed or blocked by spam filters, we are manually sending this confirmation to ensure you have your payment instructions and reference code.\n\n=========================================\nPAYMENT INSTRUCTIONS\n=========================================\n\nOption 1: PayID (Instant Verification)\n- PayID Email: ${bank.payId}\n\nOption 2: Bank Transfer (Standard Xfer)\n- Bank Name: ${bank.bankName}\n- Account Name: ${bank.accountName}\n- BSB: ${bank.bsb}\n- Account Number: ${bank.accountNumber}\n\nIMPORTANT: Please use the Order Reference: ${order.refCode} in your transaction description to avoid delivery verification delays.\n\nOnce payment is processed, we will ship your order from Melbourne within 48 hours.\n\n=========================================\nORDER SUMMARY\n=========================================\nOrder ID: #${order.orderId}\nReference Code: ${order.refCode}\n\nItems:\n${itemsText}\nSubtotal: $${subtotal.toFixed(2)}\nShipping: ${shippingFee === 0 ? "Free Express" : `$${shippingFee.toFixed(2)}`}\nTotal Payable: $${orderTotal.toFixed(2)}\n\nThank you for choosing Vape 'R' Aus.\nFor support, reply to this email or contact us at ${this.config.settings.contactEmail}.`;
+    const bodyText = `Hello ${order.customer.name},
+
+We have received your order with Vape 'R' Aus. Since automatic email receipts sometimes get delayed or blocked by spam filters, we are manually sending this confirmation to ensure you have your payment instructions and reference code.
+
+=========================================
+PAYMENT INSTRUCTIONS
+=========================================
+
+Option 1: PayID (Instant Verification)
+- PayID Email: ${bank.payId}
+
+Option 2: Bank Transfer (Standard Xfer)
+- Bank Name: ${bank.bankName}
+- Account Name: ${bank.accountName}
+- BSB: ${bank.bsb}
+- Account Number: ${bank.accountNumber}
+
+IMPORTANT: Please use the Order Reference: ${order.refCode} in your transaction description to avoid delivery verification delays.
+
+Once payment is processed, we will ship your order from Melbourne within 48 hours.
+
+=========================================
+ORDER SUMMARY
+=========================================
+Order ID: #${order.orderId}
+Reference Code: ${order.refCode}
+
+Items:
+${itemsText}
+Subtotal: $${subtotal.toFixed(2)}
+Shipping: ${shippingFee === 0 ? "Free Express" : `$${shippingFee.toFixed(2)}`}
+Total Payable: $${orderTotal.toFixed(2)}
+
+Thank you for choosing Vape 'R' Aus.
+For support, reply to this email or contact us at ${this.config.settings.contactEmail || "vapesonlineaustralia@proton.me"}.`;
+
+    const subject = `Order Confirmation & Payment Instructions #${order.orderId}`;
+    const mailtoUrl = `mailto:${order.customer.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(bodyText)}&bcc=admin@vaperaus.com`;
+    
+    // Open in user's default email client (Thunderbird)
+    window.location.href = mailtoUrl;
   }
 
   async clearVisitors() {
@@ -1353,21 +1153,6 @@ class AdminApp {
       });
     }
 
-    const closeEmailModalBtn = document.getElementById("btn-close-email-modal");
-    if (closeEmailModalBtn) {
-      closeEmailModalBtn.addEventListener("click", () => {
-        document.getElementById("email-generator-modal").classList.remove("active");
-      });
-    }
-
-    const emailModal = document.getElementById("email-generator-modal");
-    if (emailModal) {
-      emailModal.addEventListener("click", (e) => {
-        if (e.target === emailModal) {
-          emailModal.classList.remove("active");
-        }
-      });
-    }
 
     // Logout
     const logoutBtn = document.getElementById("btn-logout");
