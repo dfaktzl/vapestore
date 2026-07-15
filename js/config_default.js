@@ -16,10 +16,10 @@ const CONFIG_DEFAULT = {
                      "announcement":  "🔥 FREE EXPRESS SHIPPING ON ALL ORDERS OVER $150! PAYID \u0026 BANK XFER ACCEPTED 🔥",
                      "ageLimit":  18,
                      "orderSyncUrl":  "https://vapes-99ad2-default-rtdb.asia-southeast1.firebasedatabase.app/",
-                     "emailjsServiceId":  "NKPHTNJE2GJBRIVF",
+                     "emailjsServiceId":  "NKPHTNJE2GJBR1VF",
                      "emailjsPublicKey":  "07hCgPLcSvImHfeNk",
-                     "emailjsContactTemplateId":  "template_clrdiht",
-                     "emailjsOrderTemplateId":  "template_epmq41l",
+                     "emailjsContactTemplateId":  "template_ner135t",
+                     "emailjsOrderTemplateId":  "template_l5hhw7n",
                      "bankDetails":  {
                                          "payId":  "vapesonlineaustralia@proton.me",
                                          "bankName":  "NAB - National Australia Bank",
