@@ -148,7 +148,7 @@ class AdminApp {
     // 1. Try Firebase live config
     try {
       let fbBase = null;
-      const resp = await fetch("config.json?v=6");
+      const resp = await fetch("config.json?v=7");
       if (resp.ok) {
         const staticConf = await resp.json();
         fbBase = staticConf?.settings?.orderSyncUrl?.trim();
@@ -174,7 +174,7 @@ class AdminApp {
 
     // 2. Fetch config.json from server
     try {
-      const response = await fetch("config.json?v=6");
+      const response = await fetch("config.json?v=7");
       if (response.ok) {
         this.config = await response.json();
         console.log("Admin loaded config from config.json.");
@@ -1181,11 +1181,251 @@ Vape 'R' Aus Team`;
     }
 
 
+    // Create Test Order
+    const createTestOrderBtn = document.getElementById("btn-create-test-order");
+    if (createTestOrderBtn) createTestOrderBtn.addEventListener("click", () => this.createTestOrder());
+
     // Logout
     const logoutBtn = document.getElementById("btn-logout");
     if (logoutBtn) logoutBtn.addEventListener("click", () => {
       sessionStorage.removeItem("admin_authenticated");
       location.reload();
     });
+  }
+
+  async createTestOrder() {
+    const confirmText = "Are you sure you want to generate a random test order? This will sync to Firebase and send emails to admin@vaperaus.com.";
+    if (!confirm(confirmText)) return;
+
+    const btn = document.getElementById("btn-create-test-order");
+    if (btn) {
+      btn.disabled = true;
+      btn.innerText = "Creating Order...";
+    }
+
+    try {
+      // 1. Pick a random product from config or fallback
+      const products = this.config?.products || [];
+      if (products.length === 0) {
+        alert("No products available to create a test order.");
+        if (btn) {
+          btn.disabled = false;
+          btn.innerText = "✨ Create Test Order";
+        }
+        return;
+      }
+
+      // Generate random order fields
+      const testNames = ["John Doe", "Sarah Connor", "Alex Smith", "Emma Watson", "James Bond"];
+      const testAddresses = ["123 Gold Coast Hwy, Surfers Paradise QLD 4217", "456 Swanston St, Melbourne VIC 3000", "789 George St, Sydney NSW 2000", "11 Flinders Lane, Melbourne VIC 3000"];
+      const testPhones = ["0412 345 678", "0422 987 654", "0433 111 222", "0400 999 888"];
+
+      const name = testNames[Math.floor(Math.random() * testNames.length)];
+      const address = testAddresses[Math.floor(Math.random() * testAddresses.length)];
+      const phone = testPhones[Math.floor(Math.random() * testPhones.length)];
+      const email = "admin@vaperaus.com"; // Fixed test email
+      const notes = "SYSTEM GENERATED TEST ORDER";
+
+      // Select 1 to 2 random products
+      const count = Math.floor(Math.random() * 2) + 1;
+      const orderItems = [];
+      let total = 0;
+
+      for (let i = 0; i < count; i++) {
+        const prod = products[Math.floor(Math.random() * products.length)];
+        const qty = Math.floor(Math.random() * 2) + 1;
+        const flavor = prod.flavors && prod.flavors.length > 0 ? prod.flavors[Math.floor(Math.random() * prod.flavors.length)] : "Standard";
+        const format = prod.isBoxOnly ? "Box of 10" : "Single";
+        const price = prod.price || 50;
+
+        orderItems.push({
+          name: prod.name,
+          flavor: flavor,
+          format: format,
+          quantity: qty,
+          total: qty * price
+        });
+        total += qty * price;
+      }
+
+      // Generate IDs
+      const orderId = `OCV-TEST-${Date.now().toString().slice(-5)}`;
+      const randAlpha = Math.random().toString(36).substring(2, 6).toUpperCase();
+      const refCode = `REF-TEST-${Date.now().toString().slice(-4)}-${randAlpha}`;
+
+      const order = {
+        orderId,
+        refCode,
+        date: new Date().toISOString(),
+        customer: { name, address, phone, email, notes },
+        items: orderItems,
+        total: total,
+        status: "Pending Payment",
+        metadata: {
+          userAgent: navigator.userAgent + " (Test Mode)",
+          resolution: `${window.screen.width}x${window.screen.height}`,
+          language: navigator.language,
+          localTime: new Date().toString(),
+          referrer: "admin-panel"
+        }
+      };
+
+      // 2. Sync to Firebase
+      if (!this.firebaseUrl) {
+        throw new Error("Firebase orderSyncUrl is not resolved or config is not loaded.");
+      }
+      
+      const syncUrl = `${this.firebaseUrl}orders.json`;
+      const fbResp = await fetch(syncUrl, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(order)
+      });
+      if (!fbResp.ok) {
+        throw new Error(`Firebase push failed with status ${fbResp.status}`);
+      }
+      console.log("Test order synced to Firebase successfully.");
+
+      // 3. Send Email notifications (EmailJS & FormSubmit)
+      const settings = this.config.settings || {};
+      const hasEmailJS = settings.emailjsPublicKey && settings.emailjsServiceId && settings.emailjsOrderTemplateId;
+
+      // Compile order summary text
+      let orderItemsText = "";
+      orderItems.forEach(item => {
+        orderItemsText += `- ${item.quantity}x ${item.name} (${item.flavor} / ${item.format}) - $${(item.total).toFixed(2)}\n`;
+      });
+
+      const bank = settings.bankDetails || {
+        payId: "vapesonlineaustralia@proton.me",
+        bankName: "NAB",
+        accountName: "Vapes Discount Australia",
+        bsb: "086-724",
+        accountNumber: "91-591-6658"
+      };
+
+      let emailJSFailed = false;
+      if (hasEmailJS && typeof emailjs !== "undefined") {
+        try {
+          // Initialize EmailJS
+          emailjs.init({ publicKey: settings.emailjsPublicKey.trim() });
+
+          await emailjs.send(
+            settings.emailjsServiceId.trim(),
+            settings.emailjsOrderTemplateId.trim(),
+            {
+              order_id: orderId,
+              ref_code: refCode,
+              customer_name: name,
+              customer_email: email, // admin@vaperaus.com
+              reply_to: email,
+              bcc: "admin@vaperaus.com",
+              customer_phone: phone,
+              customer_address: address,
+              customer_notes: notes,
+              order_items: orderItemsText,
+              total_price: `$${total.toFixed(2)}`,
+              payid: bank.payId || "vapesonlineaustralia@proton.me",
+              bank_name: bank.bankName,
+              account_name: bank.accountName,
+              bsb: bank.bsb,
+              account_number: bank.accountNumber
+            }
+          );
+          console.log("Test order confirmation sent via EmailJS.");
+        } catch (emailErr) {
+          console.warn("EmailJS test send failed, will trigger FormSubmit fallback:", emailErr);
+          emailJSFailed = true;
+        }
+      } else {
+        emailJSFailed = true;
+      }
+
+      // If EmailJS skipped/failed, trigger FormSubmit Fallback
+      if (emailJSFailed) {
+        const fallbackUrl = `https://formsubmit.co/ajax/${email}`;
+        await fetch(fallbackUrl, {
+          method: "POST",
+          headers: { 
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+          },
+          body: JSON.stringify({
+            order_id: orderId,
+            ref_code: refCode,
+            customer_name: name,
+            customer_email: email,
+            customer_phone: phone,
+            customer_address: address,
+            customer_notes: notes,
+            order_items: orderItemsText,
+            total_price: `$${total.toFixed(2)}`,
+            _captcha: "false",
+            _subject: `Vape 'R' Aus: Test Order Confirmation #${orderId} (Fallback)`
+          })
+        });
+        console.log("Test order fallback sent via FormSubmit.");
+      }
+
+      // Merchant FormSubmit notification
+      const targetEmail = settings.contactEmail || "vapesonlineaustralia@proton.me";
+      const orderPostUrl = `https://formsubmit.co/ajax/${targetEmail.trim()}`;
+      await fetch(orderPostUrl, {
+        method: "POST",
+        headers: { 
+          "Content-Type": "application/json",
+          "Accept": "application/json"
+        },
+        body: JSON.stringify({
+          "Order ID": orderId,
+          "Reference Code": refCode,
+          "Customer Name": name,
+          "Customer Email": email,
+          "Customer Phone": phone,
+          "Shipping Address": address,
+          "Delivery Notes": notes,
+          "Order Items": orderItemsText,
+          "Total Amount": `$${total.toFixed(2)}`,
+          "_captcha": "false",
+          "_subject": `🛒 NEW TEST ORDER: ${orderId} (${refCode})`
+        })
+      });
+      console.log("Test order notification sent to merchant via FormSubmit.");
+
+      // Save order details to localStorage for order-success.html
+      const latestOrder = {
+        orderId: orderId,
+        refCode: refCode,
+        total: total,
+        shippingFee: 0,
+        items: order.items,
+        customer: {
+          name: name,
+          phone: phone,
+          address: address,
+          notes: notes
+        },
+        bankDetails: bank
+      };
+      localStorage.setItem("latest_order", JSON.stringify(latestOrder));
+
+      // Open confirmation page in a separate tab
+      window.open("order-success.html", "_blank");
+
+      alert(`Test Order ${orderId} created successfully!\n\nAll notifications (EmailJS & FormSubmit) have been dispatched to admin@vaperaus.com.`);
+      
+      // Reload the orders list in admin panel
+      await this.loadOrders();
+      this.renderOrders();
+
+    } catch (e) {
+      console.error("Failed to create test order:", e);
+      alert(`Error creating test order: ${e.message}`);
+    } finally {
+      if (btn) {
+        btn.disabled = false;
+        btn.innerText = "✨ Create Test Order";
+      }
+    }
   }
 }
