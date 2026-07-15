@@ -17,7 +17,7 @@ const CONFIG_DEFAULT = {
                      "ageLimit":  18,
                      "orderSyncUrl":  "https://vapes-99ad2-default-rtdb.asia-southeast1.firebasedatabase.app/",
                      "emailjsServiceId":  "NKPHTNJE2GJBR1VF",
-                     "emailjsPublicKey":  "07hCgPLcSvImHfeNk",
+                     "emailjsPublicKey":  "07hCgPLcSv1mHfeNk",
                      "emailjsContactTemplateId":  "template_ner135t",
                      "emailjsOrderTemplateId":  "template_l5hhw7n",
                      "bankDetails":  {
