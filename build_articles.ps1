@@ -13,15 +13,15 @@ if (-not (Test-Path $guidesPath)) {
     exit 1
 }
 
-# 1. Load data
-$config = Get-Content -Raw -Path $configPath | ConvertFrom-Json
-$guides = Get-Content -Raw -Path $guidesPath | ConvertFrom-Json
+# 1. Load data with explicit UTF8 encoding to preserve Unicode emojis & en-dashes
+$config = Get-Content -Raw -Encoding utf8 -Path $configPath | ConvertFrom-Json
+$guides = Get-Content -Raw -Encoding utf8 -Path $guidesPath | ConvertFrom-Json
 
 $settings = $config.settings
 $siteName = $settings.siteName
 if ($null -eq $siteName) { $siteName = "Vape 'R' Aus" }
 $announcement = $settings.announcement
-if ($null -eq $announcement) { $announcement = "FREE EXPRESS SHIPPING ON ALL ORDERS OVER $150!" }
+if ($null -eq $announcement) { $announcement = "FREE EXPRESS SHIPPING ON ALL ORDERS OVER `$150!" }
 $contactEmail = $settings.contactEmail
 if ($null -eq $contactEmail) { $contactEmail = "vapesonlineaustralia@proton.me" }
 $contactPhone = $settings.contactPhone
@@ -168,7 +168,7 @@ foreach ($guide in $guides) {
     $wordCount = ($guide.content -split '\s+').Length
     $readTime = [Math]::Max(1, [Math]::Round($wordCount / 220))
     
-    # Template HTML
+    # Template HTML (escaped $ signs for prices and HTML entities for arrows/dashes)
     $html = @"
 <!DOCTYPE html>
 <html lang="en">
@@ -195,8 +195,8 @@ foreach ($guide in $guides) {
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   
   <!-- Styles -->
-  <link rel="stylesheet" href="../css/design_system.css?v=9">
-  <link rel="stylesheet" href="../css/main.css?v=9">
+  <link rel="stylesheet" href="../css/design_system.css?v=10">
+  <link rel="stylesheet" href="../css/main.css?v=10">
   
   <!-- Custom Article Page styling -->
   <style>
@@ -311,7 +311,8 @@ foreach ($guide in $guides) {
       padding-bottom: 15px;
       border-bottom: 1px dashed rgba(255,255,255,0.05);
       text-decoration: none;
-      transition: opacity 0.2s;
+      color: var(--text-secondary) !important;
+      transition: all 0.2s ease;
     }
     .sidebar-product:last-child {
       border-bottom: none;
@@ -319,7 +320,8 @@ foreach ($guide in $guides) {
       padding-bottom: 0;
     }
     .sidebar-product:hover {
-      opacity: 0.8;
+      color: var(--gold-accent) !important;
+      opacity: 1;
     }
     .sidebar-product img {
       width: 60px;
@@ -336,7 +338,6 @@ foreach ($guide in $guides) {
     .sidebar-product-name {
       font-size: 14px;
       font-weight: 600;
-      color: #fff;
       margin-bottom: 4px;
     }
     .sidebar-product-price {
@@ -396,7 +397,7 @@ foreach ($guide in $guides) {
     <!-- PROMO BANNER -->
     <div class="promo-banner" style="background: linear-gradient(90deg, #12141c 0%, #1d190e 50%, #12141c 100%); border-bottom: 1px solid rgba(212, 175, 55, 0.25); color: #fff; padding: 14px 20px; font-size: 15px; font-family: var(--font-body); display: flex; justify-content: center; align-items: center; gap: 12px; z-index: 1000; position: relative; box-shadow: 0 4px 20px rgba(0,0,0,0.4);">
       <span class="promo-badge" style="background: var(--gold-accent); color: #000; font-weight: 800; padding: 4px 12px; border-radius: 4px; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; box-shadow: 0 0 10px rgba(212,175,55,0.3);">PROMO</span>
-      <span style="letter-spacing: 0.2px; text-transform: uppercase; font-weight: 600;">Sorry, but all Alibarbar prizes have been won. — FREE SHIPPING ON ALL ORDERS OVER $150!</span>
+      <span style="letter-spacing: 0.2px; text-transform: uppercase; font-weight: 600;">Sorry, but all Alibarbar prizes have been won. &mdash; FREE SHIPPING ON ALL ORDERS OVER `$150!</span>
     </div>
 
     <!-- ANNOUNCEMENT BAR -->
@@ -444,7 +445,7 @@ foreach ($guide in $guides) {
               <h4 class="sidebar-title">Shop Best Sellers</h4>
               
               <a href="../index.html#catalog" class="sidebar-product">
-                <img src="../img/iget_bar_opt1_1783090988615.png" alt="IGET Bar 3500">
+                <img src="../img/iget_bar_3500.webp" alt="IGET Bar 3500">
                 <div class="sidebar-product-info">
                   <div class="sidebar-product-name">IGET Bar 3500 Puffs</div>
                   <div class="sidebar-product-price">From `$33.00</div>
@@ -452,7 +453,7 @@ foreach ($guide in $guides) {
               </a>
               
               <a href="../index.html#catalog" class="sidebar-product">
-                <img src="../img/jnr_vapro_7000_1783089462854.png" alt="JNR Vapro 7000">
+                <img src="../img/jnr_vapro_7000.webp" alt="JNR Vapro 7000">
                 <div class="sidebar-product-info">
                   <div class="sidebar-product-name">JNR Vapro 7000 Puffs</div>
                   <div class="sidebar-product-price">From `$35.00</div>
@@ -460,7 +461,7 @@ foreach ($guide in $guides) {
               </a>
 
               <a href="../index.html#catalog" class="sidebar-product">
-                <img src="../img/winfield_blue_carton_1782979619147.png" alt="Winfield Blue Carton">
+                <img src="../img/winfield_blue.png" alt="Winfield Blue Carton">
                 <div class="sidebar-product-info">
                   <div class="sidebar-product-name">Winfield Blue Carton (10x25s)</div>
                   <div class="sidebar-product-price">From `$260.00</div>
@@ -468,7 +469,7 @@ foreach ($guide in $guides) {
               </a>
 
               <a href="../index.html#catalog" class="sidebar-product">
-                <img src="../img/marlboro_gold_carton_1783089227796.png" alt="Marlboro Gold Carton">
+                <img src="../img/marlboro_gold.webp" alt="Marlboro Gold Carton">
                 <div class="sidebar-product-info">
                   <div class="sidebar-product-name">Marlboro Gold Carton (10x20s)</div>
                   <div class="sidebar-product-price">From `$250.00</div>
@@ -549,9 +550,9 @@ foreach ($guide in $guides) {
 </html>
 "@
     
-    # Write file
+    # Write file using native UTF8 (No BOM) .NET writer to completely resolve emoji and accent characters
     $outPath = Join-Path $eduDir "$id.html"
-    $html | Out-File -FilePath $outPath -Encoding utf8 -Force
+    [System.IO.File]::WriteAllText($outPath, $html, [System.Text.Encoding]::UTF8)
     Write-Host "Generated: $outPath" -ForegroundColor Green
 }
 
@@ -579,6 +580,6 @@ foreach ($guide in $guides) {
 }
 
 $sitemap += "`n</urlset>"
-$sitemap | Out-File -FilePath "sitemap.xml" -Encoding utf8 -Force
+[System.IO.File]::WriteAllText("sitemap.xml", $sitemap, [System.Text.Encoding]::UTF8)
 Write-Host "Generated: sitemap.xml" -ForegroundColor Green
 Write-Host "All operations completed successfully!" -ForegroundColor Green
