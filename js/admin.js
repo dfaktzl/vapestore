@@ -1157,6 +1157,15 @@ Vape 'R' Aus Team`;
       });
     }
 
+    const visitorModal = document.getElementById("visitor-detail-modal");
+    if (visitorModal) {
+      visitorModal.addEventListener("click", (e) => {
+        if (e.target === visitorModal) {
+          visitorModal.classList.remove("active");
+        }
+      });
+    }
+
 
     // Logout
     const logoutBtn = document.getElementById("btn-logout");
