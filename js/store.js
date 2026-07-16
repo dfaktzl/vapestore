@@ -148,7 +148,7 @@ class StoreApp {
     let baseConfig = null;
 
     try {
-      const response = await fetch("config.json?v=12");
+      const response = await fetch("config.json?v=13");
       if (response.ok) {
         baseConfig = await response.json();
         console.log("Loaded base configuration from config.json.");
@@ -1196,36 +1196,7 @@ class StoreApp {
       submitBtn.innerText = "Sending Message...";
     }
     
-    const settings = this.config.settings;
-    const hasEmailJS = settings.emailjsPublicKey && settings.emailjsServiceId && settings.emailjsContactTemplateId;
-    
-    if (hasEmailJS && typeof emailjs !== "undefined") {
-      const emailPromise = emailjs.send(
-        settings.emailjsServiceId.trim(),
-        settings.emailjsContactTemplateId.trim(),
-        {
-          from_name: name,
-          reply_to: email,
-          message: message,
-          to_email: settings.contactEmail || "vapesonlineaustralia@proton.me"
-        }
-      );
-
-      // Create a 4-second timeout to prevent form submission from freezing
-      const timeoutPromise = new Promise((_, reject) => 
-        setTimeout(() => reject(new Error("EmailJS contact request timed out")), 4000)
-      );
-
-      try {
-        await Promise.race([emailPromise, timeoutPromise]);
-        this.showContactSuccess();
-      } catch (err) {
-        console.warn("EmailJS Contact Send failed or timed out, falling back to FormSubmit:", err);
-        this.sendContactFormSubmit(name, email, message);
-      }
-    } else {
-      this.sendContactFormSubmit(name, email, message);
-    }
+    this.sendContactFormSubmit(name, email, message);
   }
 
   sendContactFormSubmit(name, email, message) {
