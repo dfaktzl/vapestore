@@ -157,7 +157,7 @@ if ($typeSelection -eq "2") {
                 G'day <strong>$custNameEscaped</strong>,<br><br>
                 We are writing to let you know that we have successfully received your payment! Thank you so much for your support.<br><br>
                 <strong>What happens next?</strong><br>
-                Our team is already hard at work packing your order. To protect your privacy, we use an extremely <strong>discreet packaging and labeling process</strong> (no vape or cigarette references will appear on the parcel). Once dispatched from Melbourne, you will receive a tracking link via email.<br><br>
+                Our team is already hard at work packing your order. To protect your privacy, we use an extremely <strong>discreet packaging and labeling process</strong> (no vape or cigarette references will appear on the parcel). Once dispatched from Melbourne, we send all orders untracked express. This is done for security reasons to guarantee your package arrives untouched and unharmed by third parties using our particular delivery methods.<br><br>
                 We sincerely apologise for any minor processing delays as we prepare your package securely. If you have any questions or require updates, please reply directly to this email &mdash; we are always happy to help!
 "@
 
@@ -180,7 +180,7 @@ if ($typeSelection -eq "2") {
                     </tr>
                     <tr>
                         <td style="padding-top: 15px; font-size: 13px; color: #cccccc; line-height: 1.6;">
-                            &bull; <strong>Tracking Number:</strong> Sent directly to your email as soon as Australia Post scans the package at our Melbourne dispatch depot.
+                            &bull; <strong>Untracked Express:</strong> Sent untracked express for security reasons to ensure your package arrives untouched and unharmed by third parties using our particular delivery methods.
                         </td>
                     </tr>
                 </table>
