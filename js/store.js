@@ -148,7 +148,7 @@ class StoreApp {
     let baseConfig = null;
 
     try {
-      const response = await fetch("config.json?v=11");
+      const response = await fetch("config.json?v=12");
       if (response.ok) {
         baseConfig = await response.json();
         console.log("Loaded base configuration from config.json.");
@@ -304,7 +304,7 @@ class StoreApp {
             line-height: 1.6;
             margin-bottom: 25px;
           ">
-            Your IP address (<strong>${ip}</strong>) has been flagged for unusual activity or security reasons. Access to this website has been restricted.
+            Your IP address (<strong>${ip}</strong>) has been flagged for attempting to be malicious or overload/bruteforce our systems. We do not take kindly to this kind of directed attack and will continue to block any other IPs we detect doing such things.
           </p>
           <div style="
             font-size: 12px;
