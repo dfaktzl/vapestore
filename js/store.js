@@ -148,7 +148,7 @@ class StoreApp {
     let baseConfig = null;
 
     try {
-      const response = await fetch("config.json?v=13");
+      const response = await fetch("config.json?v=14");
       if (response.ok) {
         baseConfig = await response.json();
         console.log("Loaded base configuration from config.json.");
