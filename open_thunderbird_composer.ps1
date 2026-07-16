@@ -3,7 +3,7 @@
 # ==============================================================================
 # This script fetches your latest orders from Firebase, lets you select one,
 # and automatically opens Mozilla Thunderbird to compose a beautifully formatted
-# HTML payment confirmation email.
+# HTML email (Payment Instructions or Payment Received).
 # ==============================================================================
 
 # Fetch orders from Firebase
@@ -92,6 +92,16 @@ $refCode = $selectedOrder.refCode
 
 Write-Host "`nSelected Order: $orderId for $custName ($custEmail)" -ForegroundColor Green
 
+# Select Email Type
+Write-Host "`n------------------------------------------------------------------" -ForegroundColor Yellow
+Write-Host "                    SELECT EMAIL TYPE" -ForegroundColor Yellow
+Write-Host "------------------------------------------------------------------" -ForegroundColor Yellow
+Write-Host "[1] Payment Instructions & Reminder" -ForegroundColor Gray
+Write-Host "[2] Payment Received & Next Steps" -ForegroundColor Gray
+Write-Host ""
+$typeSelection = Read-Host "Select email type (1 or 2, default is 1)"
+if ([string]::IsNullOrEmpty($typeSelection)) { $typeSelection = "1" }
+
 # Escape HTML helper function for safety
 function Escape-Html($str) {
     if ($null -eq $str) { return "" }
@@ -99,10 +109,10 @@ function Escape-Html($str) {
 }
 
 # Apply HTML escaping for email safety
-$custName = Escape-Html $custName
-$custEmail = Escape-Html $custEmail
-$orderId = Escape-Html $orderId
-$refCode = Escape-Html $refCode
+$custNameEscaped = Escape-Html $custName
+$custEmailEscaped = Escape-Html $custEmail
+$orderIdEscaped = Escape-Html $orderId
+$refCodeEscaped = Escape-Html $refCode
 
 # ------------------ GENERATE HTML EMAIL BODY ------------------
 $bankPayId = "vapesonlineaustralia@proton.me"
@@ -135,12 +145,98 @@ $orderTotal = [double]$selectedOrder.total
 $shippingFee = if ($orderTotal -ge 150) { 0.0 } else { 15.0 }
 $formattedDate = (Get-Date $selectedOrder.date).ToString("dd/MM/yyyy HH:mm")
 
+$subject = ""
+$introHtml = ""
+$calloutHtml = ""
+
+if ($typeSelection -eq "2") {
+    # ------------------ PAYMENT RECEIVED TEMPLATE ------------------
+    $subject = "Payment Received & Order Processing - #$orderId"
+    
+    $introHtml = @"
+                G'day <strong>$custNameEscaped</strong>,<br><br>
+                We are writing to let you know that we have successfully received your payment! Thank you so much for your support.<br><br>
+                <strong>What happens next?</strong><br>
+                Our team is already hard at work packing your order. To protect your privacy, we use an extremely <strong>discreet packaging and labeling process</strong> (no vape or cigarette references will appear on the parcel). Once dispatched from Melbourne, you will receive a tracking link via email.<br><br>
+                We sincerely apologise for any minor processing delays as we prepare your package securely. If you have any questions or require updates, please reply directly to this email &mdash; we are always happy to help!
+"@
+
+    $calloutHtml = @"
+                <table width="100%" cellpadding="0" cellspacing="0" style="border: 1px solid #d4af37; background-color: rgba(212,175,55,0.06); border-radius: 8px; padding: 20px; font-size: 13px; color: #e0e0e0;">
+                    <tr>
+                        <td align="center" style="font-size: 15px; font-weight: bold; color: #d4af37; padding-bottom: 15px; text-transform: uppercase;">
+                            SHIPPING &amp; DELIVERY INFORMATION
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding-bottom: 15px; border-bottom: 1px dashed rgba(212,175,55,0.2); line-height: 1.6;">
+                            &bull; <strong>Discreet Delivery:</strong> Your parcel is packed in plain, unbranded post bags or boxes to ensure complete privacy.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding-top: 15px; padding-bottom: 15px; border-bottom: 1px dashed rgba(212,175,55,0.2); line-height: 1.6;">
+                            &bull; <strong>Shipping Method:</strong> Australia Post Express (typically 1-3 business days delivery nationwide).
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding-top: 15px; font-size: 13px; color: #cccccc; line-height: 1.6;">
+                            &bull; <strong>Tracking Number:</strong> Sent directly to your email as soon as Australia Post scans the package at our Melbourne dispatch depot.
+                        </td>
+                    </tr>
+                </table>
+"@
+} else {
+    # ------------------ PAYMENT INSTRUCTIONS TEMPLATE ------------------
+    $subject = "Order Confirmation & Payment Instructions - #$orderId"
+    
+    $introHtml = @"
+                G'day <strong>$custNameEscaped</strong>,<br><br>
+                We're so glad you chose Vape 'R' Aus &mdash; thank you for your order! Since automatic email receipts can sometimes be delayed or blocked by spam filters, we're personally sending this confirmation so you have everything you need to complete your payment and get your order on the way.<br><br>
+                Please process payment via PayID or bank transfer using the instructions below. Once payment is received, we'll have your order packed and shipped from Melbourne within 48 hours.
+"@
+
+    $calloutHtml = @"
+                <table width="100%" cellpadding="0" cellspacing="0" style="border: 1px solid #d4af37; background-color: rgba(212,175,55,0.06); border-radius: 8px; padding: 20px; font-size: 13px; color: #e0e0e0;">
+                    <tr>
+                        <td align="center" style="font-size: 15px; font-weight: bold; color: #d4af37; padding-bottom: 15px; text-transform: uppercase;">
+                            PAYMENT DETAILS &amp; INSTRUCTIONS
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding-bottom: 15px; border-bottom: 1px dashed rgba(212,175,55,0.2);">
+                            <strong style="color: #fff; display: block; margin-bottom: 5px; font-size: 14px;">Option 1: PayID (Instant Verification)</strong>
+                            &bull; PayID Email: <strong style="color: #d4af37; font-family: monospace;">$bankPayId</strong>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding-top: 15px; padding-bottom: 15px; border-bottom: 1px dashed rgba(212,175,55,0.2);">
+                            <strong style="color: #fff; display: block; margin-bottom: 5px; font-size: 14px;">Option 2: Bank Transfer (Standard Transfer)</strong>
+                            &bull; Bank Name: <strong>$bankName</strong><br>
+                            &bull; Account Name: <strong>$bankAccountName</strong><br>
+                            &bull; BSB: <strong>$bankBsb</strong><br>
+                            &bull; Account Number: <strong>$bankAccountNumber</strong>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding-top: 15px; font-size: 13px; color: #cccccc; line-height: 1.6;">
+                            We apologise &mdash; due to regulation and other legal requirements, we are unable to accept Visa/Mastercard/Amex payments at this time. We'll be sure to let you know if that changes in the future!
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="center" style="padding-top: 20px; font-size: 12px; color: #ff5252; font-weight: bold; line-height: 1.4;">
+                            <strong>IMPORTANT:</strong> Please include your Order Reference "$refCodeEscaped" in the payment description so we can match and dispatch your order instantly!
+                        </td>
+                    </tr>
+                </table>
+"@
+}
+
 $htmlBody = @"
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Order Confirmation #$orderId</title>
+    <title>$subject</title>
 </head>
 <body style="margin: 0; padding: 0; background-color: #090a0c; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; color: #ffffff;">
     <table align="center" border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px; margin: 0 auto; background-color: #0e1014; border: 1px solid rgba(212,175,55,0.15); border-radius: 12px; margin-top: 30px; margin-bottom: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.6);">
@@ -155,9 +251,7 @@ $htmlBody = @"
         <!-- Apology & Intro -->
         <tr>
             <td style="padding: 30px 25px; line-height: 1.6; font-size: 14px; color: #e0e0e0;">
-                G'day <strong>$custName</strong>,<br><br>
-                We're so glad you chose Vape 'R' Aus &mdash; thank you for your order! Since automatic email receipts can sometimes be delayed or blocked by spam filters, we're personally sending this confirmation so you have everything you need to complete your payment and get your order on the way.<br><br>
-                Please process payment via PayID or bank transfer using the instructions below. Once payment is received, we'll have your order packed and shipped from Melbourne within 48 hours.
+                $introHtml
             </td>
         </tr>
 
@@ -167,7 +261,7 @@ $htmlBody = @"
                 <table width="100%" cellpadding="0" cellspacing="0" style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 8px; padding: 15px; font-size: 13px;">
                     <tr>
                         <td style="color: #888; padding-bottom: 8px;">Order ID:</td>
-                        <td style="font-weight: bold; color: #fff; padding-bottom: 8px; text-align: right;">#$orderId</td>
+                        <td style="font-weight: bold; color: #fff; padding-bottom: 8px; text-align: right;">#$orderIdEscaped</td>
                     </tr>
                     <tr>
                         <td style="color: #888; padding-bottom: 8px;">Date:</td>
@@ -175,7 +269,7 @@ $htmlBody = @"
                     </tr>
                     <tr>
                         <td style="color: #888;">Order Reference:</td>
-                        <td style="font-weight: bold; color: #d4af37; text-align: right; font-size: 15px;">$refCode</td>
+                        <td style="font-weight: bold; color: #d4af37; text-align: right; font-size: 15px;">$refCodeEscaped</td>
                     </tr>
                 </table>
             </td>
@@ -214,41 +308,10 @@ $htmlBody = @"
             </td>
         </tr>
 
-        <!-- Payment Instructions Callout -->
+        <!-- Callout Box -->
         <tr>
             <td style="padding: 0 25px 25px 25px;">
-                <table width="100%" cellpadding="0" cellspacing="0" style="border: 1px solid #d4af37; background-color: rgba(212,175,55,0.06); border-radius: 8px; padding: 20px; font-size: 13px; color: #e0e0e0;">
-                    <tr>
-                        <td align="center" style="font-size: 15px; font-weight: bold; color: #d4af37; padding-bottom: 15px;">
-                            PAYMENT DETAILS & INSTRUCTIONS
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="padding-bottom: 15px; border-bottom: 1px dashed rgba(212,175,55,0.2);">
-                            <strong style="color: #fff; display: block; margin-bottom: 5px; font-size: 14px;">Option 1: PayID (Instant Verification)</strong>
-                            &bull; PayID Email: <strong style="color: #d4af37; font-family: monospace;">$bankPayId</strong>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="padding-top: 15px; padding-bottom: 15px; border-bottom: 1px dashed rgba(212,175,55,0.2);">
-                            <strong style="color: #fff; display: block; margin-bottom: 5px; font-size: 14px;">Option 2: Bank Transfer (Standard Transfer)</strong>
-                            &bull; Bank Name: <strong>$bankName</strong><br>
-                            &bull; Account Name: <strong>$bankAccountName</strong><br>
-                            &bull; BSB: <strong>$bankBsb</strong><br>
-                            &bull; Account Number: <strong>$bankAccountNumber</strong>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="padding-top: 15px; font-size: 13px; color: #cccccc; line-height: 1.6;">
-                            We apologise &mdash; due to regulation and other legal requirements, we are unable to accept Visa/Mastercard/Amex payments at this time. We'll be sure to let you know if that changes in the future!
-                        </td>
-                    </tr>
-                    <tr>
-                        <td align="center" style="padding-top: 20px; font-size: 12px; color: #ff5252; font-weight: bold; line-height: 1.4;">
-                            <strong>IMPORTANT:</strong> Please include your Order Reference "$refCode" in the payment description so we can match and dispatch your order instantly!
-                        </td>
-                    </tr>
-                </table>
+                $calloutHtml
             </td>
         </tr>
 
@@ -303,7 +366,6 @@ if (-not $tbFound) {
 }
 
 Write-Host "`nLaunching Thunderbird Composer..." -ForegroundColor Yellow
-$subject = "Order Confirmation & Payment Instructions - #$orderId"
 
 # Execute compose process
 try {
