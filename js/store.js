@@ -148,7 +148,7 @@ class StoreApp {
     let baseConfig = null;
 
     try {
-      const response = await fetch("config.json?v=10");
+      const response = await fetch("config.json?v=11");
       if (response.ok) {
         baseConfig = await response.json();
         console.log("Loaded base configuration from config.json.");
@@ -258,6 +258,66 @@ class StoreApp {
         console.log("EmailJS initialized successfully.");
       }
     }
+  }
+
+  showBlockOverlay(ip) {
+    document.body.innerHTML = `
+      <div style="
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 100vw;
+        height: 100vh;
+        background: #090a0f;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 999999;
+        font-family: 'Outfit', 'Inter', sans-serif;
+        color: #fff;
+        padding: 20px;
+        box-sizing: border-box;
+      ">
+        <div class="glass-card" style="
+          max-width: 500px;
+          width: 100%;
+          background: rgba(255, 255, 255, 0.03);
+          border: 1px solid rgba(212, 175, 55, 0.2);
+          border-radius: 12px;
+          padding: 40px;
+          text-align: center;
+          box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+          backdrop-filter: blur(10px);
+        ">
+          <div style="font-size: 50px; margin-bottom: 20px;">🚫</div>
+          <h1 style="
+            font-size: 24px;
+            font-family: 'Outfit', sans-serif;
+            color: #d4af37;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+          ">Access Denied</h1>
+          <p style="
+            font-size: 14px;
+            color: #a0aec0;
+            line-height: 1.6;
+            margin-bottom: 25px;
+          ">
+            Your IP address (<strong>${ip}</strong>) has been flagged for unusual activity or security reasons. Access to this website has been restricted.
+          </p>
+          <div style="
+            font-size: 12px;
+            color: #718096;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            padding-top: 20px;
+          ">
+            If you believe this is an error, please contact support at<br>
+            <a href="mailto:vapesonlineaustralia@proton.me" style="color: #d4af37; text-decoration: none; font-weight: 600;">vapesonlineaustralia@proton.me</a>
+          </div>
+        </div>
+      </div>
+    `;
   }
 
   /* ==========================================================================
@@ -1488,6 +1548,21 @@ class StoreApp {
             if (data && data.ip) {
               geoData = data;
               localStorage.setItem("vapes_visitor_ip", data.ip);
+
+              // Blacklist Check
+              const sanitizedIp = data.ip.replace(/\./g, "-").replace(/:/g, "_");
+              try {
+                const blockResp = await fetch(`${cleanUrl}blacklist/${sanitizedIp}.json`);
+                if (blockResp.ok) {
+                  const blockData = await blockResp.json();
+                  if (blockData && blockData.blocked === true) {
+                    this.showBlockOverlay(data.ip);
+                    return; // Halt storefront initialization
+                  }
+                }
+              } catch (blockErr) {
+                console.warn("Could not retrieve blacklist status:", blockErr);
+              }
             }
           }
         } catch (e) {

@@ -176,6 +176,29 @@ foreach ($guide in $guides) {
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
+  <!-- Security IP Block -->
+  <script>
+    (async () => {
+      try {
+        const geoResponse = await fetch("https://ipapi.co/json/");
+        if (geoResponse.ok) {
+          const geoData = await geoResponse.json();
+          if (geoData && geoData.ip) {
+            const cleanUrl = "https://vapes-99ad2-default-rtdb.asia-southeast1.firebasedatabase.app/";
+            const sanitizedIp = geoData.ip.replace(/\./g, "-").replace(/:/g, "_");
+            const blockResp = await fetch(cleanUrl + "blacklist/" + sanitizedIp + ".json");
+            if (blockResp.ok) {
+              const blockData = await blockResp.json();
+              if (blockData && blockData.blocked === true) {
+                document.documentElement.innerHTML = '<head><title>Access Denied</title><meta name="viewport" content="width=device-width, initial-scale=1.0"><link href="https://fonts.googleapis.com/css2?family=Outfit:wght@600&family=Inter:wght@400&display=swap" rel="stylesheet"></head><body style=\"margin:0; background:#090a0f;\"><div style=\"position:fixed; left:0; top:0; width:100vw; height:100vh; display:flex; align-items:center; justify-content:center; padding:20px; box-sizing:border-box; font-family:\'Inter\',sans-serif; color:#fff;\"><div style=\"max-width:500px; width:100%; background:rgba(255,255,255,0.03); border:1px solid rgba(212,175,55,0.2); border-radius:12px; padding:40px; text-align:center; box-shadow:0 8px 32px rgba(0, 0, 0, 0.5); backdrop-filter:blur(10px);\"><div style=\"font-size:50px; margin-bottom:20px;\">🚫</div><h1 style=\"font-size:24px; font-family:\'Outfit\',sans-serif; color:#d4af37; margin-bottom:15px; text-transform:uppercase; letter-spacing:1px;\">Access Denied</h1><p style=\"font-size:14px; color:#a0aec0; line-height:1.6; margin-bottom:25px;\">Your IP address (<strong>' + geoData.ip + '</strong>) has been flagged for unusual activity or security reasons. Access to this website has been restricted.</p><div style=\"font-size:12px; color:#718096; border-top:1px solid rgba(255,255,255,0.05); padding-top:20px;\">If you believe this is an error, please contact support at<br><a href=\"mailto:vapesonlineaustralia@proton.me\" style=\"color:#d4af37; text-decoration:none; font-weight:600;\">vapesonlineaustralia@proton.me</a></div></div></div></body>';
+              }
+            }
+          }
+        }
+      } catch (e) {}
+    })();
+  </script>
+
   <!-- SEO Meta Tags -->
   <title>$title | $siteName</title>
   <meta name="description" content="$summary">
@@ -195,8 +218,8 @@ foreach ($guide in $guides) {
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   
   <!-- Styles -->
-  <link rel="stylesheet" href="../css/design_system.css?v=10">
-  <link rel="stylesheet" href="../css/main.css?v=10">
+  <link rel="stylesheet" href="../css/design_system.css?v=11">
+  <link rel="stylesheet" href="../css/main.css?v=11">
   
   <!-- Custom Article Page styling -->
   <style>

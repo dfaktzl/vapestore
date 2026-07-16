@@ -962,11 +962,12 @@ class AdminApp {
     });
   }
 
-  viewVisitorActivity(visitor) {
+  async viewVisitorActivity(visitor) {
     const modal = document.getElementById("visitor-detail-modal");
     const metaContainer = document.getElementById("visitor-modal-meta");
     const timelineContainer = document.getElementById("visitor-activity-timeline");
-    if (!modal || !metaContainer || !timelineContainer) return;
+    const actionsContainer = document.getElementById("visitor-modal-actions");
+    if (!modal || !metaContainer || !timelineContainer || !actionsContainer) return;
 
     metaContainer.innerHTML = `
       <div><strong>IP:</strong> ${escapeHTML(visitor.ip) || "Unknown"}</div>
@@ -1014,6 +1015,104 @@ class AdminApp {
         `;
         timelineContainer.appendChild(li);
       });
+    }
+
+    // Blacklist block status logic
+    actionsContainer.innerHTML = `<span style="font-size:12px; color:var(--text-muted);">Checking block status...</span>`;
+    
+    if (visitor.ip && visitor.ip !== "Unknown" && this.firebaseUrl) {
+      const sanitizedIp = visitor.ip.replace(/\./g, "-").replace(/:/g, "_");
+      
+      const renderBlockButton = async () => {
+        try {
+          const resp = await fetch(`${this.firebaseUrl}blacklist/${sanitizedIp}.json`);
+          let isBlocked = false;
+          if (resp.ok) {
+            const data = await resp.json();
+            isBlocked = data && data.blocked === true;
+          }
+          
+          actionsContainer.innerHTML = "";
+          const btn = document.createElement("button");
+          btn.style.fontSize = "11px";
+          btn.style.padding = "6px 12px";
+          btn.style.borderRadius = "4px";
+          btn.style.fontWeight = "700";
+          btn.style.cursor = "pointer";
+          btn.style.transition = "background-color 0.2s";
+          
+          if (isBlocked) {
+            btn.innerText = "✔️ Unblock IP Address";
+            btn.className = "btn-secondary";
+            btn.style.background = "#28a745";
+            btn.style.borderColor = "#28a745";
+            btn.style.color = "#fff";
+            
+            btn.addEventListener("click", async () => {
+              btn.disabled = true;
+              btn.innerText = "Processing...";
+              try {
+                const delResp = await fetch(`${this.firebaseUrl}blacklist/${sanitizedIp}.json`, {
+                  method: "DELETE"
+                });
+                if (delResp.ok) {
+                  alert(`IP address ${visitor.ip} has been unblocked.`);
+                  renderBlockButton();
+                } else {
+                  throw new Error("HTTP " + delResp.status);
+                }
+              } catch (err) {
+                alert(`Error unblocking IP: ${err.message}`);
+                btn.disabled = false;
+                btn.innerText = "✔️ Unblock IP Address";
+              }
+            });
+          } else {
+            btn.innerText = "🚫 Block IP Address";
+            btn.className = "btn-secondary";
+            btn.style.background = "#dc3545";
+            btn.style.borderColor = "#dc3545";
+            btn.style.color = "#fff";
+            
+            btn.addEventListener("click", async () => {
+              if (confirm(`Are you sure you want to block IP address ${visitor.ip} from accessing the website?`)) {
+                btn.disabled = true;
+                btn.innerText = "Processing...";
+                try {
+                  const putResp = await fetch(`${this.firebaseUrl}blacklist/${sanitizedIp}.json`, {
+                    method: "PUT",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                      blocked: true,
+                      timestamp: Date.now(),
+                      ip: visitor.ip,
+                      reason: "Banned from Admin Panel"
+                    })
+                  });
+                  if (putResp.ok) {
+                    alert(`IP address ${visitor.ip} has been blocked.`);
+                    renderBlockButton();
+                  } else {
+                    throw new Error("HTTP " + putResp.status);
+                  }
+                } catch (err) {
+                  alert(`Error blocking IP: ${err.message}`);
+                  btn.disabled = false;
+                  btn.innerText = "🚫 Block IP Address";
+                }
+              }
+            });
+          }
+          actionsContainer.appendChild(btn);
+        } catch (err) {
+          console.warn("Error loading block button:", err);
+          actionsContainer.innerHTML = `<span style="font-size:12px; color:var(--error-color);">Error checking status</span>`;
+        }
+      };
+      
+      renderBlockButton();
+    } else {
+      actionsContainer.innerHTML = `<span style="font-size:12px; color:var(--text-muted);">IP block unavailable</span>`;
     }
 
     modal.classList.add("active");
