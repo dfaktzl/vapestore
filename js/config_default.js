@@ -1,12 +1,12 @@
-﻿/* ==========================================================================
+/* ==========================================================================
    DEFAULT CATALOG AND SITE CONFIGURATION (OZCHEAPVAPES LOCAL IMAGE LINKS)
    ========================================================================== */
 
 const CONFIG_DEFAULT = {
     "seo":  {
                 "title":  "Vape 'R' Aus | Buy Cheap Vapes & Cigarettes Online Australia",
-                "description":  "Vape 'R' Aus & Smokes â€” Australia's trusted outlet for disposable vapes & cigarette cartons. Buy IGET Bar 3500, Alibarbar 8000 & 12000, Waka SoPro DM8000, HQD Cuvie Bar boxes at the lowest prices. Fast express shipping. PayID & bank transfer accepted.",
-                "keywords":  "buy vapes online australia, cheap disposable vapes australia, iget bar 3500 buy online, alibarbar vape australia, waka sopro dm8000, hqd cuvie bar box, cheap cigarettes online australia, marlboro gold carton australia, winfield blue carton, vape wholesale australia, bulk vapes perth, buy cigarette cartons online, disposable vape 8000 puffs, iget legend 4000, iget hot 5500, vape r aus"
+                "description":  "Vape 'R' Aus & Smokes — Australia's trusted outlet for disposable vapes & cigarette cartons. Buy IGET Bar 3500, Alibarbar Ingot 9000 & 12000, Waka SoPro DM8000, HQD Cuvie Bar boxes at the lowest prices. Fast express shipping. PayID & bank transfer accepted.",
+                "keywords":  "buy vapes online australia, cheap disposable vapes australia, iget bar 3500 buy online, alibarbar vape australia, waka sopro dm8000, hqd cuvie bar box, cheap cigarettes online australia, marlboro gold carton australia, winfield blue carton, vape wholesale australia, bulk vapes perth, buy cigarette cartons online, disposable vape 9000 puffs, iget legend 4000, iget hot 5500, vape r aus"
             },
     "settings":  {
                      "siteName":  "Vape 'R' Aus",
@@ -57,8 +57,8 @@ const CONFIG_DEFAULT = {
                          "brand":  "Alibarbar",
                          "name":  "Alibarbar 8000",
                          "category":  "vapes-single",
-                         "price":  44,
-                         "boxPrice":  300,
+                         "price":  50,
+                         "boxPrice":  350,
                          "isBoxOnly":  false,
                          "flavors":  [
                                          "Blue Razz Ice",
@@ -78,6 +78,35 @@ const CONFIG_DEFAULT = {
                                        "E-Liquid":  "20mL Salt Nic",
                                        "Battery":  "2000mAh (Built-in)",
                                        "Coil Type":  "1.1Î© Mesh Coil",
+                                       "Nicotine":  "5% (50mg/mL)"
+                                   },
+                         "inStock":  true,
+                         "popular":  true
+                     },
+                     {
+                         "id":  "alibarbar-ingot-9k",
+                         "brand":  "Alibarbar",
+                         "name":  "Alibarbar Ingot 9000",
+                         "category":  "vapes-single",
+                         "price":  55,
+                         "boxPrice":  400,
+                         "isBoxOnly":  false,
+                         "flavors":  [
+                                         "Strawberry Kiwi",
+                                         "Watermelon Ice",
+                                         "Blue Razz Ice",
+                                         "Triple Berry",
+                                         "Double Apple",
+                                         "Peach Mango",
+                                         "Minty Mint"
+                                     ],
+                         "image":  "img/alibarbar_9000.png",
+                         "description":  "The Alibarbar Ingot 9000 delivers up to 9,000 puffs of pure satisfaction in a premium metallic design. Equipped with advanced dual mesh coil technology and a rechargeable cobalt battery (USB Type-C) to ensure rich, consistent flavor from start to finish. Adjustable airflow control included.",
+                         "specs":  {
+                                       "Puffs":  "~9,000 Puffs",
+                                       "E-Liquid":  "18mL Salt Nic",
+                                       "Battery":  "650mAh (Type-C Recharge)",
+                                       "Coil Type":  "Dual Mesh Coil",
                                        "Nicotine":  "5% (50mg/mL)"
                                    },
                          "inStock":  true,
@@ -241,8 +270,8 @@ const CONFIG_DEFAULT = {
                          "brand":  "IGET",
                          "name":  "IGET Bar Plus (S3) 6000 Puffs",
                          "category":  "vapes-single",
-                         "price":  40,
-                         "boxPrice":  320,
+                         "price":  60,
+                         "boxPrice":  450,
                          "isBoxOnly":  false,
                          "flavors":  [
                                          "Strawberry Watermelon Ice",
@@ -268,8 +297,8 @@ const CONFIG_DEFAULT = {
                          "brand":  "Alibarbar",
                          "name":  "Alibarbar Ingot 9000 - 5-Pack Bundle",
                          "category":  "vapes-single",
-                         "price":  160,
-                         "boxPrice":  160,
+                         "price":  220,
+                         "boxPrice":  220,
                          "isBoxOnly":  false,
                          "isBundle":  true,
                          "bundleQty":  5,

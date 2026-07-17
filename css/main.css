@@ -1111,17 +1111,27 @@
   position: absolute;
   top: 20px;
   right: 20px;
-  background: transparent;
-  border: none;
-  color: var(--text-secondary);
-  font-size: 24px;
+  background: rgba(212, 175, 55, 0.1);
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  color: var(--gold-accent);
+  font-size: 26px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
-  transition: color var(--transition-fast);
+  transition: all var(--transition-fast);
   z-index: 10;
+  line-height: 1;
 }
 
 .modal-close-btn:hover {
-  color: var(--gold-accent);
+  background: var(--gold-accent);
+  color: #000;
+  border-color: var(--gold-accent);
+  transform: rotate(90deg);
 }
 
 .modal-grid {
