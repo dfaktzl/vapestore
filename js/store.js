@@ -148,7 +148,7 @@ class StoreApp {
     let baseConfig = null;
 
     try {
-      const response = await fetch("config.json?v=14");
+      const response = await fetch("config.json?v=15");
       if (response.ok) {
         baseConfig = await response.json();
         console.log("Loaded base configuration from config.json.");
@@ -268,56 +268,34 @@ class StoreApp {
         top: 0;
         width: 100vw;
         height: 100vh;
-        background: #090a0f;
+        background: #ffffff;
         display: flex;
         align-items: center;
         justify-content: center;
         z-index: 999999;
-        font-family: 'Outfit', 'Inter', sans-serif;
-        color: #fff;
+        font-family: 'Times New Roman', Times, serif;
+        color: #000000;
         padding: 20px;
         box-sizing: border-box;
       ">
-        <div class="glass-card" style="
-          max-width: 500px;
-          width: 100%;
-          background: rgba(255, 255, 255, 0.03);
-          border: 1px solid rgba(212, 175, 55, 0.2);
-          border-radius: 12px;
-          padding: 40px;
-          text-align: center;
-          box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
-          backdrop-filter: blur(10px);
-        ">
-          <div style="font-size: 50px; margin-bottom: 20px;">🚫</div>
-          <h1 style="
-            font-size: 24px;
-            font-family: 'Outfit', sans-serif;
-            color: #d4af37;
-            margin-bottom: 15px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-          ">Access Denied</h1>
-          <p style="
-            font-size: 14px;
-            color: #a0aec0;
-            line-height: 1.6;
-            margin-bottom: 25px;
-          ">
-            Your IP address (<strong>${ip}</strong>) has been flagged for attempting to be malicious or overload/bruteforce our systems. We do not take kindly to this kind of directed attack and will continue to block any other IPs we detect doing such things.
+        <div style="max-width: 600px; text-align: center;">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b8/Coat_of_Arms_of_Australia.svg/400px-Coat_of_Arms_of_Australia.svg.png" 
+               alt="Australian Coat of Arms" 
+               style="width: 200px; height: auto; margin-bottom: 25px;" />
+          <h1 style="font-size: 20px; font-weight: bold; line-height: 1.6; margin: 0 0 15px 0;">
+            The Australian Government has seized this website active immediately due to regulatory issues and other commerce failures, it is now the property of the Australian Competition & Consumer Commission (ACCC).
+          </h1>
+          <p style="font-size: 16px; line-height: 1.6; margin: 0 0 25px 0;">
+            For a period of no more or less than (60) days is it to be held as seized or until the Illicit Tobacco Taskforce (ITTF) has finished their investigation.
           </p>
-          <div style="
-            font-size: 12px;
-            color: #718096;
-            border-top: 1px solid rgba(255,255,255,0.05);
-            padding-top: 20px;
-          ">
-            If you believe this is an error, please contact support at<br>
-            <a href="mailto:vapesonlineaustralia@proton.me" style="color: #d4af37; text-decoration: none; font-weight: 600;">vapesonlineaustralia@proton.me</a>
-          </div>
+          <p style="font-size: 14px; font-style: italic; color: #555555; margin: 0;">
+            We are sorry for any inconvenience.
+          </p>
         </div>
       </div>
     `;
+    document.body.style.background = "#ffffff";
+    document.body.style.overflow = "hidden";
   }
 
   /* ==========================================================================
