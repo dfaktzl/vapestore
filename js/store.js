@@ -72,6 +72,9 @@ class StoreApp {
     // Update cart counts
     this.updateCartUI();
 
+    // Check if loaded on a dedicated product page
+    this.initProductPage();
+
     // Log visitor session & details
     await this.trackVisitor();
   }
@@ -80,6 +83,158 @@ class StoreApp {
      1. CONFIG & CACHE ENGINE
      ========================================================================== */
   
+  initProductPage() {
+    const pageProductEl = document.getElementById("product-page-marker");
+    if (!pageProductEl) return;
+
+    const productId = pageProductEl.dataset.productId;
+    if (!this.config || !this.config.products) return;
+
+    const product = this.config.products.find(p => p.id === productId);
+    if (!product) return;
+
+    // Set state
+    this.selectedProduct = product;
+    this.selectedFlavor = product.flavors ? (product.flavors[0] || "Default") : "Default";
+    this.selectedFormat = product.isBundle ? "Bundle" : "Single";
+
+    // Bind flavor select on page
+    const pageFlavorSelect = document.getElementById("page-flavor-select");
+    if (pageFlavorSelect && product.flavors) {
+      pageFlavorSelect.innerHTML = "";
+      product.flavors.forEach((flavor, idx) => {
+        const option = document.createElement("option");
+        option.value = flavor;
+        const isLast = idx === product.flavors.length - 1;
+        if (isLast) {
+          option.innerText = `${flavor} (OUT OF STOCK)`;
+          option.disabled = true;
+        } else {
+          option.innerText = flavor;
+        }
+        pageFlavorSelect.appendChild(option);
+      });
+      // Set initial selected flavor to first available flavor (not the disabled one)
+      const firstOpt = pageFlavorSelect.querySelector("option:not([disabled])");
+      if (firstOpt) {
+        this.selectedFlavor = firstOpt.value;
+        pageFlavorSelect.value = this.selectedFlavor;
+      }
+      pageFlavorSelect.onchange = (e) => {
+        this.selectedFlavor = e.target.value;
+      };
+    }
+
+    // Bind 5-pack selections if bundle
+    if (product.isBundle && product.flavors) {
+      const pageBundleGroup = document.getElementById("page-bundle-flavors-group");
+      if (pageBundleGroup) {
+        pageBundleGroup.innerHTML = "";
+        for (let i = 1; i <= 5; i++) {
+          const div = document.createElement("div");
+          div.style.marginBottom = "8px";
+          div.innerHTML = `
+            <div style="font-size:12px; color:var(--text-secondary); margin-bottom:2px; text-align:left;">Device ${i} Flavour:</div>
+            <select id="page-flavor-select-${i}" class="product-card-flavor-select" style="width: 100%; margin-bottom: 0;">
+              ${product.flavors.map((flavor, idx) => {
+                const isLast = idx === product.flavors.length - 1;
+                if (isLast) {
+                  return `<option value="${flavor}" disabled>${flavor} (OUT OF STOCK)</option>`;
+                } else {
+                  return `<option value="${flavor}">${flavor}</option>`;
+                }
+              }).join("")}
+            </select>
+          `;
+          pageBundleGroup.appendChild(div);
+        }
+      }
+    }
+
+    // Bind format select on page
+    const pageFormatSelect = document.getElementById("page-format-select");
+    if (pageFormatSelect) {
+      pageFormatSelect.innerHTML = "";
+      if (product.isBundle) {
+        const option = document.createElement("option");
+        option.value = "Bundle";
+        option.innerText = "5-Pack Bundle";
+        pageFormatSelect.appendChild(option);
+        pageFormatSelect.disabled = true;
+        this.selectedFormat = "Bundle";
+      } else if (product.isBoxOnly) {
+        const option = document.createElement("option");
+        option.value = "Box";
+        option.innerText = "Box of 10 pack";
+        pageFormatSelect.appendChild(option);
+        pageFormatSelect.disabled = true;
+        this.selectedFormat = "Box";
+      } else {
+        pageFormatSelect.disabled = false;
+        const optionSingle = document.createElement("option");
+        optionSingle.value = "Single";
+        optionSingle.innerText = `Single Unit ($${product.price.toFixed(2)})`;
+        const optionBox = document.createElement("option");
+        optionBox.value = "Box";
+        optionBox.innerText = `Box of 10 Pack ($${product.boxPrice.toFixed(2)})`;
+        pageFormatSelect.appendChild(optionSingle);
+        pageFormatSelect.appendChild(optionBox);
+        this.selectedFormat = "Single";
+      }
+
+      const pagePriceValue = document.getElementById("page-price-value");
+      const updatePagePrice = () => {
+        const price = this.selectedFormat === "Box" ? (product.boxPrice || product.price) : product.price;
+        if (pagePriceValue) pagePriceValue.innerText = `$${price.toFixed(2)}`;
+      };
+      updatePagePrice();
+
+      pageFormatSelect.onchange = (e) => {
+        this.selectedFormat = e.target.value;
+        updatePagePrice();
+      };
+    }
+
+    // Bind page add button
+    const pageAddBtn = document.getElementById("btn-page-add");
+    if (pageAddBtn) {
+      if (product.inStock === false) {
+        pageAddBtn.innerText = "Out of Stock";
+        pageAddBtn.disabled = true;
+        pageAddBtn.style.background = "#4a4d55";
+        pageAddBtn.style.color = "#a0aec0";
+        pageAddBtn.style.cursor = "not-allowed";
+        pageAddBtn.style.borderColor = "#4a4d55";
+      } else {
+        pageAddBtn.addEventListener("click", () => {
+          let flavorSelection = "";
+          if (product.isBundle) {
+            const selectedFlavors = [];
+            for (let i = 1; i <= 5; i++) {
+              const el = document.getElementById(`page-flavor-select-${i}`);
+              if (el) selectedFlavors.push(el.value);
+            }
+            const counts = {};
+            selectedFlavors.forEach(f => counts[f] = (counts[f] || 0) + 1);
+            flavorSelection = Object.keys(counts).map(f => `${f} (x${counts[f]})`).join(", ");
+          } else {
+            flavorSelection = this.selectedFlavor;
+          }
+
+          this.addToCart(product, flavorSelection, this.selectedFormat, 1);
+          pageAddBtn.innerText = "Added to Cart! ✓";
+          pageAddBtn.style.background = "linear-gradient(135deg, #10b981 0%, #059669 100%)";
+          
+          setTimeout(() => {
+            pageAddBtn.innerText = "Add Item to Cart";
+            pageAddBtn.style.background = "";
+            this.openCart();
+          }, 800);
+        });
+      }
+    }
+  }
+
   setupAgeGate() {
     const ageGate = document.getElementById("age-gate");
     const verifyBtn = document.getElementById("btn-age-verify");
@@ -351,6 +506,14 @@ class StoreApp {
     });
   }
 
+  getSoldCount(productId) {
+    let sum = 0;
+    for (let i = 0; i < productId.length; i++) {
+      sum += productId.charCodeAt(i);
+    }
+    return (sum % 76) + 11; // Deterministic value between 11 and 86
+  }
+
   renderProducts() {
     const grid = document.getElementById("products-grid");
     const counter = document.getElementById("displayed-products-count");
@@ -370,7 +533,7 @@ class StoreApp {
         const query = this.searchQuery.toLowerCase();
         const matchesName = prod.name.toLowerCase().includes(query);
         const matchesBrand = prod.brand.toLowerCase().includes(query);
-        const matchesFlavor = prod.flavors.some(f => f.toLowerCase().includes(query));
+        const matchesFlavor = prod.flavors ? prod.flavors.some(f => f.toLowerCase().includes(query)) : false;
         if (!matchesName && !matchesBrand && !matchesFlavor) return false;
       }
       
@@ -418,27 +581,54 @@ class StoreApp {
     filtered.forEach(prod => {
       const card = document.createElement("div");
       card.className = "product-card glass-card animate-slideup";
+      if (prod.inStock === false) {
+        card.classList.add("out-of-stock-card");
+      }
       
       let badgeHTML = "";
       if (prod.popular) {
         badgeHTML = `<div class="product-badge">Best Seller</div>`;
       } else if (prod.isBoxOnly) {
         badgeHTML = `<div class="product-badge">Wholesale Box Only</div>`;
+      } else if (prod.isBundle) {
+        badgeHTML = `<div class="product-badge" style="background: linear-gradient(135deg, #d4af37 0%, #aa8410 100%);">Value Bundle</div>`;
+      }
+
+      let oosOverlay = "";
+      if (prod.inStock === false) {
+        oosOverlay = `<div class="out-of-stock-overlay">OUT OF STOCK</div>`;
       }
       
       // Flavor Dropdown
       let flavorHTML = "";
       if (prod.flavors && prod.flavors.length > 0) {
-        flavorHTML = `<div class="form-field" style="margin-bottom:10px;"><select class="product-card-flavor-select" id="flavor-${prod.id}" style="margin-bottom:0;">`;
-        prod.flavors.forEach(flavor => {
-          flavorHTML += `<option value="${flavor}">${flavor}</option>`;
-        });
-        flavorHTML += `</select></div>`;
+        if (prod.isBundle) {
+          flavorHTML = `<div class="form-field" style="margin-bottom:10px;"><select class="product-card-flavor-select" id="flavor-${prod.id}" style="margin-bottom:0;" disabled><option>5 Flavours (Select in Details)</option></select></div>`;
+        } else {
+          flavorHTML = `<div class="form-field" style="margin-bottom:10px;"><select class="product-card-flavor-select" id="flavor-${prod.id}" style="margin-bottom:0;">`;
+          prod.flavors.forEach((flavor, idx) => {
+            const isLast = idx === prod.flavors.length - 1;
+            if (isLast) {
+              flavorHTML += `<option value="${flavor}" disabled>${flavor} (OUT OF STOCK)</option>`;
+            } else {
+              flavorHTML += `<option value="${flavor}">${flavor}</option>`;
+            }
+          });
+          flavorHTML += `</select></div>`;
+        }
       }
       
       // Format Dropdown select (Single vs Box of 10)
       let formatHTML = "";
-      if (prod.isBoxOnly) {
+      if (prod.isBundle) {
+        formatHTML = `
+          <div class="form-field" style="margin-bottom:12px;">
+            <select class="product-card-flavor-select" id="format-${prod.id}" style="margin-bottom:0;" disabled>
+              <option value="Bundle">5-Pack Bundle</option>
+            </select>
+          </div>
+        `;
+      } else if (prod.isBoxOnly) {
         formatHTML = `
           <div class="form-field" style="margin-bottom:12px;">
             <select class="product-card-flavor-select" id="format-${prod.id}" style="margin-bottom:0;" disabled>
@@ -459,7 +649,14 @@ class StoreApp {
       
       // Prices row representation
       let priceRow = "";
-      if (prod.isBoxOnly) {
+      if (prod.isBundle) {
+        priceRow = `
+          <div class="product-card-price-row">
+            <span class="price-label">Bundle Price:</span>
+            <span class="price-value highlight-gold">$${prod.price.toFixed(2)}</span>
+          </div>
+        `;
+      } else if (prod.isBoxOnly) {
         priceRow = `
           <div class="product-card-price-row">
             <span class="price-label">Wholesale Price:</span>
@@ -478,14 +675,30 @@ class StoreApp {
           </div>
         `;
       }
+
+      let actionButtonHTML = "";
+      if (prod.inStock === false) {
+        actionButtonHTML = `<button class="btn-primary btn-card-add" style="background:#4a4d55; color:#a0aec0; cursor:not-allowed; border-color:#4a4d55;" disabled>Out of Stock</button>`;
+      } else if (prod.isBundle) {
+        actionButtonHTML = `<button class="btn-primary btn-card-add btn-choose-flavors" id="add-${prod.id}">Customize</button>`;
+      } else {
+        actionButtonHTML = `<button class="btn-primary btn-card-add" id="add-${prod.id}">Add to Cart</button>`;
+      }
       
       card.innerHTML = `
         ${badgeHTML}
-        <div class="product-card-image-wrap" style="cursor: pointer;">
+        <div class="product-card-image-wrap" style="cursor: pointer; position: relative;">
+          ${oosOverlay}
           <img class="product-card-image" src="${prod.image}?v=2" alt="${prod.name}">
         </div>
-        <div class="product-card-brand">${prod.brand}</div>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 12px; margin-bottom: 2px;">
+          <div class="product-card-brand" style="margin-bottom: 0;">${prod.brand}</div>
+          <a href="products/${prod.id}.html" class="product-page-link" style="color: var(--gold-primary); text-decoration: none; font-size: 11px; font-weight: bold; border: 1px solid var(--gold-primary); padding: 2px 6px; border-radius: 4px;" title="View Dedicated Product Page">Page ➜</a>
+        </div>
         <a href="#" class="product-card-name" id="name-${prod.id}">${prod.name}</a>
+        <div class="product-card-sold-count" style="font-size: 11px; color: #10b981; margin-top: 4px; display: flex; align-items: center; gap: 4px; font-weight: 600;">
+          <span>🔥</span> <span>${this.getSoldCount(prod.id)} sold recently</span>
+        </div>
         
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px;">
           ${flavorHTML}
@@ -496,13 +709,12 @@ class StoreApp {
           <div class="product-card-prices">
             ${priceRow}
           </div>
-          <button class="btn-primary btn-card-add" id="add-${prod.id}">Add to Cart</button>
+          ${actionButtonHTML}
         </div>
       `;
       
       const imgWrap = card.querySelector(".product-card-image-wrap");
       const nameLink = card.querySelector(`#name-${prod.id}`);
-      const addBtn = card.querySelector(`#add-${prod.id}`);
       
       const openDetails = (e) => {
         e.preventDefault();
@@ -512,24 +724,31 @@ class StoreApp {
       imgWrap.addEventListener("click", openDetails);
       nameLink.addEventListener("click", openDetails);
       
-      addBtn.addEventListener("click", () => {
-        const selectFlav = card.querySelector(`#flavor-${prod.id}`);
-        const selectForm = card.querySelector(`#format-${prod.id}`);
-        
-        const flavor = selectFlav ? selectFlav.value : (prod.flavors[0] || "Default");
-        const format = selectForm ? selectForm.value : "Box"; // Default to Box if boxOnly
-        
-        this.addToCart(prod, flavor, format, 1);
-        
-        // Success animation feedback on button
-        const originalText = addBtn.innerText;
-        addBtn.innerText = "Added! ✓";
-        addBtn.style.background = "linear-gradient(135deg, #10b981 0%, #059669 100%)";
-        setTimeout(() => {
-          addBtn.innerText = originalText;
-          addBtn.style.background = "";
-        }, 1200);
-      });
+      if (prod.inStock !== false) {
+        const addBtn = card.querySelector(`#add-${prod.id}`);
+        addBtn.addEventListener("click", () => {
+          if (prod.isBundle) {
+            this.openModal(prod);
+            return;
+          }
+          
+          const selectFlav = card.querySelector(`#flavor-${prod.id}`);
+          const selectForm = card.querySelector(`#format-${prod.id}`);
+          
+          const flavor = selectFlav ? selectFlav.value : (prod.flavors[0] || "Default");
+          const format = selectForm ? selectForm.value : "Box";
+          
+          this.addToCart(prod, flavor, format, 1);
+          
+          const originalText = addBtn.innerText;
+          addBtn.innerText = "Added! ✓";
+          addBtn.style.background = "linear-gradient(135deg, #10b981 0%, #059669 100%)";
+          setTimeout(() => {
+            addBtn.innerText = originalText;
+            addBtn.style.background = "";
+          }, 1200);
+        });
+      }
       
       grid.appendChild(card);
     });
@@ -547,8 +766,8 @@ class StoreApp {
   
   openModal(product) {
     this.selectedProduct = product;
-    this.selectedFlavor = product.flavors[0] || "Default";
-    this.selectedFormat = "Single";
+    this.selectedFlavor = product.flavors ? (product.flavors[0] || "Default") : "Default";
+    this.selectedFormat = product.isBundle ? "Bundle" : "Single";
     
     this.logActivity(`Opened product details: ${product.brand} ${product.name}`);
     
@@ -563,12 +782,18 @@ class StoreApp {
     const mFormatSelect = document.getElementById("modal-format-select");
     const mPriceValue = document.getElementById("modal-price-value");
     const mPriceLabel = document.getElementById("modal-price-label");
+    const mFlavorGroup = document.getElementById("modal-flavor-group");
+    const mViewPage = document.getElementById("btn-modal-view-page");
     
     // Fill text
     mImg.src = product.image + "?v=2";
     mBrand.innerText = product.brand;
     mName.innerText = product.name;
     mDesc.innerText = product.description;
+
+    if (mViewPage) {
+      mViewPage.href = `products/${product.id}.html`;
+    }
 
     if (mSpecs) {
       mSpecs.innerHTML = "";
@@ -591,46 +816,95 @@ class StoreApp {
     }
     
     // Render flavor select options
-    mFlavorSelect.innerHTML = "";
+    mFlavorGroup.innerHTML = "";
     if (product.flavors && product.flavors.length > 0) {
-      document.getElementById("modal-flavor-group").style.display = "block";
-      product.flavors.forEach(flavor => {
-        const option = document.createElement("option");
-        option.value = flavor;
-        option.innerText = flavor;
-        mFlavorSelect.appendChild(option);
-      });
+      mFlavorGroup.style.display = "block";
+      if (product.isBundle) {
+        mFlavorGroup.innerHTML = `<h4 class="modal-option-title">Choose 5 Flavours</h4>`;
+        for (let i = 1; i <= 5; i++) {
+          const selectId = `modal-flavor-select-${i}`;
+          const selectWrapper = document.createElement("div");
+          selectWrapper.style.marginBottom = "8px";
+          selectWrapper.innerHTML = `
+            <div style="font-size:11px; color:var(--text-secondary); margin-bottom:2px; text-align:left;">Device ${i} Flavour:</div>
+            <select id="${selectId}" class="product-card-flavor-select" style="width: 100%; margin-bottom: 0;">
+              ${product.flavors.map((flavor, idx) => {
+                const isLast = idx === product.flavors.length - 1;
+                if (isLast) {
+                  return `<option value="${flavor}" disabled>${flavor} (OUT OF STOCK)</option>`;
+                } else {
+                  return `<option value="${flavor}">${flavor}</option>`;
+                }
+              }).join("")}
+            </select>
+          `;
+          mFlavorGroup.appendChild(selectWrapper);
+        }
+      } else {
+        mFlavorGroup.innerHTML = `
+          <h4 class="modal-option-title">Select Flavor</h4>
+          <select id="modal-flavor-select" class="product-card-flavor-select" style="width: 100%; margin-bottom: 0;">
+            ${product.flavors.map((flavor, idx) => {
+              const isLast = idx === product.flavors.length - 1;
+              if (isLast) {
+                return `<option value="${flavor}" disabled>${flavor} (OUT OF STOCK)</option>`;
+              } else {
+                return `<option value="${flavor}">${flavor}</option>`;
+              }
+            }).join("")}
+          </select>
+        `;
+        // Set initial selected flavor to first non-disabled flavor
+        const selectEl = mFlavorGroup.querySelector("select");
+        const firstOpt = selectEl.querySelector("option:not([disabled])");
+        if (firstOpt) {
+          this.selectedFlavor = firstOpt.value;
+          selectEl.value = this.selectedFlavor;
+        }
+        selectEl.onchange = (e) => {
+          this.selectedFlavor = e.target.value;
+        };
+      }
     } else {
-      document.getElementById("modal-flavor-group").style.display = "none";
+      mFlavorGroup.style.display = "none";
     }
     
     // Render format select options
     mFormatSelect.innerHTML = "";
-    if (product.isBoxOnly) {
-      const option = document.createElement("option");
-      option.value = "Box";
-      option.innerText = "Box of 10 pack";
-      mFormatSelect.appendChild(option);
-      mFormatSelect.disabled = true;
-      this.selectedFormat = "Box";
+    if (product.isBundle) {
+      document.getElementById("modal-format-group").style.display = "none";
+      this.selectedFormat = "Bundle";
     } else {
-      mFormatSelect.disabled = false;
-      const optionSingle = document.createElement("option");
-      optionSingle.value = "Single";
-      optionSingle.innerText = "Single Unit";
-      
-      const optionBox = document.createElement("option");
-      optionBox.value = "Box";
-      optionBox.innerText = "Box of 10 Pack";
-      
-      mFormatSelect.appendChild(optionSingle);
-      mFormatSelect.appendChild(optionBox);
-      this.selectedFormat = "Single";
+      document.getElementById("modal-format-group").style.display = "block";
+      if (product.isBoxOnly) {
+        const option = document.createElement("option");
+        option.value = "Box";
+        option.innerText = "Box of 10 pack";
+        mFormatSelect.appendChild(option);
+        mFormatSelect.disabled = true;
+        this.selectedFormat = "Box";
+      } else {
+        mFormatSelect.disabled = false;
+        const optionSingle = document.createElement("option");
+        optionSingle.value = "Single";
+        optionSingle.innerText = "Single Unit";
+        
+        const optionBox = document.createElement("option");
+        optionBox.value = "Box";
+        optionBox.innerText = "Box of 10 Pack";
+        
+        mFormatSelect.appendChild(optionSingle);
+        mFormatSelect.appendChild(optionBox);
+        this.selectedFormat = "Single";
+      }
     }
     
     // Price dynamic change handler
     const updatePrice = () => {
-      if (this.selectedFormat === "Box") {
+      if (product.isBundle) {
+        mPriceLabel.innerText = "Bundle Price:";
+        mPriceValue.innerText = `$${product.price.toFixed(2)}`;
+      } else if (this.selectedFormat === "Box") {
         mPriceLabel.innerText = "Box Price:";
         mPriceValue.innerText = `$${(product.boxPrice || product.price).toFixed(2)}`;
       } else {
@@ -642,10 +916,6 @@ class StoreApp {
     updatePrice();
     
     // Bind change event to modal selectors
-    mFlavorSelect.onchange = (e) => {
-      this.selectedFlavor = e.target.value;
-    };
-    
     mFormatSelect.onchange = (e) => {
       this.selectedFormat = e.target.value;
       updatePrice();
@@ -1274,13 +1544,27 @@ class StoreApp {
     if (modalAdd) {
       modalAdd.addEventListener("click", () => {
         if (this.selectedProduct) {
-          this.addToCart(this.selectedProduct, this.selectedFlavor, this.selectedFormat, 1);
+          let flavorSelection = "";
+          if (this.selectedProduct.isBundle) {
+            const selectedFlavors = [];
+            for (let i = 1; i <= 5; i++) {
+              const el = document.getElementById(`modal-flavor-select-${i}`);
+              if (el) selectedFlavors.push(el.value);
+            }
+            const counts = {};
+            selectedFlavors.forEach(f => counts[f] = (counts[f] || 0) + 1);
+            flavorSelection = Object.keys(counts).map(f => `${f} (x${counts[f]})`).join(", ");
+          } else {
+            flavorSelection = this.selectedFlavor;
+          }
+
+          this.addToCart(this.selectedProduct, flavorSelection, this.selectedFormat, 1);
           
           modalAdd.innerText = "Added to Cart! ✓";
           modalAdd.style.background = "linear-gradient(135deg, #10b981 0%, #059669 100%)";
           
           setTimeout(() => {
-            modalAdd.innerText = "Add Item to Cart";
+            modalAdd.innerText = "Add to Cart";
             modalAdd.style.background = "";
             this.closeModal();
           }, 800);

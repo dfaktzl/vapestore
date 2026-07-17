@@ -491,7 +491,7 @@
 .product-card:hover {
   transform: translateY(-5px);
   border-color: var(--gold-accent);
-  box-shadow: var(--shadow-lg), 0 0 15px rgba(212, 175, 55, 0.05);
+  box-shadow: var(--shadow-lg), 0 0 15px rgba(212, 175, 55, 0.2);
 }
 
 .product-badge {
@@ -534,6 +534,31 @@
 
 .product-card:hover .product-card-image {
   transform: scale(1.05);
+}
+
+.out-of-stock-card {
+  filter: grayscale(0.2);
+  opacity: 0.85;
+}
+
+.out-of-stock-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.65);
+  color: #ef4444;
+  font-family: var(--font-title);
+  font-weight: 900;
+  font-size: 16px;
+  letter-spacing: 0.1em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 4;
+  pointer-events: none;
+  text-shadow: 0 0 8px rgba(0,0,0,0.8);
 }
 
 .product-card-brand {

@@ -343,6 +343,7 @@ class AdminApp {
     document.getElementById("set-emailjs-public").value = this.config.settings.emailjsPublicKey || "";
     document.getElementById("set-emailjs-contact-template").value = this.config.settings.emailjsContactTemplateId || "";
     document.getElementById("set-emailjs-order-template").value = this.config.settings.emailjsOrderTemplateId || "";
+    document.getElementById("set-emailjs-payment-received-template").value = this.config.settings.emailjsPaymentReceivedTemplateId || "";
 
     // Admin password field if present
     const adminPassField = document.getElementById("set-admin-password");
@@ -372,6 +373,7 @@ class AdminApp {
     this.config.settings.emailjsPublicKey = document.getElementById("set-emailjs-public").value.trim();
     this.config.settings.emailjsContactTemplateId = document.getElementById("set-emailjs-contact-template").value.trim();
     this.config.settings.emailjsOrderTemplateId = document.getElementById("set-emailjs-order-template").value.trim();
+    this.config.settings.emailjsPaymentReceivedTemplateId = document.getElementById("set-emailjs-payment-received-template").value.trim();
 
     // Refresh Firebase URL after URL field may have changed
     this.firebaseUrl = this._resolveFirebaseUrl();
@@ -766,9 +768,14 @@ class AdminApp {
                 </tr>
               </tfoot>
             </table>
-            <button class="btn-primary compose-email-btn" data-order-id="${order.orderId}" style="margin-top: 15px; width: 100%; font-size: 11px; height: 32px; padding: 0 10px; display: flex; align-items: center; justify-content: center; gap: 6px; font-weight: 700;">
-              ✉️ Open Thunderbird / Mail Compose
-            </button>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 15px;">
+              <button class="btn-primary send-reminder-email-btn" data-order-id="${order.orderId}" style="font-size: 11px; height: 32px; padding: 0 10px; display: flex; align-items: center; justify-content: center; gap: 4px; font-weight: 700; cursor: pointer; border-radius: 4px;">
+                ✉️ Send Reminder
+              </button>
+              <button class="btn-secondary send-confirmed-email-btn" data-order-id="${order.orderId}" style="font-size: 11px; height: 32px; padding: 0 10px; display: flex; align-items: center; justify-content: center; gap: 4px; font-weight: 700; cursor: pointer; border-color: #10b981; color: #10b981; margin:0; border-radius: 4px; background: transparent;">
+                ✉️ Send Receipt
+              </button>
+            </div>
           </div>
         </div>
       `;
@@ -782,8 +789,11 @@ class AdminApp {
     container.querySelectorAll(".delete-order-btn").forEach(btn => {
       btn.addEventListener("click", (e) => this.deleteOrder(e.currentTarget.dataset.orderId));
     });
-    container.querySelectorAll(".compose-email-btn").forEach(btn => {
-      btn.addEventListener("click", (e) => this.composeThunderbirdMail(e.currentTarget.dataset.orderId));
+    container.querySelectorAll(".send-reminder-email-btn").forEach(btn => {
+      btn.addEventListener("click", (e) => this.sendReminderEmail(e.currentTarget.dataset.orderId, e.currentTarget));
+    });
+    container.querySelectorAll(".send-confirmed-email-btn").forEach(btn => {
+      btn.addEventListener("click", (e) => this.sendConfirmedEmail(e.currentTarget.dataset.orderId, e.currentTarget));
     });
   }
 
@@ -1118,13 +1128,17 @@ class AdminApp {
     modal.classList.add("active");
   }
 
-  composeThunderbirdMail(orderId) {
+  async sendReminderEmail(orderId, btn) {
     const order = this.orders.find(o => o.orderId === orderId);
     if (!order) return;
 
+    const originalText = btn.innerText;
+    btn.disabled = true;
+    btn.innerText = "⏳ Sending...";
+
     const bank = this.config.settings.bankDetails || {
       payId: "vapesonlineaustralia@proton.me",
-      bankName: "NAB (National Australia Bank)",
+      bankName: "NAB - National Australia Bank",
       accountName: "Vapes Discount Australia",
       bsb: "086-724",
       accountNumber: "91-591-6658"
@@ -1138,58 +1152,125 @@ class AdminApp {
         subtotal += itemTotal;
         const flavorText = item.flavor ? ` (${item.flavor})` : "";
         const formatText = item.format ? ` [${item.format}]` : "";
-        itemsText += `- ${item.quantity}x ${item.name}${flavorText}${formatText} - $${itemTotal.toFixed(2)}\n`;
+        itemsText += `${item.quantity}x ${item.name}${flavorText}${formatText} - $${itemTotal.toFixed(2)}\n`;
       });
     }
-
     const orderTotal = parseFloat(order.total || 0);
-    const shippingFee = orderTotal >= 150 ? 0 : 15;
 
-    const bodyText = `G'day ${order.customer.name},
+    const templateParams = {
+      order_id: order.orderId,
+      ref_code: order.refCode,
+      customer_name: order.customer.name,
+      customer_email: order.customer.email,
+      customer_phone: order.customer.phone || "",
+      customer_address: order.customer.address,
+      customer_notes: order.customer.notes || "",
+      order_items: itemsText,
+      total_price: `$${orderTotal.toFixed(2)}`,
+      payid: bank.payId,
+      bank_name: bank.bankName,
+      account_name: bank.accountName,
+      bsb: bank.bsb,
+      account_number: bank.accountNumber
+    };
 
-We're so glad you chose Vape 'R' Aus — thank you for your order! Since automatic email receipts can sometimes be delayed or blocked by spam filters, we're personally sending this confirmation so you have everything you need to complete your payment and get your order on the way.
+    try {
+      const serviceId = this.config.settings.emailjsServiceId;
+      const templateId = this.config.settings.emailjsOrderTemplateId;
+      const publicKey = this.config.settings.emailjsPublicKey;
 
-- - - - - - - - - - - - - - - - - - - - - - - - - - - -
-PAYMENT INSTRUCTIONS
-- - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      if (!serviceId || !templateId || !publicKey) {
+        throw new Error("EmailJS configurations are incomplete under SEO & Bank Settings.");
+      }
 
-Option 1: PayID (Instant Verification)
-PayID Email: ${bank.payId}
+      if (typeof emailjs === "undefined") {
+        throw new Error("EmailJS library not loaded. Check internet connection.");
+      }
 
-Option 2: Bank Transfer (Standard Transfer)
-- Bank Name: ${bank.bankName}
-- Account Name: ${bank.accountName}
-- BSB: ${bank.bsb}
-- Account Number: ${bank.accountNumber}
+      emailjs.init({ publicKey: publicKey.trim() });
+      const resp = await emailjs.send(serviceId.trim(), templateId.trim(), templateParams);
+      if (resp.status === 200) {
+        alert("✉️ Payment Reminder Email sent successfully via EmailJS!");
+        btn.innerText = "✓ Sent!";
+        btn.style.background = "#10b981";
+      } else {
+        throw new Error("Status code " + resp.status);
+      }
+    } catch(err) {
+      console.error("Failed to send EmailJS Reminder:", err);
+      alert("❌ Failed to send Payment Reminder: " + err.message);
+      btn.innerText = originalText;
+      btn.disabled = false;
+    }
+  }
 
-IMPORTANT: Please use the Order Reference: ${order.refCode} in your transaction description to avoid delivery verification delays.
+  async sendConfirmedEmail(orderId, btn) {
+    const order = this.orders.find(o => o.orderId === orderId);
+    if (!order) return;
 
-We apologise — due to regulation and other legal requirements, we are unable to accept Visa/Mastercard/Amex payments at this time. We'll be sure to let you know if that changes in the future! Once payment is processed, we'll have your order packed and shipped from Melbourne within 48 hours.
-
-- - - - - - - - - - - - - - - - - - - - - - - - - - - -
-ORDER SUMMARY
-- - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-Order ID: #${order.orderId}
-Reference Code: ${order.refCode}
-
-Items:
-${itemsText}
-Subtotal: $${subtotal.toFixed(2)}
-Shipping: ${shippingFee === 0 ? "Free Express" : `$${shippingFee.toFixed(2)}`}
-Total Payable: $${orderTotal.toFixed(2)}
-
-Thank you so much for supporting Vape 'R' Aus — we truly appreciate it!
-For any questions, feel free to reply to this email or reach us at ${this.config.settings.contactEmail || "vapesonlineaustralia@proton.me"}.
-
-Warm Regards,
-Vape 'R' Aus Team`;
-
-    const subject = `Order Confirmation & Payment Instructions — #${order.orderId}`;
-    const mailtoUrl = `mailto:${order.customer.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(bodyText)}`;
+    const originalText = btn.innerText;
     
-    // Open in user's default email client (Thunderbird)
-    window.location.href = mailtoUrl;
+    const serviceId = this.config.settings.emailjsServiceId;
+    const templateId = this.config.settings.emailjsPaymentReceivedTemplateId;
+    const publicKey = this.config.settings.emailjsPublicKey;
+
+    if (!templateId) {
+      alert("⚠️ Please configure the 'EmailJS Payment Received Template ID' inside the SEO & Bank Settings tab first.");
+      return;
+    }
+
+    btn.disabled = true;
+    btn.innerText = "⏳ Sending...";
+
+    let itemsText = "";
+    let subtotal = 0;
+    if (order.items && Array.isArray(order.items)) {
+      order.items.forEach(item => {
+        const itemTotal = parseFloat(item.total || 0);
+        subtotal += itemTotal;
+        const flavorText = item.flavor ? ` (${item.flavor})` : "";
+        const formatText = item.format ? ` [${item.format}]` : "";
+        itemsText += `${item.quantity}x ${item.name}${flavorText}${formatText} - $${itemTotal.toFixed(2)}\n`;
+      });
+    }
+    const orderTotal = parseFloat(order.total || 0);
+
+    const templateParams = {
+      order_id: order.orderId,
+      ref_code: order.refCode,
+      customer_name: order.customer.name,
+      customer_email: order.customer.email,
+      customer_phone: order.customer.phone || "",
+      customer_address: order.customer.address,
+      customer_notes: order.customer.notes || "",
+      order_items: itemsText,
+      total_price: `$${orderTotal.toFixed(2)}`
+    };
+
+    try {
+      if (!serviceId || !publicKey) {
+        throw new Error("EmailJS configurations are incomplete under SEO & Bank Settings.");
+      }
+
+      if (typeof emailjs === "undefined") {
+        throw new Error("EmailJS library not loaded. Check internet connection.");
+      }
+
+      emailjs.init({ publicKey: publicKey.trim() });
+      const resp = await emailjs.send(serviceId.trim(), templateId.trim(), templateParams);
+      if (resp.status === 200) {
+        alert("✉️ Payment Received Email sent successfully via EmailJS!");
+        btn.innerText = "✓ Sent!";
+        btn.style.background = "#10b981";
+      } else {
+        throw new Error("Status code " + resp.status);
+      }
+    } catch(err) {
+      console.error("Failed to send EmailJS Received confirmation:", err);
+      alert("❌ Failed to send Payment Received confirmation: " + err.message);
+      btn.innerText = originalText;
+      btn.disabled = false;
+    }
   }
 
   async clearVisitors() {
@@ -1203,6 +1284,172 @@ Vape 'R' Aus Team`;
         console.error("Cloud database clear failed:", err);
         alert("Failed to clear visitor logs: " + err.message);
       }
+    }
+  }
+
+  async loadUsersDirectory() {
+    const tbody = document.getElementById("users-directory-tbody");
+    if (!tbody) return;
+
+    tbody.innerHTML = `
+      <tr>
+        <td colspan="7" style="padding: 30px; text-align: center; color: var(--text-secondary);">
+          <div class="loading-spinner" style="margin: 0 auto 10px auto;"></div>
+          Fetching and aggregating user records...
+        </td>
+      </tr>
+    `;
+
+    try {
+      const syncUrl = this.config?.settings?.orderSyncUrl?.trim();
+      if (!syncUrl) {
+        throw new Error("Cloud database URL is not configured.");
+      }
+      const cleanUrl = syncUrl.endsWith("/") ? syncUrl : syncUrl + "/";
+      const resp = await fetch(cleanUrl + "visits.json");
+      if (!resp.ok) throw new Error("Database responded with status " + resp.status);
+
+      const visitsObj = await resp.json();
+      if (!visitsObj) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="7" style="padding: 30px; text-align: center; color: var(--text-secondary);">
+              No visitor sessions recorded yet.
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      // Group visits by visitorId
+      const usersMap = {};
+      Object.keys(visitsObj).forEach(key => {
+        const visit = visitsObj[key];
+        const vId = visit.visitorId || "Unknown";
+        if (!usersMap[vId]) {
+          usersMap[vId] = {
+            visitorId: vId,
+            sessions: [],
+            ip: visit.ip || "Unknown",
+            geo: visit.geo || null,
+            userAgent: visit.userAgent || "Unknown",
+            lastActivity: 0
+          };
+        }
+
+        // Add visit record
+        usersMap[vId].sessions.push(visit);
+
+        // Update last activity
+        const time = visit.timestamp || 0;
+        if (time > usersMap[vId].lastActivity) {
+          usersMap[vId].lastActivity = time;
+          // Capture latest session meta
+          if (visit.ip) usersMap[vId].ip = visit.ip;
+          if (visit.geo) usersMap[vId].geo = visit.geo;
+          if (visit.userAgent) usersMap[vId].userAgent = visit.userAgent;
+        }
+      });
+
+      const usersList = Object.values(usersMap);
+      // Sort users by last activity desc
+      usersList.sort((a, b) => b.lastActivity - a.lastActivity);
+
+      tbody.innerHTML = "";
+      usersList.forEach(user => {
+        const row = document.createElement("tr");
+
+        // Format short visitorId code
+        const shortId = user.visitorId.substring(0, 8).toUpperCase();
+
+        // Count unique sessions
+        const sessionCount = user.sessions.length;
+
+        // Geo details
+        let geoText = "Unknown";
+        let ispText = "Unknown";
+        if (user.geo) {
+          const city = user.geo.city || "";
+          const country = user.geo.country || "";
+          geoText = [city, country].filter(Boolean).join(", ") || "Unknown";
+          ispText = user.geo.org || user.geo.asn || "Unknown";
+        }
+
+        // Browser agent simplifier
+        let browserName = "Unknown";
+        const ua = user.userAgent.toLowerCase();
+        if (ua.includes("firefox")) browserName = "Firefox";
+        else if (ua.includes("chrome")) browserName = "Chrome";
+        else if (ua.includes("safari")) browserName = "Safari";
+        else if (ua.includes("edge")) browserName = "Edge";
+        else if (ua.includes("opera")) browserName = "Opera";
+        else browserName = "Mobile/Other";
+
+        row.innerHTML = `
+          <td><strong style="color: var(--gold-accent); font-family: monospace;">USR-${shortId}</strong></td>
+          <td><span class="status-badge status-approved" style="background: rgba(212,175,55,0.15); color: var(--gold-light); font-weight: bold; padding: 2px 8px; border-radius: 4px;">${sessionCount} sessions</span></td>
+          <td><span style="font-family: monospace;">${user.ip}</span></td>
+          <td>${geoText}</td>
+          <td><span style="font-size: 11px; color: var(--text-secondary);">${ispText}</span></td>
+          <td><span style="font-size: 11px;">${browserName}</span></td>
+          <td>
+            <button class="btn-secondary view-user-timeline-btn" style="padding: 4px 8px; font-size: 11px; margin: 0; border-radius: 4px; cursor: pointer;" data-visitor-id="${user.visitorId}">🔍 View Timeline</button>
+          </td>
+        `;
+
+        row.querySelector(".view-user-timeline-btn").addEventListener("click", () => {
+          // Flatten activity timeline from all sessions
+          const activitiesList = [];
+          user.sessions.forEach(session => {
+            // Add session start activity
+            activitiesList.push({
+              timestamp: session.timestamp || 0,
+              action: `Started session on ${session.landingPage || "/"}`
+            });
+
+            // Add detailed actions
+            if (session.activity) {
+              const acts = Array.isArray(session.activity) ? session.activity : Object.values(session.activity);
+              acts.forEach(act => {
+                if (act && act.action) {
+                  activitiesList.push(act);
+                }
+              });
+            }
+          });
+
+          // Sort combined list by timestamp asc
+          activitiesList.sort((a, b) => (a.timestamp || 0) - (b.timestamp || 0));
+
+          const visitorObj = {
+            ip: user.ip,
+            isp: ispText,
+            city: user.geo?.city || "",
+            region: user.geo?.region || "",
+            country: user.geo?.country || "",
+            referrer: "Various Sessions",
+            landingPage: "/",
+            screen: "Various",
+            userAgent: user.userAgent,
+            activity: activitiesList,
+            visitorId: user.visitorId
+          };
+
+          this.viewVisitorActivity(visitorObj);
+        });
+
+        tbody.appendChild(row);
+      });
+
+    } catch (err) {
+      console.error("Failed to load User Directory:", err);
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="7" style="padding: 30px; text-align: center; color: #ef4444;">
+            Failed to load User Directory: ${err.message}
+          </td>
+        </tr>
+      `;
     }
   }
 
@@ -1222,6 +1469,8 @@ Vape 'R' Aus Team`;
 
         if (tab.dataset.tab === "visitors") {
           this.loadVisitors();
+        } else if (tab.dataset.tab === "users") {
+          this.loadUsersDirectory();
         }
       });
     });
@@ -1252,6 +1501,10 @@ Vape 'R' Aus Team`;
 
     const resetBtn = document.getElementById("btn-reset-config");
     if (resetBtn) resetBtn.addEventListener("click", () => this.resetConfig());
+
+    // Users refresh
+    const refreshUsersBtn = document.getElementById("btn-refresh-users");
+    if (refreshUsersBtn) refreshUsersBtn.addEventListener("click", () => this.loadUsersDirectory());
 
     // Orders
     const clearOrdersBtn = document.getElementById("btn-clear-orders");

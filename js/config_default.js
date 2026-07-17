@@ -1,25 +1,26 @@
-/* ==========================================================================
+﻿/* ==========================================================================
    DEFAULT CATALOG AND SITE CONFIGURATION (OZCHEAPVAPES LOCAL IMAGE LINKS)
    ========================================================================== */
 
 const CONFIG_DEFAULT = {
     "seo":  {
-                "title":  "Vape \u0027R\u0027 Aus | Buy Cheap Vapes \u0026 Cigarettes Online Australia",
-                "description":  "Vape \u0027R\u0027 Aus \u0026 Smokes â€” Australia\u0027s trusted outlet for disposable vapes \u0026 cigarette cartons. Buy IGET Bar 3500, Alibarbar 8000 \u0026 12000, Waka SoPro DM8000, HQD Cuvie Bar boxes at the lowest prices. Fast express shipping. PayID \u0026 bank transfer accepted.",
+                "title":  "Vape 'R' Aus | Buy Cheap Vapes & Cigarettes Online Australia",
+                "description":  "Vape 'R' Aus & Smokes â€” Australia's trusted outlet for disposable vapes & cigarette cartons. Buy IGET Bar 3500, Alibarbar 8000 & 12000, Waka SoPro DM8000, HQD Cuvie Bar boxes at the lowest prices. Fast express shipping. PayID & bank transfer accepted.",
                 "keywords":  "buy vapes online australia, cheap disposable vapes australia, iget bar 3500 buy online, alibarbar vape australia, waka sopro dm8000, hqd cuvie bar box, cheap cigarettes online australia, marlboro gold carton australia, winfield blue carton, vape wholesale australia, bulk vapes perth, buy cigarette cartons online, disposable vape 8000 puffs, iget legend 4000, iget hot 5500, vape r aus"
             },
     "settings":  {
-                     "siteName":  "Vape \u0027R\u0027 Aus",
-                     "tagline":  "Best Deals on Vapes \u0026 Smokes in Australia",
+                     "siteName":  "Vape 'R' Aus",
+                     "tagline":  "Best Deals on Vapes & Smokes in Australia",
                      "contactEmail":  "vapesonlineaustralia@proton.me",
                      "contactPhone":  "0402 179 489",
-                     "announcement":  "🔥 FREE EXPRESS SHIPPING ON ALL ORDERS OVER $150! PAYID \u0026 BANK XFER ACCEPTED 🔥",
+                     "announcement":  "ðŸ”¥ FREE EXPRESS SHIPPING ON ALL ORDERS OVER $150! PAYID & BANK XFER ACCEPTED ðŸ”¥",
                      "ageLimit":  18,
                      "orderSyncUrl":  "https://vapes-99ad2-default-rtdb.asia-southeast1.firebasedatabase.app/",
                      "emailjsServiceId":  "NKPHTNJE2GJBR1VF",
                      "emailjsPublicKey":  "07hCgPLcSv1mHfeNk",
                      "emailjsContactTemplateId":  "template_ner135t",
                      "emailjsOrderTemplateId":  "template_l5hhw7n",
+                     "emailjsPaymentReceivedTemplateId":  "",
                      "bankDetails":  {
                                          "payId":  "vapesonlineaustralia@proton.me",
                                          "bankName":  "NAB - National Australia Bank",
@@ -39,11 +40,11 @@ const CONFIG_DEFAULT = {
                        },
                        {
                            "id":  "vapes-single",
-                           "name":  "IGET \u0026 Alibarbar (Singles/Cartons)"
+                           "name":  "IGET & Alibarbar (Singles/Cartons)"
                        },
                        {
                            "id":  "vapes-boxes",
-                           "name":  "Waka \u0026 HQD Boxes (Wholesale 10x)"
+                           "name":  "Waka & HQD Boxes (Wholesale 10x)"
                        },
                        {
                            "id":  "jnr",
@@ -56,7 +57,7 @@ const CONFIG_DEFAULT = {
                          "brand":  "Alibarbar",
                          "name":  "Alibarbar 8000",
                          "category":  "vapes-single",
-                         "price":  40,
+                         "price":  44,
                          "boxPrice":  300,
                          "isBoxOnly":  false,
                          "flavors":  [
@@ -71,12 +72,12 @@ const CONFIG_DEFAULT = {
                                          "Kiwi Passionfruit"
                                      ],
                          "image":  "img/alibarbar_toybox_8k.webp",
-                         "description":  "The Alibarbar Toybox 8000 packs an impressive 8,000 puffs into a compact, distinctive design. Powered by a robust 2000mAh non-rechargeable battery with 20mL of premium 5% (50mg/mL) nicotine salt e-liquid. Features a 1.1Ω mesh coil for consistent, flavour-rich vapour from the first draw to the very last. Sold as single units or in bulk boxes of 10.",
+                         "description":  "The Alibarbar Toybox 8000 packs an impressive 8,000 puffs into a compact, distinctive design. Powered by a robust 2000mAh non-rechargeable battery with 20mL of premium 5% (50mg/mL) nicotine salt e-liquid. Features a 1.1Î© mesh coil for consistent, flavour-rich vapour from the first draw to the very last. Sold as single units or in bulk boxes of 10.",
                          "specs":  {
                                        "Puffs":  "~8,000 Puffs",
                                        "E-Liquid":  "20mL Salt Nic",
                                        "Battery":  "2000mAh (Built-in)",
-                                       "Coil Type":  "1.1Ω Mesh Coil",
+                                       "Coil Type":  "1.1Î© Mesh Coil",
                                        "Nicotine":  "5% (50mg/mL)"
                                    },
                          "inStock":  true,
@@ -87,7 +88,7 @@ const CONFIG_DEFAULT = {
                          "brand":  "Alibarbar",
                          "name":  "Alibarbar 12000 Rechargable",
                          "category":  "vapes-single",
-                         "price":  55,
+                         "price":  61,
                          "boxPrice":  400,
                          "isBoxOnly":  false,
                          "flavors":  [
@@ -118,7 +119,7 @@ const CONFIG_DEFAULT = {
                          "brand":  "IGET",
                          "name":  "IGET Bar 3500 Puffs",
                          "category":  "vapes-single",
-                         "price":  33,
+                         "price":  36,
                          "boxPrice":  260,
                          "isBoxOnly":  false,
                          "flavors":  [
@@ -136,12 +137,12 @@ const CONFIG_DEFAULT = {
                                          "Lush Ice"
                                      ],
                          "image":  "img/iget_bar_3500.webp",
-                         "description":  "Australia\u0027s most popular disposable vape. The IGET Bar 3500 delivers up to 3,500 puffs from 12mL of premium 5% (50mg/mL) nicotine salt e-liquid. Powered by a 1500mAh built-in non-rechargeable battery and a 1.2Ω mesh coil for smooth, consistent draws and rich flavour from start to finish. Ergonomic, pocket-friendly design. Available as single units or cartons of 10.",
+                         "description":  "Australia's most popular disposable vape. The IGET Bar 3500 delivers up to 3,500 puffs from 12mL of premium 5% (50mg/mL) nicotine salt e-liquid. Powered by a 1500mAh built-in non-rechargeable battery and a 1.2Î© mesh coil for smooth, consistent draws and rich flavour from start to finish. Ergonomic, pocket-friendly design. Available as single units or cartons of 10.",
                          "specs":  {
                                        "Puffs":  "3,500 Puffs",
                                        "E-Liquid":  "12mL Salt Nic",
                                        "Battery":  "1500mAh (Built-in)",
-                                       "Coil Type":  "1.2Ω Mesh Coil",
+                                       "Coil Type":  "1.2Î© Mesh Coil",
                                        "Nicotine":  "5% (50mg/mL)"
                                    },
                          "inStock":  true,
@@ -152,7 +153,7 @@ const CONFIG_DEFAULT = {
                          "brand":  "IGET",
                          "name":  "IGET Legend 4000 Puffs",
                          "category":  "vapes-single",
-                         "price":  37,
+                         "price":  41,
                          "boxPrice":  290,
                          "isBoxOnly":  false,
                          "flavors":  [
@@ -183,7 +184,7 @@ const CONFIG_DEFAULT = {
                          "brand":  "IGET",
                          "name":  "IGET Hot 5500 Puffs",
                          "category":  "vapes-single",
-                         "price":  42,
+                         "price":  46,
                          "boxPrice":  330,
                          "isBoxOnly":  false,
                          "flavors":  [
@@ -197,13 +198,134 @@ const CONFIG_DEFAULT = {
                                          "Peach Berry Lemonade"
                                      ],
                          "image":  "img/iget_hot_5500.webp",
-                         "description":  "IGET\u0027s most powerful single-unit disposable. The IGET Hot 5500 delivers up to 5,500 puffs from 12mL of premium 5% (50mg/mL) nicotine salt e-liquid. Housed in a high-quality aluminium shell with a transparent visual tank, it uses a 1.4Ω ceramic-mesh coil for fast, even vapourisation with intense flavour and throat hit. Features a breathing LED indicator and integrated short-circuit, overcharge, and overheat protection.",
+                         "description":  "IGET's most powerful single-unit disposable. The IGET Hot 5500 delivers up to 5,500 puffs from 12mL of premium 5% (50mg/mL) nicotine salt e-liquid. Housed in a high-quality aluminium shell with a transparent visual tank, it uses a 1.4Î© ceramic-mesh coil for fast, even vapourisation with intense flavour and throat hit. Features a breathing LED indicator and integrated short-circuit, overcharge, and overheat protection.",
                          "specs":  {
                                        "Puffs":  "5,500 Puffs",
                                        "E-Liquid":  "12mL Salt Nic",
                                        "Battery":  "1600mAh (Built-in)",
-                                       "Coil Type":  "1.4Ω Ceramic-Mesh",
+                                       "Coil Type":  "1.4Î© Ceramic-Mesh",
                                        "Nicotine":  "5% (50mg/mL)"
+                                   },
+                         "inStock":  true,
+                         "popular":  true
+                     },
+                     {
+                         "id":  "instabar-max-7500",
+                         "brand":  "Insta Bar",
+                         "name":  "Insta Bar Max 7500 Puffs",
+                         "category":  "vapes-single",
+                         "price":  45,
+                         "boxPrice":  350,
+                         "isBoxOnly":  false,
+                         "flavors":  [
+                                         "Strawberry Ice Cream",
+                                         "Blueberry Grape",
+                                         "Watermelon Bubblegum",
+                                         "Kiwi Passion Fruit Guava",
+                                         "Summer Peach Ice"
+                                     ],
+                         "image":  "img/instabar_max_7500.png",
+                         "description":  "Scraped from Quantum Vape: The Insta Bar Max 7500 features an advanced mesh coil design and a real-time smart power indicator screen. Delivering up to 7,500 puffs of premium smooth vapour. Rechargeable 650mAh battery with Type-C support.",
+                         "specs":  {
+                                       "Puffs":  "~7,500 Puffs",
+                                       "E-Liquid":  "16mL Salt Nic",
+                                       "Battery":  "650mAh (Type-C Recharge)",
+                                       "Coil Type":  "Advanced Mesh Coil",
+                                       "Nicotine":  "5% (50mg/mL)"
+                                   },
+                         "inStock":  false,
+                         "popular":  false
+                     },
+                     {
+                         "id":  "iget-bar-plus-6000",
+                         "brand":  "IGET",
+                         "name":  "IGET Bar Plus (S3) 6000 Puffs",
+                         "category":  "vapes-single",
+                         "price":  40,
+                         "boxPrice":  320,
+                         "isBoxOnly":  false,
+                         "flavors":  [
+                                         "Strawberry Watermelon Ice",
+                                         "Blueberry Raspberry Bubblegum",
+                                         "Double Apple",
+                                         "Grape Ice",
+                                         "Cherry Pomegranate"
+                                     ],
+                         "image":  "img/iget_bar_plus_6000.png",
+                         "description":  "Scraped from Quantum Vape: The IGET Bar Plus (S3) features a smart screen displaying battery and e-liquid percentages. Employs a mesh coil system to extract deep, rich flavours. Compact, stylish, and fully rechargeable.",
+                         "specs":  {
+                                       "Puffs":  "~6,000 Puffs",
+                                       "E-Liquid":  "16mL Salt Nic",
+                                       "Battery":  "600mAh (Type-C Recharge)",
+                                       "Coil Type":  "Mesh Coil System",
+                                       "Nicotine":  "5% (50mg/mL)"
+                                   },
+                         "inStock":  false,
+                         "popular":  false
+                     },
+                     {
+                         "id":  "alibarbar-9k-bundle",
+                         "brand":  "Alibarbar",
+                         "name":  "Alibarbar Ingot 9000 - 5-Pack Bundle",
+                         "category":  "vapes-single",
+                         "price":  160,
+                         "boxPrice":  160,
+                         "isBoxOnly":  false,
+                         "isBundle":  true,
+                         "bundleQty":  5,
+                         "flavors":  [
+                                         "Strawberry Kiwi",
+                                         "Watermelon Ice",
+                                         "Blue Razz Ice",
+                                         "Triple Berry",
+                                         "Double Apple",
+                                         "Peach Mango",
+                                         "Minty Mint"
+                                     ],
+                         "image":  "img/alibarbar_9000.png",
+                         "description":  "Exclusive 5-Pack Bundle Pack. Customise your bundle by choosing 5 separate flavours of the premium Alibarbar Ingot 9000. Mix and match flavours or stock up on your favourites! Delivers up to 9,000 puffs per device with dual mesh coil technology.",
+                         "specs":  {
+                                       "Puffs":  "~9,000 Puffs per unit",
+                                       "Quantity":  "5 Devices",
+                                       "E-Liquid":  "18mL per unit",
+                                       "Nicotine":  "5% (50mg/mL)",
+                                       "Flavour Choice":  "Select 5 individual flavours"
+                                   },
+                         "inStock":  true,
+                         "popular":  true
+                     },
+                     {
+                         "id":  "iget-bar-3500-bundle",
+                         "brand":  "IGET",
+                         "name":  "IGET Bar 3500 - 5-Pack Bundle",
+                         "category":  "vapes-single",
+                         "price":  145,
+                         "boxPrice":  145,
+                         "isBoxOnly":  false,
+                         "isBundle":  true,
+                         "bundleQty":  5,
+                         "flavors":  [
+                                         "Blackberry Raspberry Ice",
+                                         "Strawberry Watermelon",
+                                         "Double Apple",
+                                         "Banana Ice",
+                                         "Grape Ice",
+                                         "Blueberry Ice",
+                                         "Mango Ice",
+                                         "Passion Fruit Grape",
+                                         "Strawberry Kiwi",
+                                         "Peach Ice",
+                                         "Watermelon Ice",
+                                         "Lush Ice"
+                                     ],
+                         "image":  "img/iget_bar_3500.webp",
+                         "description":  "Value 5-Pack Bundle. Select 5 individual flavours from the legendary IGET Bar 3500 range. Maximise savings and custom-build your personal variety pack! Enjoy 3,500 puffs per device.",
+                         "specs":  {
+                                       "Puffs":  "~3,500 Puffs per unit",
+                                       "Quantity":  "5 Devices",
+                                       "E-Liquid":  "12mL per unit",
+                                       "Nicotine":  "5% (50mg/mL)",
+                                       "Flavour Choice":  "Select 5 individual flavours"
                                    },
                          "inStock":  true,
                          "popular":  true
@@ -243,7 +365,7 @@ const CONFIG_DEFAULT = {
                                          "Classic Blue Blend"
                                      ],
                          "image":  "img/winfield_blue.png",
-                         "description":  "An absolute Australian classic. Winfield Blue is one of the country\u0027s most-loved cigarette brands, offering a signature rich domestic tobacco blend with a satisfying, medium-strength draw. Each carton contains 10 packs of 25 cigarettes (250 cigarettes total). Sold as a full carton only.",
+                         "description":  "An absolute Australian classic. Winfield Blue is one of the country's most-loved cigarette brands, offering a signature rich domestic tobacco blend with a satisfying, medium-strength draw. Each carton contains 10 packs of 25 cigarettes (250 cigarettes total). Sold as a full carton only.",
                          "specs":  {
                                        "Format":  "Carton (10 Packs)",
                                        "Quantity":  "250 Cigarettes Total",
@@ -279,8 +401,8 @@ const CONFIG_DEFAULT = {
                      },
                      {
                          "id":  "cig-bh-classic",
-                         "brand":  "Benson \u0026 Hedges",
-                         "name":  "Benson \u0026 Hedges Classic Carton (10 Packs x 20 Cigarettes)",
+                         "brand":  "Benson & Hedges",
+                         "name":  "Benson & Hedges Classic Carton (10 Packs x 20 Cigarettes)",
                          "category":  "cigarettes",
                          "price":  250,
                          "boxPrice":  250,
@@ -289,7 +411,7 @@ const CONFIG_DEFAULT = {
                                          "Classic Rich Tobacco"
                                      ],
                          "image":  "img/bh_classic.png",
-                         "description":  "Benson \u0026 Hedges Classic â€” a premium cigarette with heritage dating back over 150 years. Crafted from a distinguished gold-leaf Virginia tobacco blend, delivering a full-flavoured, luxurious, and consistently clean smoke. Favoured by those who appreciate quality and tradition. Each carton contains 10 packs of 20 cigarettes (200 cigarettes total). Sold as a full carton only.",
+                         "description":  "Benson & Hedges Classic â€” a premium cigarette with heritage dating back over 150 years. Crafted from a distinguished gold-leaf Virginia tobacco blend, delivering a full-flavoured, luxurious, and consistently clean smoke. Favoured by those who appreciate quality and tradition. Each carton contains 10 packs of 20 cigarettes (200 cigarettes total). Sold as a full carton only.",
                          "specs":  {
                                        "Format":  "Carton (10 Packs)",
                                        "Quantity":  "200 Cigarettes Total",
@@ -320,13 +442,13 @@ const CONFIG_DEFAULT = {
                                          "Peach Ice"
                                      ],
                          "image":  "img/hqd_cuvie_box.png",
-                         "description":  "WHOLESALE BOX â€” Our cheapest box deal. Each box contains 10 x HQD Cuvie Bar disposables. Each unit delivers up to 7,000 puffs from 18mL of 5% (50mg/mL) nicotine salt e-liquid. Features a 1.2Ω mesh coil, draw-activated firing, and a 550mAh rechargeable battery (USB Type-C) for extended use. Compact, square design with a wide range of flavours available. No singles sold.",
+                         "description":  "WHOLESALE BOX â€” Our cheapest box deal. Each box contains 10 x HQD Cuvie Bar disposables. Each unit delivers up to 7,000 puffs from 18mL of 5% (50mg/mL) nicotine salt e-liquid. Features a 1.2Î© mesh coil, draw-activated firing, and a 550mAh rechargeable battery (USB Type-C) for extended use. Compact, square design with a wide range of flavours available. No singles sold.",
                          "specs":  {
                                        "Puffs":  "~7,000 Puffs (per unit)",
                                        "Box Qty":  "10x Disposables",
                                        "E-Liquid":  "18mL per unit",
                                        "Battery":  "550mAh (Type-C Recharge)",
-                                       "Coil Type":  "1.2Ω Mesh Coil"
+                                       "Coil Type":  "1.2Î© Mesh Coil"
                                    },
                          "inStock":  true,
                          "popular":  true
@@ -350,14 +472,14 @@ const CONFIG_DEFAULT = {
                                          "Passion Fruit Lychee"
                                      ],
                          "image":  "img/waka_sopro_box.png",
-                         "description":  "WHOLESALE BOX â€” Each box contains 10 x Waka SoPro DM8000 disposables. The DM8000 is a premium rechargeable device delivering up to 8,000 puffs from 14mL of 5% nicotine salt e-liquid. Powered by an 850mAh battery (USB Type-C, 80% charge in ~45 mins) with DUALMESH™ dual coil technology. Two intelligent modes: Boost Mode (both coils active for max clouds) and Regular Mode (single coil for extended lifespan). Includes a smart digital screen showing live battery \u0026 e-liquid levels, plus full overcharge and short-circuit protection.",
+                         "description":  "WHOLESALE BOX â€” Each box contains 10 x Waka SoPro DM8000 disposables. The DM8000 is a premium rechargeable device delivering up to 8,000 puffs from 14mL of 5% nicotine salt e-liquid. Powered by an 850mAh battery (USB Type-C, 80% charge in ~45 mins) with DUALMESHâ„¢ dual coil technology. Two intelligent modes: Boost Mode (both coils active for max clouds) and Regular Mode (single coil for extended lifespan). Includes a smart digital screen showing live battery & e-liquid levels, plus full overcharge and short-circuit protection.",
                          "specs":  {
                                        "Puffs":  "~8,000 Puffs (per unit)",
                                        "Box Qty":  "10x Disposables",
                                        "E-Liquid":  "14mL per unit",
                                        "Battery":  "850mAh (Type-C Recharge)",
-                                       "Coil Type":  "DUALMESH™ Dual Coil",
-                                       "Screen":  "Battery \u0026 E-Liquid Display"
+                                       "Coil Type":  "DUALMESHâ„¢ Dual Coil",
+                                       "Screen":  "Battery & E-Liquid Display"
                                    },
                          "inStock":  true,
                          "popular":  true
@@ -367,7 +489,7 @@ const CONFIG_DEFAULT = {
                          "brand":  "JNR",
                          "name":  "JNR Falcon X 18000 Puffs",
                          "category":  "jnr",
-                         "price":  50,
+                         "price":  55,
                          "boxPrice":  390,
                          "isBoxOnly":  false,
                          "flavors":  [
@@ -385,7 +507,7 @@ const CONFIG_DEFAULT = {
                                          "Passion Fruit Mango"
                                      ],
                          "image":  "img/jnr_falcon_x_18000.webp",
-                         "description":  "JNR\u0027s flagship high-capacity device. The Falcon X 18000 delivers an extraordinary 18,000 puffs from 24mL of premium 5% (50mg/mL) nicotine salt e-liquid. Features a distinctive crystal-clear translucent shell with an engraved falcon emblem, a smart color digital screen displaying real-time battery percentage and e-liquid level, and a powerful dual mesh coil for rich, consistent flavour throughout. Adjustable airflow and USB-C fast charging (950mAh battery). The ultimate long-lasting disposable.",
+                         "description":  "JNR's flagship high-capacity device. The Falcon X 18000 delivers an extraordinary 18,000 puffs from 24mL of premium 5% (50mg/mL) nicotine salt e-liquid. Features a distinctive crystal-clear translucent shell with an engraved falcon emblem, a smart color digital screen displaying real-time battery percentage and e-liquid level, and a powerful dual mesh coil for rich, consistent flavour throughout. Adjustable airflow and USB-C fast charging (950mAh battery). The ultimate long-lasting disposable.",
                          "specs":  {
                                        "Puffs":  "~18,000 Puffs",
                                        "E-Liquid":  "24mL Salt Nic",
@@ -403,7 +525,7 @@ const CONFIG_DEFAULT = {
                          "brand":  "JNR",
                          "name":  "JNR Vapro 7000 Puffs",
                          "category":  "jnr",
-                         "price":  35,
+                         "price":  39,
                          "boxPrice":  260,
                          "isBoxOnly":  false,
                          "flavors":  [
@@ -420,7 +542,7 @@ const CONFIG_DEFAULT = {
                                          "Strawberry Kiwi"
                                      ],
                          "image":  "img/jnr_vapro_7000.webp",
-                         "description":  "The JNR Vapro 7000 is JNR\u0027s reliable everyday carry â€” a compact, slim rechargeable disposable delivering 7,000 puffs from 15mL of 5% (50mg/mL) nicotine salt e-liquid. Features a premium gradient soft-touch finish, precision mesh coil for clean consistent flavour, and USB-C recharging (650mAh battery) to ensure you drain every last drop of e-liquid. Draw-activated, no buttons, no fuss. Perfect entry into the JNR range.",
+                         "description":  "The JNR Vapro 7000 is JNR's reliable everyday carry â€” a compact, slim rechargeable disposable delivering 7,000 puffs from 15mL of 5% (50mg/mL) nicotine salt e-liquid. Features a premium gradient soft-touch finish, precision mesh coil for clean consistent flavour, and USB-C recharging (650mAh battery) to ensure you drain every last drop of e-liquid. Draw-activated, no buttons, no fuss. Perfect entry into the JNR range.",
                          "specs":  {
                                        "Puffs":  "~7,000 Puffs",
                                        "E-Liquid":  "15mL Salt Nic",

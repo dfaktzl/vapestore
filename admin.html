@@ -86,7 +86,7 @@
         <button class="admin-tab" data-tab="guides">SEO Content Hub</button>
         <button class="admin-tab" data-tab="orders">Customer Orders</button>
         <button class="admin-tab" data-tab="visitors">Visitor Analytics</button>
-        <button class="admin-tab" data-tab="guide">Firebase Setup Guide</button>
+        <button class="admin-tab" data-tab="users">User Directory</button>
       </nav>
 
       <!-- TAB 1: CATALOG MANAGEMENT -->
@@ -309,6 +309,13 @@
                 <input type="text" id="set-emailjs-order-template" placeholder="e.g. template_xxxxxxx" class="form-input">
               </div>
             </div>
+            
+            <div class="form-grid" style="margin-top: 15px;">
+              <div class="form-field">
+                <label class="form-label">EmailJS Payment Received Template ID</label>
+                <input type="text" id="set-emailjs-payment-received-template" placeholder="e.g. template_xxxxxxx" class="form-input">
+              </div>
+            </div>
           </div>
 
           <div style="display:flex; justify-content:flex-end; margin-top:20px;">
@@ -482,67 +489,35 @@
 
 
 
-      <!-- TAB 4: FIREBASE SETUPS & RULE GUIDE -->
-      <section id="tab-guide" class="admin-tab-content">
-        <div class="glass-card guide-card">
-          <h2 class="admin-card-title" style="border:none;">Firebase Realtime Database Setup Guide</h2>
-          <p style="font-size:14px; color:var(--text-secondary); margin-bottom:25px; line-height:1.6;">
-            To enable live updates and secure access to your merchant dashboard, follow these steps to set up your Firebase Realtime Database.
-          </p>
-
-          <div class="guide-step">
-            <div class="guide-step-num">1</div>
-            <h3 class="guide-step-title">Create a Firebase Realtime Database</h3>
-            <p class="guide-step-desc">
-              Go to the <a href="https://console.firebase.google.com" target="_blank" style="color:var(--gold-accent);">Firebase Console</a>, create a project, and add a **Realtime Database** in the **Build** section. Make sure to choose the **Asia-Southeast1 (Singapore)** region or whichever is closest.
-            </p>
+      <!-- TAB 4: USER DIRECTORY & CRM TRACKER -->
+      <section id="tab-users" class="admin-tab-content">
+        <div class="glass-card">
+          <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid rgba(255,255,255,0.08); padding-bottom:15px; margin-bottom:20px;">
+            <h2 class="admin-card-title" style="border:none; margin:0;">User Directory & CRM Activity Log</h2>
+            <button id="btn-refresh-users" class="btn-secondary" style="font-size:12px; margin:0; padding:6px 12px;">🔄 Refresh List</button>
           </div>
-
-          <div class="guide-step">
-            <div class="guide-step-num">2</div>
-            <h3 class="guide-step-title">Set up Database Security Rules</h3>
-            <p class="guide-step-desc">
-              Navigate to the **Rules** tab in your Firebase Realtime Database dashboard and paste the following configuration, then click **Publish**:
-              <div class="code-box" style="white-space: pre-wrap; text-align: left; font-family: monospace; background: rgba(0,0,0,0.5); padding: 15px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.05); margin-top: 10px; color: #fff;">{
-  "rules": {
-    "config": {
-      ".read": true,
-      ".write": true
-    },
-    "guides": {
-      ".read": true,
-      ".write": true
-    },
-    "orders": {
-      ".read": true,
-      "$orderId": {
-        ".write": "!data.exists() || data.child('status').exists()"
-      }
-    },
-    "adminKey": {
-      ".read": true,
-      ".write": true
-    },
-    "visits": {
-      ".read": true,
-      ".write": true
-    },
-    "blacklist": {
-      ".read": true,
-      ".write": true
-    }
-  }
-}</div>
-              *(Note: If you are using granular security rules, make sure to add the `"visits"` and `"blacklist"` nodes configuration above to authorize analytics and user block updates).*
-            </p>
-          </div>
-
-          <div class="guide-step">
-            <div class="guide-step-num">3</div>
-            <h3 class="guide-step-title">Connect your Database to the Store</h3>
-            <p class="guide-step-desc">
-              Copy your Firebase Database URL (e.g. <code>https://your-project-id.firebaseio.com/</code>) and paste it into the **Cloud Database Integration** field inside the **SEO & Bank Settings** tab, then click **Apply Settings Caches** and **Publish Live**. Your site will now be fully live!
-            </p>
+          
+          <div class="table-responsive">
+            <table class="catalog-table">
+              <thead>
+                <tr>
+                  <th>Unique User ID</th>
+                  <th>Total Sessions</th>
+                  <th>IP Address</th>
+                  <th>Location Metadata</th>
+                  <th>Service Provider (ISP)</th>
+                  <th>Device / OS</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="users-directory-tbody">
+                <tr>
+                  <td colspan="7" style="padding:30px; text-align:center; color:var(--text-secondary);">
+                    Loading unique user records from database...
+                  </td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
       </section>
