@@ -60,7 +60,7 @@ Write-Host "==================================================================" 
 Write-Host ("{0,-5} {1,-15} {2,-20} {3,-12} {4,-10}" -f "Index", "Order ID", "Customer Name", "Total Price", "Ref Code") -ForegroundColor Cyan
 Write-Host ("{0,-5} {1,-15} {2,-20} {3,-12} {4,-10}" -f "-----", "--------", "-------------", "-----------", "--------") -ForegroundColor Cyan
 
-$limit = [Math]::Min(15, $ordersList.Count)
+$limit = [Math]::Min(40, $ordersList.Count)
 for ($i = 0; $i -lt $limit; $i++) {
     $order = $ordersList[$i]
     $name = $order.customer.name
