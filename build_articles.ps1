@@ -612,7 +612,7 @@ foreach ($prod in $config.products) {
     for ($charIdx = 0; $charIdx -lt $id.Length; $charIdx++) {
         $sum += [int][char]$id[$charIdx]
     }
-    $soldCount = ($sum % 76) + 11
+    $soldCount = ($sum % 47) + 8
 
     # Availability tag for SEO Schema
     $availability = "https://schema.org/InStock"
@@ -637,42 +637,23 @@ foreach ($prod in $config.products) {
         }
     }
 
-    # Generate options UI depending on bundle/flavors
-    $optionsHtml = ""
-    if ($isBundle -eq $true) {
-        $optionsHtml = @"
-            <div id="page-bundle-flavors-group" style="margin-top: 15px; margin-bottom: 20px;">
-              <!-- Populated dynamically by store.js -->
+    # Options wrapper DOM populated by store.js
+    $optionsHtml = @"
+            <!-- Purchase Options & Customisation -->
+            <div id="product-purchase-options-container" style="margin-bottom: 25px;">
+              <div style="font-size:12px; color:var(--text-secondary); margin-bottom:8px; text-align:left; font-weight:600; text-transform:uppercase; letter-spacing:0.05em;">Select Option</div>
+              <div id="page-format-cards-group" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 12px; margin-bottom: 20px;">
+                <!-- Generated dynamically by store.js -->
+              </div>
+              
+              <div id="page-flavor-group-wrap" style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); padding: 20px; border-radius: 8px; text-align: left; display: none;">
+                <label id="page-flavor-label" class="modal-option-title" style="display: block; margin-bottom: 10px; font-weight: 600; color: var(--gold-light);">Choose Flavour</label>
+                <div id="page-flavor-inputs-container">
+                  <!-- Populated dynamically by store.js -->
+                </div>
+              </div>
             </div>
 "@
-    } elseif ($null -ne $prod.flavors -and $prod.flavors.Count -gt 0) {
-        $optionsHtml = @"
-            <div style="margin-bottom: 20px; text-align: left;">
-              <label class="modal-option-title" style="display: block; margin-bottom: 8px; font-weight: 600; color: var(--gold-light);">Select Flavour</label>
-              <select id="page-flavor-select" class="product-card-flavor-select" style="width: 100%;">
-                <!-- Populated dynamically by store.js -->
-              </select>
-            </div>
-"@
-    }
-
-    $formatSelectHtml = ""
-    if ($isBundle -eq $true) {
-        $formatSelectHtml = @"
-            <div style="margin-bottom: 20px; text-align: left; display: none;">
-              <select id="page-format-select" class="product-card-flavor-select" style="width: 100%;"></select>
-            </div>
-"@
-    } else {
-        $formatSelectHtml = @"
-            <div style="margin-bottom: 20px; text-align: left;">
-              <label class="modal-option-title" style="display: block; margin-bottom: 8px; font-weight: 600; color: var(--gold-light);">Select Format</label>
-              <select id="page-format-select" class="product-card-flavor-select" style="width: 100%;">
-                <!-- Populated dynamically by store.js -->
-              </select>
-            </div>
-"@
-    }
 
     $html = @"
 <!DOCTYPE html>
@@ -801,11 +782,7 @@ foreach ($prod in $config.products) {
               $specsHtml
             </div>
 
-            <!-- Selectors -->
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-              $optionsHtml
-              $formatSelectHtml
-            </div>
+            $optionsHtml
           </div>
 
           <div>

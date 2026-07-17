@@ -118,7 +118,7 @@ const CONFIG_DEFAULT = {
                          "name":  "Alibarbar 12000 Rechargable",
                          "category":  "vapes-single",
                          "price":  61,
-                         "boxPrice":  400,
+                         "boxPrice":  450,
                          "isBoxOnly":  false,
                          "flavors":  [
                                          "Peach Mango Watermelon",

@@ -1667,3 +1667,54 @@
     padding: 0 16px 14px;
   }
 }
+
+/* Format Card styles */
+.format-card {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  padding: 16px;
+  text-align: center;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.format-card:hover {
+  background: rgba(212, 175, 55, 0.03);
+  border-color: rgba(212, 175, 55, 0.3);
+}
+
+.format-card.active {
+  background: rgba(212, 175, 55, 0.08);
+  border-color: var(--gold-accent);
+  box-shadow: 0 0 10px rgba(212, 175, 55, 0.15);
+}
+
+.format-card-title {
+  font-family: var(--font-title);
+  font-weight: 700;
+  font-size: 14px;
+  color: #fff;
+  margin-bottom: 4px;
+}
+
+.format-card-price {
+  font-size: 16px;
+  font-weight: 900;
+  color: var(--gold-accent);
+}
+
+.format-card-savings {
+  font-size: 10px;
+  color: #10b981;
+  font-weight: 600;
+  margin-top: 4px;
+  background: rgba(16, 185, 129, 0.1);
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+

@@ -96,104 +96,166 @@ class StoreApp {
     // Set state
     this.selectedProduct = product;
     this.selectedFlavor = product.flavors ? (product.flavors[0] || "Default") : "Default";
-    this.selectedFormat = product.isBundle ? "Bundle" : "Single";
+    this.selectedFormat = product.isBundle ? "Bundle" : (product.isBoxOnly ? "Box" : "Single");
 
-    // Bind flavor select on page
-    const pageFlavorSelect = document.getElementById("page-flavor-select");
-    if (pageFlavorSelect && product.flavors) {
-      pageFlavorSelect.innerHTML = "";
-      product.flavors.forEach((flavor, idx) => {
-        const option = document.createElement("option");
-        option.value = flavor;
-        const isLast = idx === product.flavors.length - 1;
-        if (isLast) {
-          option.innerText = `${flavor} (OUT OF STOCK)`;
-          option.disabled = true;
-        } else {
-          option.innerText = flavor;
-        }
-        pageFlavorSelect.appendChild(option);
-      });
-      // Set initial selected flavor to first available flavor (not the disabled one)
-      const firstOpt = pageFlavorSelect.querySelector("option:not([disabled])");
-      if (firstOpt) {
-        this.selectedFlavor = firstOpt.value;
-        pageFlavorSelect.value = this.selectedFlavor;
+    const formatContainer = document.getElementById("page-format-cards-group");
+    const flavorGroupWrap = document.getElementById("page-flavor-group-wrap");
+    const flavorInputsContainer = document.getElementById("page-flavor-inputs-container");
+    const flavorLabel = document.getElementById("page-flavor-label");
+    const pagePriceValue = document.getElementById("page-price-value");
+
+    if (!formatContainer) return;
+
+    // Function to render flavor selections
+    const renderFlavorsUI = () => {
+      if (!product.flavors || product.flavors.length === 0) {
+        if (flavorGroupWrap) flavorGroupWrap.style.display = "none";
+        return;
       }
-      pageFlavorSelect.onchange = (e) => {
-        this.selectedFlavor = e.target.value;
-      };
-    }
 
-    // Bind 5-pack selections if bundle
-    if (product.isBundle && product.flavors) {
-      const pageBundleGroup = document.getElementById("page-bundle-flavors-group");
-      if (pageBundleGroup) {
-        pageBundleGroup.innerHTML = "";
+      if (flavorGroupWrap) flavorGroupWrap.style.display = "block";
+      if (flavorInputsContainer) flavorInputsContainer.innerHTML = "";
+
+      if (this.selectedFormat === "Bundle") {
+        if (flavorLabel) flavorLabel.innerText = "Customise Bundle (Choose 5 Flavours)";
+        
         for (let i = 1; i <= 5; i++) {
           const div = document.createElement("div");
-          div.style.marginBottom = "8px";
+          div.style.marginBottom = "12px";
+          
+          let optionsHtml = product.flavors.map((flavor, idx) => {
+            const isLast = idx === product.flavors.length - 1;
+            if (isLast) {
+              return `<option value="${flavor}" disabled>${flavor} (OUT OF STOCK)</option>`;
+            } else {
+              return `<option value="${flavor}">${flavor}</option>`;
+            }
+          }).join("");
+
           div.innerHTML = `
-            <div style="font-size:12px; color:var(--text-secondary); margin-bottom:2px; text-align:left;">Device ${i} Flavour:</div>
+            <div style="font-size:12px; color:var(--text-secondary); margin-bottom:4px; font-weight:600;">Device ${i} Flavour:</div>
             <select id="page-flavor-select-${i}" class="product-card-flavor-select" style="width: 100%; margin-bottom: 0;">
-              ${product.flavors.map((flavor, idx) => {
-                const isLast = idx === product.flavors.length - 1;
-                if (isLast) {
-                  return `<option value="${flavor}" disabled>${flavor} (OUT OF STOCK)</option>`;
-                } else {
-                  return `<option value="${flavor}">${flavor}</option>`;
-                }
-              }).join("")}
+              ${optionsHtml}
             </select>
           `;
-          pageBundleGroup.appendChild(div);
+          if (flavorInputsContainer) flavorInputsContainer.appendChild(div);
+        }
+      } else {
+        if (flavorLabel) flavorLabel.innerText = "Choose Flavour";
+        
+        const div = document.createElement("div");
+        
+        let optionsHtml = product.flavors.map((flavor, idx) => {
+          const isLast = idx === product.flavors.length - 1;
+          if (isLast) {
+            return `<option value="${flavor}" disabled>${flavor} (OUT OF STOCK)</option>`;
+          } else {
+            return `<option value="${flavor}">${flavor}</option>`;
+          }
+        }).join("");
+
+        div.innerHTML = `
+          <select id="page-flavor-select" class="product-card-flavor-select" style="width: 100%; margin-bottom: 0;">
+            ${optionsHtml}
+          </select>
+        `;
+        if (flavorInputsContainer) flavorInputsContainer.appendChild(div);
+
+        const selectEl = div.querySelector("#page-flavor-select");
+        if (selectEl) {
+          // Set initial flavor to first available (not last disabled option)
+          const firstOpt = selectEl.querySelector("option:not([disabled])");
+          if (firstOpt) {
+            this.selectedFlavor = firstOpt.value;
+            selectEl.value = this.selectedFlavor;
+          }
+          selectEl.onchange = (e) => {
+            this.selectedFlavor = e.target.value;
+          };
         }
       }
-    }
+    };
 
-    // Bind format select on page
-    const pageFormatSelect = document.getElementById("page-format-select");
-    if (pageFormatSelect) {
-      pageFormatSelect.innerHTML = "";
-      if (product.isBundle) {
-        const option = document.createElement("option");
-        option.value = "Bundle";
-        option.innerText = "5-Pack Bundle";
-        pageFormatSelect.appendChild(option);
-        pageFormatSelect.disabled = true;
-        this.selectedFormat = "Bundle";
-      } else if (product.isBoxOnly) {
-        const option = document.createElement("option");
-        option.value = "Box";
-        option.innerText = "Box of 10 pack";
-        pageFormatSelect.appendChild(option);
-        pageFormatSelect.disabled = true;
-        this.selectedFormat = "Box";
-      } else {
-        pageFormatSelect.disabled = false;
-        const optionSingle = document.createElement("option");
-        optionSingle.value = "Single";
-        optionSingle.innerText = `Single Unit ($${product.price.toFixed(2)})`;
-        const optionBox = document.createElement("option");
-        optionBox.value = "Box";
-        optionBox.innerText = `Box of 10 Pack ($${product.boxPrice.toFixed(2)})`;
-        pageFormatSelect.appendChild(optionSingle);
-        pageFormatSelect.appendChild(optionBox);
-        this.selectedFormat = "Single";
+    // Function to update price display
+    const updatePriceUI = () => {
+      const price = this.selectedFormat === "Box" ? (product.boxPrice || product.price) : product.price;
+      if (pagePriceValue) pagePriceValue.innerText = `$${price.toFixed(2)}`;
+    };
+
+    // Render format cards
+    formatContainer.innerHTML = "";
+
+    if (product.isBundle) {
+      const card = document.createElement("div");
+      card.className = "format-card active";
+      card.style.gridColumn = "span 2";
+      card.innerHTML = `
+        <div class="format-card-title">5-Pack Variety Bundle</div>
+        <div class="format-card-price">$${product.price.toFixed(2)}</div>
+        <div class="format-card-savings">Value Pack</div>
+      `;
+      formatContainer.appendChild(card);
+    } else if (product.isBoxOnly) {
+      const card = document.createElement("div");
+      card.className = "format-card active";
+      card.style.gridColumn = "span 2";
+      card.innerHTML = `
+        <div class="format-card-title">Box of 10 Pack</div>
+        <div class="format-card-price">$${product.boxPrice.toFixed(2)}</div>
+        <div class="format-card-savings">Wholesale Carton</div>
+      `;
+      formatContainer.appendChild(card);
+    } else {
+      // Single unit card
+      const cardSingle = document.createElement("div");
+      cardSingle.className = this.selectedFormat === "Single" ? "format-card active" : "format-card";
+      cardSingle.innerHTML = `
+        <div class="format-card-title">Single Unit</div>
+        <div class="format-card-price">$${product.price.toFixed(2)}</div>
+      `;
+      
+      // Box of 10 card
+      const cardBox = document.createElement("div");
+      cardBox.className = this.selectedFormat === "Box" ? "format-card active" : "format-card";
+      
+      let savingsHtml = "";
+      if (product.boxPrice && product.price) {
+        const singleTotal = product.price * 10;
+        const savings = singleTotal - product.boxPrice;
+        if (savings > 0) {
+          savingsHtml = `<div class="format-card-savings">Save $${savings.toFixed(0)}!</div>`;
+        }
       }
+      
+      cardBox.innerHTML = `
+        <div class="format-card-title">Box of 10 Pack</div>
+        <div class="format-card-price">$${product.boxPrice.toFixed(2)}</div>
+        ${savingsHtml}
+      `;
 
-      const pagePriceValue = document.getElementById("page-price-value");
-      const updatePagePrice = () => {
-        const price = this.selectedFormat === "Box" ? (product.boxPrice || product.price) : product.price;
-        if (pagePriceValue) pagePriceValue.innerText = `$${price.toFixed(2)}`;
+      cardSingle.onclick = () => {
+        this.selectedFormat = "Single";
+        cardSingle.classList.add("active");
+        cardBox.classList.remove("active");
+        renderFlavorsUI();
+        updatePriceUI();
       };
-      updatePagePrice();
 
-      pageFormatSelect.onchange = (e) => {
-        this.selectedFormat = e.target.value;
-        updatePagePrice();
+      cardBox.onclick = () => {
+        this.selectedFormat = "Box";
+        cardBox.classList.add("active");
+        cardSingle.classList.remove("active");
+        renderFlavorsUI();
+        updatePriceUI();
       };
+
+      formatContainer.appendChild(cardSingle);
+      formatContainer.appendChild(cardBox);
     }
+
+    // Initial render
+    renderFlavorsUI();
+    updatePriceUI();
 
     // Bind page add button
     const pageAddBtn = document.getElementById("btn-page-add");
@@ -511,7 +573,7 @@ class StoreApp {
     for (let i = 0; i < productId.length; i++) {
       sum += productId.charCodeAt(i);
     }
-    return (sum % 76) + 11; // Deterministic value between 11 and 86
+    return (sum % 47) + 8; // Deterministic value between 8 and 54
   }
 
   renderProducts() {

@@ -114,7 +114,7 @@
             <h1 style="font-family: var(--font-title); font-size: 32px; font-weight: 900; color: #fff; margin: 0 0 10px 0;">Benson & Hedges Classic Carton (10 Packs x 20 Cigarettes)</h1>
             
             <div style="font-size: 13px; color: #10b981; margin-bottom: 20px; font-weight: 600; display: flex; align-items: center; gap: 6px;">
-              <span>&#128293;</span> <span>56 items sold recently</span>
+              <span>&#128293;</span> <span>29 items sold recently</span>
             </div>
 
             <p style="font-size: 14px; color: var(--text-secondary); line-height: 1.6; margin-bottom: 25px;">Benson & Hedges Classic â€” a premium cigarette with heritage dating back over 150 years. Crafted from a distinguished gold-leaf Virginia tobacco blend, delivering a full-flavoured, luxurious, and consistently clean smoke. Favoured by those who appreciate quality and tradition. Each carton contains 10 packs of 20 cigarettes (200 cigarettes total). Sold as a full carton only.</p>
@@ -139,20 +139,19 @@
               </div>
             </div>
 
-            <!-- Selectors -->
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-                          <div style="margin-bottom: 20px; text-align: left;">
-              <label class="modal-option-title" style="display: block; margin-bottom: 8px; font-weight: 600; color: var(--gold-light);">Select Flavour</label>
-              <select id="page-flavor-select" class="product-card-flavor-select" style="width: 100%;">
-                <!-- Populated dynamically by store.js -->
-              </select>
-            </div>
-                          <div style="margin-bottom: 20px; text-align: left;">
-              <label class="modal-option-title" style="display: block; margin-bottom: 8px; font-weight: 600; color: var(--gold-light);">Select Format</label>
-              <select id="page-format-select" class="product-card-flavor-select" style="width: 100%;">
-                <!-- Populated dynamically by store.js -->
-              </select>
-            </div>
+                        <!-- Purchase Options & Customisation -->
+            <div id="product-purchase-options-container" style="margin-bottom: 25px;">
+              <div style="font-size:12px; color:var(--text-secondary); margin-bottom:8px; text-align:left; font-weight:600; text-transform:uppercase; letter-spacing:0.05em;">Select Option</div>
+              <div id="page-format-cards-group" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 12px; margin-bottom: 20px;">
+                <!-- Generated dynamically by store.js -->
+              </div>
+              
+              <div id="page-flavor-group-wrap" style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); padding: 20px; border-radius: 8px; text-align: left; display: none;">
+                <label id="page-flavor-label" class="modal-option-title" style="display: block; margin-bottom: 10px; font-weight: 600; color: var(--gold-light);">Choose Flavour</label>
+                <div id="page-flavor-inputs-container">
+                  <!-- Populated dynamically by store.js -->
+                </div>
+              </div>
             </div>
           </div>
 
