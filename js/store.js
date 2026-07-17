@@ -689,11 +689,11 @@ class StoreApp {
         ${badgeHTML}
         <div class="product-card-image-wrap" style="cursor: pointer; position: relative;">
           ${oosOverlay}
-          <img class="product-card-image" src="${prod.image}?v=2" alt="${prod.name}">
+          <img class="product-card-image" src="${prod.image.startsWith('http') || prod.image.startsWith('/') ? prod.image : '/' + prod.image}?v=2" alt="${prod.name}">
         </div>
         <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 12px; margin-bottom: 2px;">
           <div class="product-card-brand" style="margin-bottom: 0;">${prod.brand}</div>
-          <a href="products/${prod.id}.html" class="product-page-link" style="color: var(--gold-primary); text-decoration: none; font-size: 11px; font-weight: bold; border: 1px solid var(--gold-primary); padding: 2px 6px; border-radius: 4px;" title="View Dedicated Product Page">Page ➜</a>
+          <a href="/products/${prod.id}.html" class="product-page-link" style="color: var(--gold-primary); text-decoration: none; font-size: 11px; font-weight: bold; border: 1px solid var(--gold-primary); padding: 2px 6px; border-radius: 4px;" title="View Dedicated Product Page">Page ➜</a>
         </div>
         <a href="#" class="product-card-name" id="name-${prod.id}">${prod.name}</a>
         <div class="product-card-sold-count" style="font-size: 11px; color: #10b981; margin-top: 4px; display: flex; align-items: center; gap: 4px; font-weight: 600;">
@@ -786,13 +786,13 @@ class StoreApp {
     const mViewPage = document.getElementById("btn-modal-view-page");
     
     // Fill text
-    mImg.src = product.image + "?v=2";
+    mImg.src = (product.image.startsWith('http') || product.image.startsWith('/') ? product.image : '/' + product.image) + "?v=2";
     mBrand.innerText = product.brand;
     mName.innerText = product.name;
     mDesc.innerText = product.description;
 
     if (mViewPage) {
-      mViewPage.href = `products/${product.id}.html`;
+      mViewPage.href = `/products/${product.id}.html`;
     }
 
     if (mSpecs) {
@@ -1116,7 +1116,7 @@ class StoreApp {
       
       cartItem.innerHTML = `
         <div class="cart-item-image-wrap">
-          <img class="cart-item-image" src="${item.image}?v=2" alt="${item.name}">
+          <img class="cart-item-image" src="${item.image.startsWith('http') || item.image.startsWith('/') ? item.image : '/' + item.image}?v=2" alt="${item.name}">
         </div>
         <div class="cart-item-info">
           <div class="cart-item-brand">${item.brand}</div>
@@ -1667,7 +1667,7 @@ class StoreApp {
           "@type": "Product",
           "@id": `${siteUrl}/#product-${prod.id}`,
           "name": prod.name,
-          "image": `${siteUrl}/${prod.image}`,
+          "image": `${siteUrl}${prod.image.startsWith('/') ? prod.image : '/' + prod.image}`,
           "description": prod.description,
           "brand": {
             "@type": "Brand",

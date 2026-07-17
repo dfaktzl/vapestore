@@ -768,7 +768,7 @@ foreach ($prod in $config.products) {
         <div class="header-actions" style="display:flex; gap:15px; align-items:center;">
           <a href="../index.html#catalog" class="btn-secondary" style="font-size:12px; padding:8px 16px;">Back to Shop</a>
           <button id="cart-toggle" class="btn-primary" style="font-size:12px; padding:8px 16px;">
-            🛒 Cart (<span id="cart-count">0</span>)
+            &#128722; Cart (<span id="cart-count">0</span>)
           </button>
         </div>
       </div>
@@ -791,7 +791,7 @@ foreach ($prod in $config.products) {
             <h1 style="font-family: var(--font-title); font-size: 32px; font-weight: 900; color: #fff; margin: 0 0 10px 0;">$name</h1>
             
             <div style="font-size: 13px; color: #10b981; margin-bottom: 20px; font-weight: 600; display: flex; align-items: center; gap: 6px;">
-              <span>🔥</span> <span>$soldCount items sold recently</span>
+              <span>&#128293;</span> <span>$soldCount items sold recently</span>
             </div>
 
             <p style="font-size: 14px; color: var(--text-secondary); line-height: 1.6; margin-bottom: 25px;">$description</p>

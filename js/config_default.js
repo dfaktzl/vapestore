@@ -13,7 +13,7 @@ const CONFIG_DEFAULT = {
                      "tagline":  "Best Deals on Vapes & Smokes in Australia",
                      "contactEmail":  "vapesonlineaustralia@proton.me",
                      "contactPhone":  "0402 179 489",
-                     "announcement":  "ðŸ”¥ FREE EXPRESS SHIPPING ON ALL ORDERS OVER $150! PAYID & BANK XFER ACCEPTED ðŸ”¥",
+                     "announcement":  "🔥 FREE EXPRESS SHIPPING ON ALL ORDERS OVER $150! PAYID & BANK XFER ACCEPTED 🔥",
                      "ageLimit":  18,
                      "orderSyncUrl":  "https://vapes-99ad2-default-rtdb.asia-southeast1.firebasedatabase.app/",
                      "emailjsServiceId":  "NKPHTNJE2GJBR1VF",
