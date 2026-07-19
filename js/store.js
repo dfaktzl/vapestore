@@ -1671,6 +1671,32 @@ class StoreApp {
         this.renderProducts();
       });
     }
+
+    // Transit Estimator Widget
+    const transitTrigger = document.getElementById("btn-transit-trigger");
+    const transitClose = document.getElementById("transit-estimator-close");
+    const transitModal = document.getElementById("transit-estimator-modal");
+    const checkTransitBtn = document.getElementById("btn-check-transit");
+
+    if (transitTrigger) {
+      transitTrigger.addEventListener("click", () => {
+        if (transitModal) transitModal.classList.add("active");
+        this.logActivity("Opened Transit Estimator Widget");
+      });
+    }
+    if (transitClose) {
+      transitClose.addEventListener("click", () => {
+        if (transitModal) transitModal.classList.remove("active");
+      });
+    }
+    if (transitModal) {
+      transitModal.addEventListener("click", (e) => {
+        if (e.target === transitModal) transitModal.classList.remove("active");
+      });
+    }
+    if (checkTransitBtn) {
+      checkTransitBtn.addEventListener("click", () => this.runTransitEstimator());
+    }
     
     const sortSelect = document.getElementById("sort-select");
     if (sortSelect) {
@@ -2014,6 +2040,98 @@ class StoreApp {
     } catch (e) {
       console.warn("Could not log user activity:", e);
     }
+  }
+
+  runTransitEstimator() {
+    const postcode = document.getElementById("transit-postcode").value.trim();
+    const resultEl = document.getElementById("transit-result");
+    if (!postcode || postcode.length < 3) {
+      alert("Please enter a valid Australian postcode or state code.");
+      return;
+    }
+    
+    resultEl.style.display = "block";
+    
+    let state = "VIC";
+    let locationType = "Metro";
+    let time = "1-2 Business Days";
+    let desc = "";
+    
+    const char = postcode[0];
+    if (char === '3') {
+      state = "Victoria";
+      if (postcode.startsWith("30") || postcode.startsWith("31") || postcode.startsWith("320")) {
+        locationType = "Metro (Melbourne)";
+        time = "Next Business Day (Overnight)";
+        desc = "Your order is dispatched locally from Melbourne. You get the fastest priority transit.";
+      } else {
+        locationType = "Regional VIC";
+        time = "1-2 Business Days";
+        desc = "Country VIC destinations clear quickly via AusPost Express channels.";
+      }
+    } else if (char === '2') {
+      state = "NSW / ACT";
+      if (postcode.startsWith("20") || postcode.startsWith("21") || postcode.startsWith("260")) {
+        locationType = "Metro (Sydney / Canberra)";
+        time = "1-2 Business Days";
+        desc = "High frequency express lane ensures delivery in 24-48 hours post-payment clearance.";
+      } else {
+        locationType = "Regional NSW";
+        time = "2-3 Business Days";
+        desc = "Outer regional hubs take slightly longer to clear local depots.";
+      }
+    } else if (char === '4') {
+      state = "Queensland";
+      if (postcode.startsWith("40") || postcode.startsWith("41") || postcode.startsWith("42")) {
+        locationType = "Metro (Brisbane / Gold Coast)";
+        time = "2-3 Business Days";
+        desc = "Express air lane ensures fast delivery to South-East Queensland.";
+      } else {
+        locationType = "Regional QLD / Far North";
+        time = "3-4 Business Days";
+        desc = "Tropical QLD and outer rural areas require additional sorting stops.";
+      }
+    } else if (char === '5') {
+      state = "South Australia";
+      if (postcode.startsWith("50") || postcode.startsWith("51")) {
+        locationType = "Metro (Adelaide)";
+        time = "2-3 Business Days";
+        desc = "Adelaide metro hubs process incoming shipments rapidly.";
+      } else {
+        locationType = "Regional SA";
+        time = "3-4 Business Days";
+        desc = "Rural and wine region distribution centers clear within 72-96 hours.";
+      }
+    } else if (char === '6') {
+      state = "Western Australia";
+      if (postcode.startsWith("60")) {
+        locationType = "Metro (Perth)";
+        time = "2-3 Business Days";
+        desc = "Express air cargo delivers Perth orders quickly across the Nullarbor.";
+      } else {
+        locationType = "Regional WA / Mining Hubs";
+        time = "4-6 Business Days";
+        desc = "WA country and remote mining sites experience longer transits.";
+      }
+    } else if (char === '7') {
+      state = "Tasmania";
+      time = "2-3 Business Days";
+      desc = "Bass Strait transport clears Hobart/Launceston within 48-72 hours.";
+    } else if (char === '0') {
+      state = "Northern Territory";
+      time = "3-5 Business Days";
+      desc = "Darwin and regional NT locations process through national linehaul corridors.";
+    } else {
+      state = "Unknown / Interstate";
+      time = "3-5 Business Days";
+      desc = "Standard national express dispatch timeline applies.";
+    }
+    
+    resultEl.innerHTML = `
+      <div style="margin-bottom:8px;"><span style="color:var(--gold-primary); font-weight:700;">State:</span> ${state} (${locationType})</div>
+      <div style="margin-bottom:8px;"><span style="color:var(--gold-primary); font-weight:700;">Estimated Delivery:</span> <strong style="color:#10b981; font-size:14px;">${time}</strong></div>
+      <div style="font-size:12px; color:var(--text-secondary); line-height:1.4;">${desc}</div>
+    `;
   }
 
 }

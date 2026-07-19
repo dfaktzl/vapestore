@@ -38,8 +38,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
   <!-- Styles -->
-  <link rel="stylesheet" href="css/design_system.css?v=17">
-  <link rel="stylesheet" href="css/main.css?v=17">
+  <link rel="stylesheet" href="css/design_system.css?v=18">
+  <link rel="stylesheet" href="css/main.css?v=18">
 </head>
 <body>
 
@@ -175,7 +175,8 @@
                 </label>
               </div>
             </div>
-            <button id="btn-clear-filters" class="filter-clear-btn">✕ Clear</button>
+             <button id="btn-clear-filters" class="filter-clear-btn">✕ Clear</button>
+             <button id="btn-transit-trigger" class="filter-clear-btn" style="border:1px solid var(--gold-primary); background:none; color:var(--gold-primary); margin-left:8px; font-weight:700;">🚚 Transit Time</button>
           </div>
           <div class="filter-bar-meta">
             <span class="results-count">Showing <strong id="displayed-products-count">0</strong> products</span>
@@ -393,6 +394,31 @@
       </div>
     </div>
 
+    <!-- 8.5. POSTCODE DELIVERY ESTIMATOR MODAL -->
+    <div id="transit-estimator-modal" class="modal-overlay">
+      <div class="modal-container glass-card" style="max-width:450px; padding:30px;">
+        <button id="transit-estimator-close" class="modal-close-btn">✖</button>
+        <h2 class="modal-name text-gold" style="margin-bottom:15px; text-transform:uppercase; display:flex; align-items:center; gap:8px; font-size: 20px;">
+          <span>🚚</span> Transit Delivery Estimator
+        </h2>
+        <p style="font-size:13px; color:var(--text-secondary); margin-bottom:20px; line-height:1.5;">
+          Enter your 4-digit Australian postcode to calculate the estimated delivery time window from our Melbourne depot.
+        </p>
+        
+        <div style="margin-bottom: 20px; text-align: left;">
+          <label style="display:block; font-size:12px; color:var(--text-secondary); margin-bottom:6px; font-weight:600; text-transform:uppercase; letter-spacing:0.5px;">Postcode / State Prefix</label>
+          <div style="display:flex; gap:10px;">
+            <input type="text" id="transit-postcode" class="search-input" style="padding-left:15px; border-radius:6px; background:rgba(0,0,0,0.4); flex-grow:1; color:#fff;" placeholder="e.g. 3000, 2000, 4000" maxlength="4">
+            <button id="btn-check-transit" class="btn-primary" style="margin:0; padding:0 20px; font-size:13px; cursor:pointer;">Check Time</button>
+          </div>
+        </div>
+        
+        <div id="transit-result" style="display:none; padding:15px; background:rgba(212,175,55,0.03); border:1px solid rgba(212,175,55,0.15); border-radius:var(--radius-sm); font-size:13px; text-align:left; line-height:1.6;">
+          <!-- Loaded dynamically -->
+        </div>
+      </div>
+    </div>
+
     <!-- 9. SHOPPING CART SIDE DRAWER -->
     <div id="cart-drawer-overlay" class="cart-drawer-overlay"></div>
     <div id="cart-drawer" class="cart-drawer">
@@ -567,7 +593,7 @@
 
   <!-- Loading scripts -->
   <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-  <script src="js/config_default.js?v=17"></script>
-  <script src="js/store.js?v=17"></script>
+  <script src="js/config_default.js?v=18"></script>
+  <script src="js/store.js?v=18"></script>
 </body>
 </html>
