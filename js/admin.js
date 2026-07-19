@@ -32,9 +32,13 @@ function escapeHTML(str) {
     .replace(/'/g, "&#39;");
 }
 
-document.addEventListener("DOMContentLoaded", () => {
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", () => {
+    window.adminApp = new AdminApp();
+  });
+} else {
   window.adminApp = new AdminApp();
-});
+}
 
 class AdminApp {
   constructor() {

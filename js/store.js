@@ -21,9 +21,13 @@ const localStorage = (() => {
   }
 })();
 
-document.addEventListener("DOMContentLoaded", () => {
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", () => {
+    window.store = new StoreApp();
+  });
+} else {
   window.store = new StoreApp();
-});
+}
 
 class StoreApp {
   constructor() {

@@ -468,7 +468,7 @@ Paste your Order Reference (${ref}) into the payment description so we can match
     }
 
     // Load order on startup
-    window.addEventListener("DOMContentLoaded", () => {
+    const initOrderSuccess = () => {
       const latestOrderStr = localStorage.getItem("latest_order");
       if (!latestOrderStr) {
         document.getElementById("order-empty-view").style.display = "block";
@@ -543,7 +543,13 @@ Paste your Order Reference (${ref}) into the payment description so we can match
         console.error("Could not parse stored order details:", e);
         document.getElementById("order-empty-view").style.display = "block";
       }
-    });
+    };
+
+    if (document.readyState === "loading") {
+      window.addEventListener("DOMContentLoaded", initOrderSuccess);
+    } else {
+      initOrderSuccess();
+    }
   </script>
 </body>
 </html>
