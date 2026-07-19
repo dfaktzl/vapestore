@@ -227,8 +227,8 @@ foreach ($guide in $guides) {
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   
   <!-- Styles -->
-  <link rel="stylesheet" href="../css/design_system.css?v=23">
-  <link rel="stylesheet" href="../css/main.css?v=23">
+  <link rel="stylesheet" href="../css/design_system.css?v=24">
+  <link rel="stylesheet" href="../css/main.css?v=24">
   
   <!-- Custom Article Page styling -->
   <style>
@@ -736,8 +736,8 @@ foreach ($prod in $config.products) {
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;900&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   
   <!-- Stylesheets -->
-  <link rel="stylesheet" href="../css/design_system.css?v=23">
-  <link rel="stylesheet" href="../css/main.css?v=23">
+  <link rel="stylesheet" href="../css/design_system.css?v=24">
+  <link rel="stylesheet" href="../css/main.css?v=24">
   <link rel="icon" type="image/png" href="../img/logo_small.png">
   
   <!-- Structured SEO Schema -->
@@ -886,8 +886,8 @@ foreach ($prod in $config.products) {
   </div>
 
   <!-- scripts -->
-  <script src="../js/config_default.js?v=23"></script>
-  <script src="../js/store.js?v=23"></script>
+  <script src="../js/config_default.js?v=24"></script>
+  <script src="../js/store.js?v=24"></script>
 </body>
 </html>
 "@

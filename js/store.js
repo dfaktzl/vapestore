@@ -657,13 +657,31 @@ class StoreApp {
   isFlavorOutOfStock(productId, flavorName, flavorsList) {
     if (!flavorName || !flavorsList) return false;
     
+    // 0. Manual in-stock exceptions
+    if (productId === "alibarbar-link-12k" && flavorName.toLowerCase() === "triple berry ice") {
+      return false;
+    }
+    if (productId === "alibarbar-ingot-9k" && flavorName.toLowerCase() === "blue razz ice") {
+      return false;
+    }
+    if (productId === "alibarbar-toybox-8k" && flavorName.toLowerCase() === "peach mango") {
+      return false;
+    }
+
     // 1. Mint flavors are always out of stock and do not add to the 1-3 limit
     if (flavorName.toLowerCase().includes("mint")) {
       return true;
     }
     
-    // 2. Filter non-mint flavors to select 1-3 other out of stock flavors
-    const nonMintFlavors = flavorsList.filter(f => !f.toLowerCase().includes("mint"));
+    // 2. Filter non-mint and exception flavors to select 1-3 other out of stock flavors
+    const nonMintFlavors = flavorsList.filter(f => {
+      const nameLower = f.toLowerCase();
+      if (nameLower.includes("mint")) return false;
+      if (productId === "alibarbar-link-12k" && nameLower === "triple berry ice") return false;
+      if (productId === "alibarbar-ingot-9k" && nameLower === "blue razz ice") return false;
+      if (productId === "alibarbar-toybox-8k" && nameLower === "peach mango") return false;
+      return true;
+    });
     if (nonMintFlavors.length === 0) return false;
     
     let hash = 0;
