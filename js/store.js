@@ -664,6 +664,9 @@ class StoreApp {
     if (productId === "alibarbar-ingot-9k" && flavorName.toLowerCase() === "blue razz ice") {
       return false;
     }
+    if (productId === "alibarbar-ingot-9k" && flavorName.toLowerCase() === "triple berry") {
+      return false;
+    }
     if (productId === "alibarbar-toybox-8k" && flavorName.toLowerCase() === "peach mango") {
       return false;
     }
@@ -679,6 +682,7 @@ class StoreApp {
       if (nameLower.includes("mint")) return false;
       if (productId === "alibarbar-link-12k" && nameLower === "triple berry ice") return false;
       if (productId === "alibarbar-ingot-9k" && nameLower === "blue razz ice") return false;
+      if (productId === "alibarbar-ingot-9k" && nameLower === "triple berry") return false;
       if (productId === "alibarbar-toybox-8k" && nameLower === "peach mango") return false;
       return true;
     });
