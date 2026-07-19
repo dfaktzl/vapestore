@@ -365,9 +365,15 @@ class StoreApp {
   async loadConfig() {
     // 1. Load base configuration from config.json, or fallback JS defaults
     let baseConfig = null;
+    let pathPrefix = "";
+    
+    // Resolve relative path if in a subdirectory
+    if (window.location.pathname.includes("/products/") || window.location.pathname.includes("/education/")) {
+      pathPrefix = "../";
+    }
 
     try {
-      const response = await fetch("config.json?v=15");
+      const response = await fetch(`${pathPrefix}config.json?v=15`);
       if (response.ok) {
         baseConfig = await response.json();
         console.log("Loaded base configuration from config.json.");
@@ -376,8 +382,10 @@ class StoreApp {
       console.warn("Could not load config.json. Falling back to default script.");
     }
 
-    if (!baseConfig && window.CONFIG_DEFAULT) {
-      baseConfig = JSON.parse(JSON.stringify(window.CONFIG_DEFAULT));
+    // Direct check for global CONFIG_DEFAULT (without window prefix as const variables do not bind to window object)
+    const fallbackConfig = typeof CONFIG_DEFAULT !== "undefined" ? CONFIG_DEFAULT : (window.CONFIG_DEFAULT || null);
+    if (!baseConfig && fallbackConfig) {
+      baseConfig = JSON.parse(JSON.stringify(fallbackConfig));
       console.log("Loaded base configuration from config_default.js fallback.");
     }
 
@@ -410,9 +418,15 @@ class StoreApp {
   async loadGuides() {
     // 1. Load base guides from guides.json, or default guides
     let baseGuides = null;
+    let pathPrefix = "";
+
+    // Resolve relative path if in a subdirectory
+    if (window.location.pathname.includes("/products/") || window.location.pathname.includes("/education/")) {
+      pathPrefix = "../";
+    }
 
     try {
-      const response = await fetch("guides.json?v=3");
+      const response = await fetch(`${pathPrefix}guides.json?v=3`);
       if (response.ok) {
         baseGuides = await response.json();
         console.log("Loaded base guides from guides.json.");
@@ -421,7 +435,9 @@ class StoreApp {
       console.warn("Could not load guides.json. Using fallback default.");
     }
 
-    this.guides = baseGuides || [];
+    // Direct check for global GUIDES_DEFAULT (without window prefix as const variables do not bind to window object)
+    const fallbackGuides = typeof GUIDES_DEFAULT !== "undefined" ? GUIDES_DEFAULT : (window.GUIDES_DEFAULT || null);
+    this.guides = baseGuides || (fallbackGuides ? JSON.parse(JSON.stringify(fallbackGuides)) : []);
 
     // 2. Try fetching live guides from Firebase if sync URL exists
     const syncUrl = this.config?.settings?.orderSyncUrl?.trim();
