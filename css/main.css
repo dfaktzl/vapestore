@@ -1515,22 +1515,30 @@
   color: #ff6b6b;
 }
 
-.filter-actions-group {
+.transit-estimator-btn {
+  flex-shrink: 0;
+  background: rgba(212, 175, 55, 0.06);
+  border: 1px solid rgba(212, 175, 55, 0.4);
+  color: var(--gold-accent);
+  font-size: 12px;
+  font-family: var(--font-body);
+  font-weight: 700;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
   display: flex;
-  gap: 8px;
   align-items: center;
-}
-
-#btn-transit-trigger {
-  border-radius: 20px;
+  gap: 6px;
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  white-space: nowrap;
 }
 
-#btn-transit-trigger:hover {
-  background: var(--gold-primary) !important;
-  color: #000000 !important;
-  border-color: var(--gold-primary) !important;
-  box-shadow: 0 0 10px rgba(212,175,55,0.4);
+.transit-estimator-btn:hover {
+  background: var(--gold-primary);
+  color: #000000;
+  border-color: var(--gold-primary);
+  box-shadow: 0 4px 15px rgba(212, 175, 55, 0.35);
+  transform: translateY(-1px);
 }
 
 .filter-bar-meta {
@@ -1648,10 +1656,11 @@
 
 @media (max-width: 768px) {
   .filter-bar {
-    flex-direction: column;
-    align-items: stretch;
-    padding: 12px 14px;
-    gap: 12px;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 8px 12px;
+    gap: 8px;
   }
   .filter-bar::-webkit-scrollbar {
     display: none;
@@ -1675,21 +1684,31 @@
   }
   .filter-bar-meta {
     font-size: 12px;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+    margin-top: 12px;
   }
-  .filter-actions-group {
-    display: grid;
-    grid-template-columns: 1fr 1.5fr;
-    gap: 8px;
+  .meta-right-wrap {
     width: 100%;
-    margin-top: 4px;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
   }
-  .filter-actions-group .filter-clear-btn {
+  .transit-estimator-btn {
     width: 100%;
-    text-align: center;
-    padding: 10px;
-    font-size: 12px;
-    border-radius: 6px;
-    margin: 0 !important;
+    justify-content: center;
+    padding: 10px 16px;
+    font-size: 13px;
+  }
+  .sort-selector-container {
+    width: 100%;
+    justify-content: space-between;
+  }
+  .sort-select {
+    flex-grow: 1;
+    max-width: none;
   }
   .faq-question {
     font-size: 14px;
