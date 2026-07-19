@@ -116,14 +116,14 @@ class AdminApp {
     // Load base config first to get the Firebase URL
     try {
       let baseConfig = null;
-      const resp = await fetch("config.json?v=3");
+      const resp = await fetch(`config.json?v=${Date.now()}`);
       if (resp.ok) baseConfig = await resp.json();
       else if (window.CONFIG_DEFAULT) baseConfig = window.CONFIG_DEFAULT;
 
       const fbUrl = baseConfig?.settings?.orderSyncUrl?.trim();
       if (fbUrl) {
         const cleanUrl = fbUrl.endsWith("/") ? fbUrl : fbUrl + "/";
-        const keyResp = await fetch(`${cleanUrl}adminKey.json`);
+        const keyResp = await fetch(`${cleanUrl}adminKey.json?v=${Date.now()}`);
         if (keyResp.ok) {
           const storedKey = await keyResp.json();
           // storedKey is stored as "username:password" hash in Firebase
@@ -148,7 +148,7 @@ class AdminApp {
     // 1. Try Firebase live config
     try {
       let fbBase = null;
-      const resp = await fetch("config.json?v=9");
+      const resp = await fetch(`config.json?v=${Date.now()}`);
       if (resp.ok) {
         const staticConf = await resp.json();
         fbBase = staticConf?.settings?.orderSyncUrl?.trim();
@@ -158,7 +158,7 @@ class AdminApp {
 
       if (fbBase) {
         const cleanUrl = fbBase.endsWith("/") ? fbBase : fbBase + "/";
-        const fbResp = await fetch(`${cleanUrl}config.json`);
+        const fbResp = await fetch(`${cleanUrl}config.json?v=${Date.now()}`);
         if (fbResp.ok) {
           const fbData = await fbResp.json();
           if (fbData && fbData.products && fbData.settings) {
@@ -174,7 +174,7 @@ class AdminApp {
 
     // 2. Fetch config.json from server
     try {
-      const response = await fetch("config.json?v=9");
+      const response = await fetch(`config.json?v=${Date.now()}`);
       if (response.ok) {
         this.config = await response.json();
         console.log("Admin loaded config from config.json.");

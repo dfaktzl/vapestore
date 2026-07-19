@@ -373,7 +373,7 @@ class StoreApp {
     }
 
     try {
-      const response = await fetch(`${pathPrefix}config.json?v=15`);
+      const response = await fetch(`${pathPrefix}config.json?v=${Date.now()}`);
       if (response.ok) {
         baseConfig = await response.json();
         console.log("Loaded base configuration from config.json.");
@@ -401,7 +401,7 @@ class StoreApp {
     if (syncUrl) {
       const cleanUrl = syncUrl.endsWith("/") ? syncUrl : syncUrl + "/";
       try {
-        const fbResponse = await fetch(`${cleanUrl}config.json`);
+        const fbResponse = await fetch(`${cleanUrl}config.json?v=${Date.now()}`);
         if (fbResponse.ok) {
           const fbConfig = await fbResponse.json();
           if (fbConfig && fbConfig.products && fbConfig.settings) {
@@ -426,7 +426,7 @@ class StoreApp {
     }
 
     try {
-      const response = await fetch(`${pathPrefix}guides.json?v=3`);
+      const response = await fetch(`${pathPrefix}guides.json?v=${Date.now()}`);
       if (response.ok) {
         baseGuides = await response.json();
         console.log("Loaded base guides from guides.json.");
@@ -444,7 +444,7 @@ class StoreApp {
     if (syncUrl) {
       const cleanUrl = syncUrl.endsWith("/") ? syncUrl : syncUrl + "/";
       try {
-        const fbResponse = await fetch(`${cleanUrl}guides.json`);
+        const fbResponse = await fetch(`${cleanUrl}guides.json?v=${Date.now()}`);
         if (fbResponse.ok) {
           const fbGuides = await fbResponse.json();
           if (Array.isArray(fbGuides)) {
