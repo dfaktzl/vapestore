@@ -38,8 +38,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
   <!-- Styles -->
-  <link rel="stylesheet" href="css/design_system.css?v=19">
-  <link rel="stylesheet" href="css/main.css?v=19">
+  <link rel="stylesheet" href="css/design_system.css?v=20">
+  <link rel="stylesheet" href="css/main.css?v=20">
 </head>
 <body>
 
@@ -175,8 +175,10 @@
                 </label>
               </div>
             </div>
-             <button id="btn-clear-filters" class="filter-clear-btn">✕ Clear</button>
-             <button id="btn-transit-trigger" class="filter-clear-btn" style="border:1px solid var(--gold-primary); background:none; color:var(--gold-primary); margin-left:8px; font-weight:700;">🚚 Transit Time</button>
+             <div class="filter-actions-group">
+               <button id="btn-clear-filters" class="filter-clear-btn">✕ Clear</button>
+               <button id="btn-transit-trigger" class="filter-clear-btn" style="border:1px solid var(--gold-primary); background:none; color:var(--gold-primary); font-weight:700;">🚚 Transit Time</button>
+             </div>
           </div>
           <div class="filter-bar-meta">
             <span class="results-count">Showing <strong id="displayed-products-count">0</strong> products</span>
@@ -593,7 +595,7 @@
 
   <!-- Loading scripts -->
   <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-  <script src="js/config_default.js?v=19"></script>
-  <script src="js/store.js?v=19"></script>
+  <script src="js/config_default.js?v=20"></script>
+  <script src="js/store.js?v=20"></script>
 </body>
 </html>
