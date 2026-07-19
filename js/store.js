@@ -1138,6 +1138,7 @@ class StoreApp {
     // Group items in format "Single" by product ID to apply auto-carton discounts
     const singleProductQuantities = {};
     this.cart.forEach(item => {
+      item.quantity = parseInt(item.quantity) || 0;
       itemCount += item.quantity;
       if (item.format === "Single") {
         if (!singleProductQuantities[item.id]) {
@@ -1148,30 +1149,34 @@ class StoreApp {
     });
 
     this.cart.forEach(item => {
+      const qty = parseInt(item.quantity) || 0;
+      const singlePrice = parseFloat(item.singlePrice) || parseFloat(item.price) || 0;
+      const boxPrice = parseFloat(item.boxPrice) || parseFloat(item.price) || 0;
+
       // 1. If the item is in Box format, the price is already discounted, so sum it up directly
       if (item.format === "Box") {
-        const cost = item.quantity * item.boxPrice;
+        const cost = qty * boxPrice;
         subtotal += cost;
         total += cost;
       } else {
         // 2. If the item is in Single format, check if total singles ordered reaches 10
-        const totalSingleQty = singleProductQuantities[item.id];
+        const totalSingleQty = singleProductQuantities[item.id] || 0;
         
         if (totalSingleQty < 10) {
-          const cost = item.quantity * item.singlePrice;
+          const cost = qty * singlePrice;
           subtotal += cost;
           total += cost;
         } else {
           // Auto Carton rate discount applied for buying 10 or more singles!
-          const proportion = item.quantity / totalSingleQty;
+          const proportion = totalSingleQty > 0 ? (qty / totalSingleQty) : 0;
           
           const boxes = Math.floor(totalSingleQty / 10);
           const leftovers = totalSingleQty % 10;
           
-          const totalCalculatedCost = (boxes * item.boxPrice) + (leftovers * item.singlePrice);
+          const totalCalculatedCost = (boxes * boxPrice) + (leftovers * singlePrice);
           const itemAllocatedCost = totalCalculatedCost * proportion;
           
-          const standardCost = item.quantity * item.singlePrice;
+          const standardCost = qty * singlePrice;
           
           subtotal += standardCost;
           total += itemAllocatedCost;
@@ -1192,12 +1197,12 @@ class StoreApp {
     total += shipping;
 
     return {
-      subtotal,
-      savings,
-      shipping,
-      happyHourDiscount,
-      total,
-      itemCount
+      subtotal: isNaN(subtotal) ? 0 : subtotal,
+      savings: isNaN(savings) ? 0 : savings,
+      shipping: isNaN(shipping) ? 0 : shipping,
+      happyHourDiscount: isNaN(happyHourDiscount) ? 0 : happyHourDiscount,
+      total: isNaN(total) ? 0 : total,
+      itemCount: isNaN(itemCount) ? 0 : itemCount
     };
   }
 
@@ -1258,7 +1263,9 @@ class StoreApp {
       const cartItem = document.createElement("div");
       cartItem.className = "cart-item";
       
-      const itemPriceTotal = item.quantity * item.price;
+      const qty = parseInt(item.quantity) || 0;
+      const price = parseFloat(item.price) || 0;
+      const itemPriceTotal = qty * price;
       const formatBadge = item.format === "Box" ? "10x Box" : "Single";
       
       cartItem.innerHTML = `
@@ -1343,11 +1350,13 @@ class StoreApp {
       row.style.justifyContent = "space-between";
       row.style.fontSize = "13px";
       row.style.marginBottom = "8px";
+      const qty = parseInt(item.quantity) || 0;
+      const price = parseFloat(item.price) || 0;
       row.innerHTML = `
         <span style="color:var(--text-secondary)">
-          ${item.quantity}x ${item.name} (${item.flavor}) [${item.format}]
+          ${qty}x ${item.name} (${item.flavor}) [${item.format}]
         </span>
-        <strong>$${(item.quantity * item.price).toFixed(2)}</strong>
+        <strong>$${(qty * price).toFixed(2)}</strong>
       `;
       checkList.appendChild(row);
     });
@@ -1399,13 +1408,17 @@ class StoreApp {
       refCode,
       date: new Date().toISOString(),
       customer: { name, address: `${addr}, ${city}, ${state} ${post}`, phone, email, notes },
-      items: this.cart.map(i => ({ 
-        name: i.name, 
-        flavor: i.flavor, 
-        format: i.format, 
-        quantity: i.quantity, 
-        total: i.quantity * i.price 
-      })),
+      items: this.cart.map(i => {
+        const qty = parseInt(i.quantity) || 0;
+        const price = parseFloat(i.price) || 0;
+        return {
+          name: i.name, 
+          flavor: i.flavor, 
+          format: i.format, 
+          quantity: qty, 
+          total: qty * price
+        };
+      }),
       total: calculations.total,
       happyHourDiscount: calculations.happyHourDiscount || 0,
       status: "Pending Payment",
@@ -1469,7 +1482,9 @@ class StoreApp {
     // Generate pre-formatted order summary text
     let orderItemsText = "";
     this.cart.forEach(item => {
-      orderItemsText += `- ${item.quantity}x ${item.name} (${item.flavor || "Standard"} / ${item.format || "Single"}) - $${(item.quantity * item.price).toFixed(2)}\n`;
+      const qty = parseInt(item.quantity) || 0;
+      const price = parseFloat(item.price) || 0;
+      orderItemsText += `- ${qty}x ${item.name} (${item.flavor || "Standard"} / ${item.format || "Single"}) - $${(qty * price).toFixed(2)}\n`;
     });
 
     // Send email notifications
