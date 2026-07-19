@@ -20,7 +20,7 @@ const CONFIG_DEFAULT = {
                      "emailjsPublicKey":  "07hCgPLcSv1mHfeNk",
                      "emailjsContactTemplateId":  "template_ner135t",
                      "emailjsOrderTemplateId":  "template_l5hhw7n",
-                     "emailjsPaymentReceivedTemplateId":  "",
+                     "emailjsPaymentReceivedTemplateId":  "template_nklzn1r",
                      "bankDetails":  {
                                          "payId":  "vapesonlineaustralia@proton.me",
                                          "bankName":  "NAB - National Australia Bank",

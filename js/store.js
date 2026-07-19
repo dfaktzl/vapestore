@@ -358,6 +358,10 @@ class StoreApp {
     }
 
     promoCountEl.innerText = currentSpots;
+    
+    // Initialize & monitor Happy Hour promo banner
+    this.updatePromoBanner();
+    setInterval(() => this.updatePromoBanner(), 10000);
   }
 
   async loadConfig() {
@@ -568,12 +572,74 @@ class StoreApp {
     });
   }
 
+  hashCode(str) {
+    let hash = 0;
+    for (let i = 0; i < str.length; i++) {
+      hash = (hash * 31 + str.charCodeAt(i)) % 1000000;
+    }
+    return hash;
+  }
+
+  isHappyHour() {
+    try {
+      const melbourneTimeStr = new Date().toLocaleString("en-US", { timeZone: "Australia/Melbourne" });
+      const melbourneDate = new Date(melbourneTimeStr);
+      const hours = melbourneDate.getHours();
+      return hours === 17; // 5:00 PM to 5:59 PM AEST/AEDT
+    } catch (e) {
+      const hours = new Date().getHours();
+      return hours === 17;
+    }
+  }
+
+  updatePromoBanner() {
+    const banner = document.querySelector(".promo-banner");
+    const bannerText = document.getElementById("promo-banner-text");
+    if (!banner || !bannerText) return;
+
+    if (this.isHappyHour()) {
+      banner.style.background = "linear-gradient(90deg, #3a1f60 0%, #d4af37 50%, #3a1f60 100%)";
+      banner.style.borderBottom = "1px solid #d4af37";
+      bannerText.innerHTML = "⚡ HAPPY HOUR IS ACTIVE! All orders get 10% OFF automatically at checkout until 6:00 PM AEST! ⚡";
+      bannerText.style.color = "#ffffff";
+      bannerText.style.fontWeight = "800";
+    } else {
+      banner.style.background = "linear-gradient(90deg, #12141c 0%, #1d190e 50%, #12141c 100%)";
+      banner.style.borderBottom = "1px solid rgba(212, 175, 55, 0.25)";
+      bannerText.innerHTML = "DAILY HAPPY HOUR 5-6PM AEST: All orders get 10% off automatically! | Beat any competitor's quote by 10%!";
+      bannerText.style.color = "#fff";
+      bannerText.style.fontWeight = "600";
+    }
+  }
+
   getSoldCount(productId) {
     let sum = 0;
     for (let i = 0; i < productId.length; i++) {
       sum += productId.charCodeAt(i);
     }
-    return (sum % 47) + 8; // Deterministic value between 8 and 54
+    let soldCount = (sum % 47) + 8; // Deterministic value between 8 and 54
+
+    // If product is popular, increment it deterministically by 1-10 each day since July 1, 2026
+    const product = this.config && this.config.products ? this.config.products.find(p => p.id === productId) : null;
+    if (product && product.popular) {
+      const epoch = new Date("2026-07-01T00:00:00Z");
+      const now = new Date();
+      // Calculate days in Melbourne local time
+      const melbourneTimeStr = now.toLocaleString("en-US", { timeZone: "Australia/Melbourne" });
+      const melbourneDate = new Date(melbourneTimeStr);
+      const diffTime = Math.max(0, melbourneDate - epoch);
+      const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+      
+      if (diffDays > 0) {
+        let increment = 0;
+        for (let d = 1; d <= diffDays; d++) {
+          const hashVal = this.hashCode(productId + "_day_" + d);
+          increment += (hashVal % 10) + 1; // 1 to 10 randomly each day
+        }
+        soldCount += increment;
+      }
+    }
+    return soldCount;
   }
 
   renderProducts() {
@@ -1114,6 +1180,13 @@ class StoreApp {
       }
     });
 
+    // Happy Hour 10% discount on order items total before shipping
+    let happyHourDiscount = 0;
+    if (this.isHappyHour()) {
+      happyHourDiscount = total * 0.1;
+      total -= happyHourDiscount;
+    }
+
     // Hardcode free shipping on all orders over $150
     const shipping = (total >= 150 || total === 0) ? 0 : 15.00;
     total += shipping;
@@ -1122,6 +1195,7 @@ class StoreApp {
       subtotal,
       savings,
       shipping,
+      happyHourDiscount,
       total,
       itemCount
     };
@@ -1150,6 +1224,17 @@ class StoreApp {
         savingsText.parentElement.style.display = "none";
       }
     }
+    const happyHourRow = document.getElementById("cart-happy-hour-row");
+    const happyHourDiscountText = document.getElementById("cart-happy-hour-discount");
+    if (happyHourRow && happyHourDiscountText) {
+      if (calculations.happyHourDiscount > 0) {
+        happyHourRow.style.display = "flex";
+        happyHourDiscountText.innerText = `-$${calculations.happyHourDiscount.toFixed(2)}`;
+      } else {
+        happyHourRow.style.display = "none";
+      }
+    }
+
     if (shippingText) {
       shippingText.innerText = calculations.shipping === 0 ? "Free Express" : `$${calculations.shipping.toFixed(2)}`;
     }
@@ -1237,6 +1322,17 @@ class StoreApp {
     } else {
       savingsText.parentElement.style.display = "none";
     }
+    const checkoutHappyHourRow = document.getElementById("checkout-happy-hour-row");
+    const checkoutHappyHourDiscountText = document.getElementById("checkout-happy-hour-discount");
+    if (checkoutHappyHourRow && checkoutHappyHourDiscountText) {
+      if (calculations.happyHourDiscount > 0) {
+        checkoutHappyHourRow.style.display = "flex";
+        checkoutHappyHourDiscountText.innerText = `-$${calculations.happyHourDiscount.toFixed(2)}`;
+      } else {
+        checkoutHappyHourRow.style.display = "none";
+      }
+    }
+
     shippingText.innerText = calculations.shipping === 0 ? "Free" : `$${calculations.shipping.toFixed(2)}`;
     totalText.innerText = `$${calculations.total.toFixed(2)}`;
     
@@ -1311,6 +1407,7 @@ class StoreApp {
         total: i.quantity * i.price 
       })),
       total: calculations.total,
+      happyHourDiscount: calculations.happyHourDiscount || 0,
       status: "Pending Payment",
       metadata // Save user agent metrics
     };

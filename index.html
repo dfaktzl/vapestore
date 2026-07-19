@@ -66,7 +66,7 @@
     <!-- PROMO BANNER -->
     <div class="promo-banner" style="background: linear-gradient(90deg, #12141c 0%, #1d190e 50%, #12141c 100%); border-bottom: 1px solid rgba(212, 175, 55, 0.25); color: #fff; padding: 14px 20px; font-size: 15px; font-family: var(--font-body); display: flex; justify-content: center; align-items: center; gap: 12px; z-index: 1000; position: relative; box-shadow: 0 4px 20px rgba(0,0,0,0.4);">
       <span class="promo-badge" style="background: var(--gold-accent); color: #000; font-weight: 800; padding: 4px 12px; border-radius: 4px; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; box-shadow: 0 0 10px rgba(212,175,55,0.3);">PROMO</span>
-      <span style="letter-spacing: 0.2px; text-transform: uppercase; font-weight: 600;">Send in quotes from other shops to our email & we will beat it by 10%! The Bunnings Regulation.</span>
+      <span id="promo-banner-text" style="letter-spacing: 0.2px; text-transform: uppercase; font-weight: 600;">DAILY HAPPY HOUR 5-6PM AEST: All orders get 10% off automatically! | Beat any competitor's quote by 10%!</span>
     </div>
 
     <!-- 2. ANNOUNCEMENT BAR -->
@@ -319,6 +319,10 @@
                   <span>Bulk Discounts</span>
                   <span id="checkout-savings">$0.00</span>
                 </div>
+                <div class="cart-summary-row happy-hour-row" id="checkout-happy-hour-row" style="display: none; color: #bb88ff;">
+                  <span>Happy Hour (10% Off) ⚡</span>
+                  <span id="checkout-happy-hour-discount">-$0.00</span>
+                </div>
                 <div class="cart-summary-row">
                   <span>Express Shipping</span>
                   <span id="checkout-shipping">Free</span>
@@ -413,6 +417,10 @@
         <div class="cart-summary-row savings-row">
           <span>Bulk Savings</span>
           <span id="cart-savings">$0.00</span>
+        </div>
+        <div class="cart-summary-row happy-hour-row" id="cart-happy-hour-row" style="display: none; color: #bb88ff;">
+          <span>Happy Hour (10% Off) ⚡</span>
+          <span id="cart-happy-hour-discount">-$0.00</span>
         </div>
         <div class="cart-summary-row">
           <span>Express Shipping</span>
