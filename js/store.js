@@ -123,9 +123,8 @@ class StoreApp {
           const div = document.createElement("div");
           div.style.marginBottom = "12px";
           
-          let optionsHtml = product.flavors.map((flavor, idx) => {
-            const isLast = idx === product.flavors.length - 1;
-            if (isLast) {
+          let optionsHtml = product.flavors.map((flavor) => {
+            if (this.isFlavorOutOfStock(product.id, flavor, product.flavors)) {
               return `<option value="${flavor}" disabled>${flavor} (OUT OF STOCK)</option>`;
             } else {
               return `<option value="${flavor}">${flavor}</option>`;
@@ -145,9 +144,8 @@ class StoreApp {
         
         const div = document.createElement("div");
         
-        let optionsHtml = product.flavors.map((flavor, idx) => {
-          const isLast = idx === product.flavors.length - 1;
-          if (isLast) {
+        let optionsHtml = product.flavors.map((flavor) => {
+          if (this.isFlavorOutOfStock(product.id, flavor, product.flavors)) {
             return `<option value="${flavor}" disabled>${flavor} (OUT OF STOCK)</option>`;
           } else {
             return `<option value="${flavor}">${flavor}</option>`;
@@ -617,7 +615,21 @@ class StoreApp {
     for (let i = 0; i < productId.length; i++) {
       sum += productId.charCodeAt(i);
     }
-    let soldCount = (sum % 47) + 8; // Deterministic value between 8 and 54
+    
+    let soldCount = 58 + (sum % 30); // Default base: between 58 and 87
+
+    // Explicitly override top 5 best sellers to have base counts between 100 and 211
+    if (productId === "alibarbar-link-12k") {
+      soldCount = 135 + (sum % 50); // e.g. 135 to 184
+    } else if (productId === "alibarbar-ingot-9k") {
+      soldCount = 120 + (sum % 40); // e.g. 120 to 159
+    } else if (productId === "iget-bar-3500") {
+      soldCount = 105 + (sum % 30); // e.g. 105 to 134
+    } else if (productId === "iget-bar-plus-6000") {
+      soldCount = 115 + (sum % 40); // e.g. 115 to 154
+    } else if (productId === "jnr-falcon-x-18000") {
+      soldCount = 130 + (sum % 45); // e.g. 130 to 174
+    }
 
     // If product is popular, increment it deterministically by 1-10 each day since July 1, 2026
     const product = this.config && this.config.products ? this.config.products.find(p => p.id === productId) : null;
@@ -640,6 +652,48 @@ class StoreApp {
       }
     }
     return soldCount;
+  }
+
+  isFlavorOutOfStock(productId, flavorName, flavorsList) {
+    if (!flavorName || !flavorsList) return false;
+    
+    // 1. Mint flavors are always out of stock and do not add to the 1-3 limit
+    if (flavorName.toLowerCase().includes("mint")) {
+      return true;
+    }
+    
+    // 2. Filter non-mint flavors to select 1-3 other out of stock flavors
+    const nonMintFlavors = flavorsList.filter(f => !f.toLowerCase().includes("mint"));
+    if (nonMintFlavors.length === 0) return false;
+    
+    let hash = 0;
+    for (let i = 0; i < productId.length; i++) {
+      hash += productId.charCodeAt(i);
+    }
+    
+    let K = (hash % 3) + 1; // 1, 2, or 3 out of stock
+    if (K > nonMintFlavors.length) {
+      K = nonMintFlavors.length;
+    }
+    
+    // Deterministically select K flavors by sorting them using their string hash
+    const nonMintWithHash = nonMintFlavors.map(f => {
+      let fHash = hash;
+      for (let i = 0; i < f.length; i++) {
+        fHash = (fHash * 31 + f.charCodeAt(i)) % 100000;
+      }
+      return { name: f, hash: fHash };
+    });
+    
+    nonMintWithHash.sort((a, b) => a.hash - b.hash);
+    
+    for (let i = 0; i < K; i++) {
+      if (nonMintWithHash[i].name === flavorName) {
+        return true;
+      }
+    }
+    
+    return false;
   }
 
   renderProducts() {
@@ -734,9 +788,8 @@ class StoreApp {
           flavorHTML = `<div class="form-field" style="margin-bottom:10px;"><select class="product-card-flavor-select" id="flavor-${prod.id}" style="margin-bottom:0;" disabled><option>5 Flavours (Select in Details)</option></select></div>`;
         } else {
           flavorHTML = `<div class="form-field" style="margin-bottom:10px;"><select class="product-card-flavor-select" id="flavor-${prod.id}" style="margin-bottom:0;">`;
-          prod.flavors.forEach((flavor, idx) => {
-            const isLast = idx === prod.flavors.length - 1;
-            if (isLast) {
+          prod.flavors.forEach((flavor) => {
+            if (this.isFlavorOutOfStock(prod.id, flavor, prod.flavors)) {
               flavorHTML += `<option value="${flavor}" disabled>${flavor} (OUT OF STOCK)</option>`;
             } else {
               flavorHTML += `<option value="${flavor}">${flavor}</option>`;
@@ -956,9 +1009,8 @@ class StoreApp {
           selectWrapper.innerHTML = `
             <div style="font-size:11px; color:var(--text-secondary); margin-bottom:2px; text-align:left;">Device ${i} Flavour:</div>
             <select id="${selectId}" class="product-card-flavor-select" style="width: 100%; margin-bottom: 0;">
-              ${product.flavors.map((flavor, idx) => {
-                const isLast = idx === product.flavors.length - 1;
-                if (isLast) {
+              ${product.flavors.map((flavor) => {
+                if (this.isFlavorOutOfStock(product.id, flavor, product.flavors)) {
                   return `<option value="${flavor}" disabled>${flavor} (OUT OF STOCK)</option>`;
                 } else {
                   return `<option value="${flavor}">${flavor}</option>`;
@@ -972,9 +1024,8 @@ class StoreApp {
         mFlavorGroup.innerHTML = `
           <h4 class="modal-option-title">Select Flavor</h4>
           <select id="modal-flavor-select" class="product-card-flavor-select" style="width: 100%; margin-bottom: 0;">
-            ${product.flavors.map((flavor, idx) => {
-              const isLast = idx === product.flavors.length - 1;
-              if (isLast) {
+            ${product.flavors.map((flavor) => {
+              if (this.isFlavorOutOfStock(product.id, flavor, product.flavors)) {
                 return `<option value="${flavor}" disabled>${flavor} (OUT OF STOCK)</option>`;
               } else {
                 return `<option value="${flavor}">${flavor}</option>`;

@@ -227,8 +227,8 @@ foreach ($guide in $guides) {
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   
   <!-- Styles -->
-  <link rel="stylesheet" href="../css/design_system.css?v=21">
-  <link rel="stylesheet" href="../css/main.css?v=21">
+  <link rel="stylesheet" href="../css/design_system.css?v=23">
+  <link rel="stylesheet" href="../css/main.css?v=23">
   
   <!-- Custom Article Page styling -->
   <style>
@@ -612,7 +612,41 @@ foreach ($prod in $config.products) {
     for ($charIdx = 0; $charIdx -lt $id.Length; $charIdx++) {
         $sum += [int][char]$id[$charIdx]
     }
-    $soldCount = ($sum % 47) + 8
+    
+    $soldCount = 58 + ($sum % 30)
+
+    # Top 5 best sellers overrides
+    if ($id -eq "alibarbar-link-12k") {
+        $soldCount = 135 + ($sum % 50)
+    } elseif ($id -eq "alibarbar-ingot-9k") {
+        $soldCount = 120 + ($sum % 40)
+    } elseif ($id -eq "iget-bar-3500") {
+        $soldCount = 105 + ($sum % 30)
+    } elseif ($id -eq "iget-bar-plus-6000") {
+        $soldCount = 115 + ($sum % 40)
+    } elseif ($id -eq "jnr-falcon-x-18000") {
+        $soldCount = 130 + ($sum % 45)
+    }
+
+    # Increment popular items deterministically each day since July 1, 2026
+    if ($prod.popular -eq $true) {
+        $epoch = Get-Date "2026-07-01T00:00:00Z"
+        $now = [DateTime]::UtcNow
+        $diffDays = ($now - $epoch).Days
+        
+        if ($diffDays -gt 0) {
+            $increment = 0
+            for ($d = 1; $d -le $diffDays; $d++) {
+                $hashStr = "${id}_day_${d}"
+                $hash = 0
+                for ($i = 0; $i -lt $hashStr.Length; $i++) {
+                    $hash = ($hash * 31 + [int][char]$hashStr[$i]) % 1000000
+                }
+                $increment += ($hash % 10) + 1
+            }
+            $soldCount += $increment
+        }
+    }
 
     # Availability tag for SEO Schema
     $availability = "https://schema.org/InStock"
@@ -702,8 +736,8 @@ foreach ($prod in $config.products) {
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;900&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   
   <!-- Stylesheets -->
-  <link rel="stylesheet" href="../css/design_system.css?v=21">
-  <link rel="stylesheet" href="../css/main.css?v=21">
+  <link rel="stylesheet" href="../css/design_system.css?v=23">
+  <link rel="stylesheet" href="../css/main.css?v=23">
   <link rel="icon" type="image/png" href="../img/logo_small.png">
   
   <!-- Structured SEO Schema -->
@@ -852,8 +886,8 @@ foreach ($prod in $config.products) {
   </div>
 
   <!-- scripts -->
-  <script src="../js/config_default.js?v=21"></script>
-  <script src="../js/store.js?v=21"></script>
+  <script src="../js/config_default.js?v=23"></script>
+  <script src="../js/store.js?v=23"></script>
 </body>
 </html>
 "@
