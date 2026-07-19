@@ -1,0 +1,386 @@
+/* ==========================================================================
+   ADMIN PANEL SPECIFIC STYLES (LUXURY GOLD)
+   ========================================================================== */
+
+/* Admin Header & Layout */
+.admin-container {
+  max-width: 1200px;
+  margin: 40px auto;
+  padding: 0 20px;
+}
+
+.admin-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 40px;
+  border-bottom: 1px solid var(--glass-border);
+  padding-bottom: 20px;
+}
+
+.admin-title {
+  font-family: var(--font-title);
+  font-size: 28px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.admin-actions {
+  display: flex;
+  gap: 12px;
+}
+
+/* Tabs System */
+.admin-tabs {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 30px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  padding-bottom: 1px;
+}
+
+.admin-tab {
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: var(--text-secondary);
+  font-family: var(--font-title);
+  font-weight: 600;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 12px 20px;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.admin-tab:hover {
+  color: var(--text-primary);
+}
+
+.admin-tab.active {
+  color: var(--gold-accent);
+  border-bottom-color: var(--gold-accent);
+}
+
+.admin-tab-content {
+  display: none;
+}
+
+.admin-tab-content.active {
+  display: block;
+}
+
+/* Form Styles */
+.admin-card {
+  padding: 30px;
+  margin-bottom: 30px;
+}
+
+.admin-card-title {
+  font-family: var(--font-title);
+  font-size: 18px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--gold-accent);
+  margin-bottom: 25px;
+  border-bottom: 1px dashed rgba(168, 85, 247, 0.15);
+  padding-bottom: 10px;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+  margin-bottom: 25px;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-label {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+.form-input, .form-textarea, .form-select {
+  background: rgba(22, 25, 32, 0.6);
+  border: 1px solid var(--glass-border);
+  border-radius: 6px;
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: 14px;
+  padding: 12px 15px;
+  outline: none;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.form-input:focus, .form-textarea:focus, .form-select:focus {
+  border-color: var(--gold-accent);
+  box-shadow: 0 0 10px rgba(168, 85, 247, 0.15);
+}
+
+.form-textarea {
+  resize: none;
+}
+
+/* Product list table */
+.admin-table-container {
+  overflow-x: auto;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--glass-border);
+  background: rgba(15, 17, 21, 0.3);
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 14px;
+}
+
+.admin-table th {
+  background: rgba(22, 25, 32, 0.8);
+  font-family: var(--font-title);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--gold-accent);
+  padding: 15px 20px;
+  border-bottom: 1px solid var(--glass-border);
+}
+
+.admin-table td {
+  padding: 15px 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  color: var(--text-secondary);
+}
+
+.admin-table tr:hover td {
+  color: var(--text-primary);
+  background: rgba(255, 255, 255, 0.01);
+}
+
+.td-product-info {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.td-product-img {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--glass-border);
+  background: rgba(255,255,255,0.02);
+}
+
+.td-product-details {
+  display: flex;
+  flex-direction: column;
+}
+
+.td-product-name {
+  font-family: var(--font-title);
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.td-product-brand {
+  font-size: 11px;
+  color: var(--gold-accent);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.action-btn-group {
+  display: flex;
+  gap: 8px;
+}
+
+.btn-icon {
+  background: rgba(22, 25, 32, 0.8);
+  border: 1px solid var(--glass-border);
+  color: var(--text-secondary);
+  border-radius: 4px;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.btn-icon:hover {
+  border-color: var(--gold-accent);
+  color: var(--gold-accent);
+  background: rgba(168, 85, 247, 0.05);
+}
+
+.btn-icon.delete-btn:hover {
+  border-color: var(--error-color);
+  color: var(--error-color);
+  background: rgba(239, 68, 68, 0.05);
+}
+
+/* Local Orders Grid */
+.orders-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.order-card {
+  padding: 24px;
+}
+
+.order-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  padding-bottom: 15px;
+  margin-bottom: 15px;
+}
+
+.order-id-block {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.order-id {
+  font-family: var(--font-title);
+  font-weight: 700;
+  font-size: 18px;
+  color: var(--text-primary);
+}
+
+.order-date {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.order-ref {
+  font-family: var(--font-title);
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--gold-accent);
+  background: rgba(168, 85, 247, 0.05);
+  border: 1px solid rgba(168, 85, 247, 0.15);
+  padding: 6px 12px;
+  border-radius: 4px;
+}
+
+.order-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr;
+  gap: 30px;
+}
+
+@media (max-width: 768px) {
+  .order-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.order-customer-details {
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.order-customer-details p {
+  margin-bottom: 8px;
+}
+
+.order-customer-details strong {
+  color: var(--text-primary);
+}
+
+.order-items-table {
+  width: 100%;
+  font-size: 13px;
+  border-collapse: collapse;
+}
+
+.order-items-table th {
+  text-align: left;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  padding-bottom: 8px;
+  color: var(--gold-accent);
+}
+
+.order-items-table td {
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+}
+
+.order-items-table tr:last-child td {
+  border-bottom: none;
+}
+
+/* Automation Card Guide */
+.guide-card {
+  padding: 24px;
+  border-left: 4px solid var(--gold-accent);
+}
+
+.guide-step {
+  margin-bottom: 20px;
+  position: relative;
+  padding-left: 30px;
+}
+
+.guide-step-num {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--gold-accent);
+  color: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 12px;
+  font-family: var(--font-title);
+}
+
+.guide-step-title {
+  font-family: var(--font-title);
+  font-weight: 600;
+  font-size: 15px;
+  color: var(--text-primary);
+  margin-bottom: 6px;
+}
+
+.guide-step-desc {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.code-box {
+  background: #060709;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 10px 15px;
+  font-family: monospace;
+  font-size: 12px;
+  color: var(--gold-light);
+  border-radius: 4px;
+  margin-top: 8px;
+  overflow-x: auto;
+}

@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Merchant Portal | Vape Matrix</title>
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="img/logo_small.png">
+  
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/design_system.css?v=16">
+  <link rel="stylesheet" href="css/main.css?v=16">
+  <link rel="stylesheet" href="css/admin.css?v=16">
+</head>
+<body>
+
+  <!-- ADMIN AUTHENTICATION GATEWAY -->
+  <div id="admin-login-overlay" style="display: none; align-items: center; justify-content: center; background: #090a0c; z-index: 100000; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;">
+    <div class="glass-card" style="width: 100%; max-width: 400px; padding: 40px; text-align: center; border-color: var(--gold-accent); box-shadow: 0 0 30px rgba(168, 85, 247, 0.15); background: rgba(9, 10, 12, 0.95); border: 1px solid rgba(168, 85, 247, 0.2); border-radius: 12px;">
+      <div style="margin-bottom: 25px; display:flex; align-items:center; justify-content:center; gap:8px;">
+        <span style="font-size:28px; color:var(--gold-accent);">⚡</span>
+        <span style="font-family:var(--font-title); font-weight:800; font-size:28px; color:#fff; letter-spacing:1px; text-transform:uppercase;">
+          VAPE <span style="color:var(--cyan-accent);">MATRIX</span>
+        </span>
+      </div>
+      <h2 class="text-gold" style="font-size: 13px; text-transform: uppercase; margin-bottom: 30px; letter-spacing: 1px; color: var(--gold-light);">Merchant Control Center</h2>
+      
+      <form id="admin-login-form" onsubmit="event.preventDefault();">
+        <div style="margin-bottom: 20px; text-align: left;">
+          <label style="display:block; font-size:12px; color:var(--text-secondary); margin-bottom:6px;">Username</label>
+          <input type="text" id="login-username" required style="padding: 10px 15px; border-radius:6px; background:rgba(255,255,255,0.03); width: 100%; border: 1px solid rgba(255,255,255,0.1); color: #fff; height: 42px; box-sizing: border-box;">
+        </div>
+        
+        <div style="margin-bottom: 25px; text-align: left;">
+          <label style="display:block; font-size:12px; color:var(--text-secondary); margin-bottom:6px;">Security Password</label>
+          <input type="password" id="login-password" required style="padding: 10px 15px; border-radius:6px; background:rgba(255,255,255,0.03); width: 100%; border: 1px solid rgba(255,255,255,0.1); color: #fff; height: 42px; box-sizing: border-box;">
+        </div>
+        
+        <div id="login-error" style="color: var(--error-color); font-size: 12px; margin-bottom: 20px; display: none;">
+          ❌ Invalid username or security password.
+        </div>
+        
+        <button type="submit" class="btn-primary" style="width: 100%; height: 44px; font-size: 14px; cursor: pointer;">Verify Credentials</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="main-wrapper">
+    <!-- Header -->
+    <header class="main-header">
+      <div class="container header-container">
+        <a href="admin.html" class="logo-link" style="text-decoration:none; display:flex; align-items:center; gap:8px;">
+          <span style="font-size:24px; color:var(--gold-accent);">⚡</span>
+          <span style="font-family:var(--font-title); font-weight:800; font-size:24px; color:#fff; letter-spacing:1px; text-transform:uppercase;">
+            VAPE <span style="color:var(--cyan-accent);">MATRIX</span>
+          </span>
+          <span class="logo-text" style="font-size:16px; margin-left:10px; background:var(--cyan-accent); -webkit-text-fill-color: #000; padding:2px 8px; border-radius:4px;">Admin</span>
+        </a>
+        <div class="header-actions">
+          <a href="index.html" class="btn-secondary" style="font-size:12px; padding:8px 16px;">View Storefront ➜</a>
+        </div>
+      </div>
+    </header>
+
+    <!-- Admin Body -->
+    <div class="admin-container animate-fade">
+      
+      <div class="admin-header">
+        <div>
+          <h1 class="admin-title text-gold">Vape Matrix Merchant Panel</h1>
+          <p style="font-size:14px; color:var(--text-secondary); margin-top:5px;">
+            Configure products, adjust SEO tags, manage bank details and PayID, and review local client orders database logs.
+          </p>
+        </div>
+        
+        <div class="admin-actions" style="display:flex; gap:10px; align-items:center;">
+          <button id="btn-publish-live" class="btn-primary">🚀 Publish Live</button>
+          <button id="btn-reset-config" class="btn-secondary" style="border-color:var(--error-color); color:var(--error-color); margin:0;">Reset Defaults</button>
+          <button id="btn-logout" class="btn-secondary" style="border-color:var(--text-secondary); color:var(--text-secondary); margin:0;">Logout</button>
+        </div>
+      </div>
+
+      <!-- Tabs Navigation -->
+      <nav class="admin-tabs">
+        <button class="admin-tab active" data-tab="catalog">Products Catalog</button>
+        <button class="admin-tab" data-tab="seo-settings">SEO & Bank Settings</button>
+        <button class="admin-tab" data-tab="guides">SEO Content Hub</button>
+        <button class="admin-tab" data-tab="orders">Customer Orders</button>
+        <button class="admin-tab" data-tab="visitors">Visitor Analytics</button>
+        <button class="admin-tab" data-tab="guide">Firebase Setup Guide</button>
+      </nav>
+
+      <!-- TAB 1: CATALOG MANAGEMENT -->
+      <section id="tab-catalog" class="admin-tab-content active">
+        
+        <!-- Add/Edit Product Card -->
+        <div class="glass-card admin-card" id="product-editor-card">
+          <h2 class="admin-card-title" id="editor-title">Add New Catalog Product</h2>
+          <form id="product-form" onsubmit="event.preventDefault();">
+            <input type="hidden" id="edit-product-id">
+            
+            <div class="form-grid">
+              <div class="form-field">
+                <label class="form-label">Brand *</label>
+                <input type="text" id="prod-brand" required placeholder="e.g. IGET, Alibarbar, Marlboro" class="form-input">
+              </div>
+              <div class="form-field">
+                <label class="form-label">Product Name *</label>
+                <input type="text" id="prod-name" required placeholder="e.g. IGET Bar 3500 Puffs" class="form-input">
+              </div>
+              <div class="form-field">
+                <label class="form-label">Category *</label>
+                <select id="prod-category" required class="form-select">
+                  <option value="vapes-single">IGET & Alibarbar (Singles)</option>
+                  <option value="vapes-boxes">Waka & HQD Boxes (Wholesale 10x)</option>
+                  <option value="cigarettes">Cigarette Cartons</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-grid">
+              <div class="form-field">
+                <label class="form-label">Unit/Carton Price ($) *</label>
+                <input type="number" step="0.01" id="prod-price" required placeholder="e.g. 30.00 or 220.00" class="form-input">
+              </div>
+              <div class="form-field">
+                <label class="form-label">Bulk Box (10x) Price ($)</label>
+                <input type="number" step="0.01" id="prod-box-price" placeholder="e.g. 240.00 (leave empty if box-only)" class="form-input">
+              </div>
+              <div class="form-field" style="justify-content: center; padding-left: 10px;">
+                <label class="filter-checkbox-label" style="margin-top: 15px;">
+                  <input type="checkbox" id="prod-box-only" class="filter-checkbox">
+                  Bulk Box/Carton Only (No Singles)
+                </label>
+              </div>
+            </div>
+
+            <div class="form-grid" style="grid-template-columns: 1.5fr 1fr;">
+              <div class="form-field">
+                <label class="form-label">Image URL * (Paste image address from reference sites or uploads)</label>
+                <input type="text" id="prod-image" required placeholder="https://..." class="form-input">
+              </div>
+              <div class="form-field">
+                <label class="form-label">Flavor List (Comma-separated)</label>
+                <input type="text" id="prod-flavors" placeholder="e.g. Lush Ice, Grape Ice, Blueberry" class="form-input">
+              </div>
+            </div>
+
+            <div class="form-field" style="margin-bottom: 25px;">
+              <label class="form-label">Description</label>
+              <textarea id="prod-description" rows="3" placeholder="Explain puff counts, carton contents, and specifications..." class="form-textarea"></textarea>
+            </div>
+
+            <div style="display:flex; justify-content:flex-end; gap:12px;">
+              <button type="button" id="btn-cancel-edit" class="btn-secondary" style="display:none;">Cancel Edit</button>
+              <button type="submit" id="btn-save-product" class="btn-primary">Add Product</button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Products List -->
+        <h2 class="admin-card-title" style="border:none; margin-bottom:15px;">Active Inventory Items (<span id="admin-product-count">0</span>)</h2>
+        <div class="admin-table-container">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Product Information</th>
+                <th>Category</th>
+                <th>Single Price</th>
+                <th>Box (10x) Price</th>
+                <th>Formats</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="admin-products-list">
+              <!-- Dynamically populated -->
+            </tbody>
+          </table>
+        </div>
+
+      </section>
+
+      <!-- TAB 2: SEO & SETTINGS -->
+      <section id="tab-seo-settings" class="admin-tab-content">
+        <form id="settings-form" onsubmit="event.preventDefault();">
+          
+          <!-- SEO settings -->
+          <div class="glass-card admin-card">
+            <h2 class="admin-card-title">SEO & Metadata Details</h2>
+            <div class="form-grid">
+              <div class="form-field">
+                <label class="form-label">Browser Page Title</label>
+                <input type="text" id="set-seo-title" class="form-input">
+              </div>
+            </div>
+            <div class="form-field" style="margin-top: 15px;">
+              <label class="form-label">Meta Description (Search Engines Snippet)</label>
+              <textarea id="set-seo-desc" rows="3" class="form-textarea"></textarea>
+            </div>
+          </div>
+
+          <!-- Site Contact settings -->
+          <div class="glass-card admin-card">
+            <h2 class="admin-card-title">Contact & Announcement Settings</h2>
+            <div class="form-grid">
+              <div class="form-field">
+                <label class="form-label">Customer Support Email</label>
+                <input type="email" id="set-contact-email" class="form-input">
+              </div>
+              <div class="form-field">
+                <label class="form-label">Customer Support Phone</label>
+                <input type="text" id="set-contact-phone" class="form-input">
+              </div>
+            </div>
+            <div class="form-field" style="margin-top: 15px;">
+              <label class="form-label">Floating Banner Announcement Text</label>
+              <input type="text" id="set-announcement" class="form-input">
+            </div>
+          </div>
+
+          <!-- Bank settings -->
+          <div class="glass-card admin-card">
+            <h2 class="admin-card-title">Checkout Credentials (PayID & Bank Transfer)</h2>
+            <p style="font-size:12px; color:var(--text-secondary); margin-bottom:20px; line-height:1.4;">
+              Configure your payment coordinates. These coordinates display directly on the success screen after a customer clicks buy. The reference matches a unique token generated on checkout.
+            </p>
+            
+            <div class="form-grid">
+              <div class="form-field">
+                <label class="form-label">PayID Email / Number</label>
+                <input type="text" id="set-payid" class="form-input">
+              </div>
+              <div class="form-field">
+                <label class="form-label">Bank Name</label>
+                <input type="text" id="set-bank-name" class="form-input">
+              </div>
+            </div>
+            
+            <div class="form-grid">
+              <div class="form-field">
+                <label class="form-label">Account Holder Name</label>
+                <input type="text" id="set-bank-holder" class="form-input">
+              </div>
+              <div class="form-field">
+                <label class="form-label">BSB (Format: XX-XXX or XXXXXX)</label>
+                <input type="text" id="set-bank-bsb" class="form-input">
+              </div>
+              <div class="form-field">
+                <label class="form-label">Account Number</label>
+                <input type="text" id="set-bank-account" class="form-input">
+              </div>
+            </div>
+
+            <!-- Cloud Database Integration -->
+            <div style="margin-top:20px; padding-top:20px; border-top: 1px dashed rgba(255,255,255,0.05);">
+              <h3 class="modal-option-title text-gold" style="font-size:14px; margin-bottom:10px;">Cloud Database Integration (Optional)</h3>
+              <p style="font-size:12px; color:var(--text-secondary); margin-bottom:15px; line-height:1.5;">
+                Enter a free Firebase Realtime Database URL to sync customer orders and tracking status in real time across multiple browsers/devices. Leave blank to run in offline local demo mode.
+              </p>
+              <div class="form-field">
+                <label class="form-label">Firebase Database URL</label>
+                <input type="url" id="set-order-sync-url" placeholder="https://your-project-id-default-rtdb.firebaseio.com" class="form-input">
+              </div>
+            </div>
+          </div>
+
+          <!-- Admin Credentials Settings -->
+          <div class="glass-card admin-card">
+            <h2 class="admin-card-title">Admin Access Credentials</h2>
+            <p style="font-size:12px; color:var(--text-secondary); margin-bottom:20px; line-height:1.4;">
+              Change your admin panel credentials. These credentials are stored securely in your Firebase database. Leave username and password blank if you do not wish to update them.
+            </p>
+            <div class="form-grid">
+              <div class="form-field">
+                <label class="form-label">New Admin Username</label>
+                <input type="text" id="set-admin-username" placeholder="e.g. admin" class="form-input">
+              </div>
+              <div class="form-field">
+                <label class="form-label">New Admin Password</label>
+                <input type="password" id="set-admin-password" placeholder="Enter new password" class="form-input">
+              </div>
+            </div>
+          </div>
+
+          <!-- Email Settings -->
+          <div class="glass-card admin-card">
+            <h2 class="admin-card-title">Email Integration (EmailJS Settings)</h2>
+            <p style="font-size:12px; color:var(--text-secondary); margin-bottom:20px; line-height:1.4;">
+              Configure EmailJS to send professional, automated order confirmation emails directly to your customers. If left blank, notifications will default to standard FormSubmit notifications to `orders@vapematrix.co`.
+            </p>
+            
+            <div class="form-grid">
+              <div class="form-field">
+                <label class="form-label">EmailJS Service ID</label>
+                <input type="text" id="set-emailjs-service" placeholder="e.g. service_xxxxxxx" class="form-input">
+              </div>
+              <div class="form-field">
+                <label class="form-label">EmailJS Public Key</label>
+                <input type="text" id="set-emailjs-public" placeholder="e.g. user_xxxxxxxxxxxxxxxx" class="form-input">
+              </div>
+            </div>
+            
+            <div class="form-grid">
+              <div class="form-field">
+                <label class="form-label">EmailJS Contact Template ID</label>
+                <input type="text" id="set-emailjs-contact-template" placeholder="e.g. template_xxxxxxx" class="form-input">
+              </div>
+              <div class="form-field">
+                <label class="form-label">EmailJS Order Confirmation Template ID</label>
+                <input type="text" id="set-emailjs-order-template" placeholder="e.g. template_xxxxxxx" class="form-input">
+              </div>
+            </div>
+          </div>
+
+          <div style="display:flex; justify-content:flex-end; margin-top:20px;">
+            <button type="submit" id="btn-save-settings" class="btn-primary">Apply Settings Caches</button>
+          </div>
+
+        </form>
+      </section>
+
+      <!-- TAB: SEO GUIDES CONTENT HUB -->
+      <section id="tab-guides" class="admin-tab-content">
+        
+        <!-- Add/Edit Article Card -->
+        <div class="glass-card admin-card" id="guide-editor-card">
+          <h2 class="admin-card-title" id="guide-editor-title">Add New Educational Article</h2>
+          <form id="guide-form" onsubmit="event.preventDefault();">
+            <input type="hidden" id="edit-guide-id">
+            
+            <div class="form-grid">
+              <div class="form-field" style="grid-column: span 2;">
+                <label class="form-label">Article Title *</label>
+                <input type="text" id="guide-title" required placeholder="e.g. How to Clean a Vape Coil: A Step-by-Step Guide" class="form-input">
+              </div>
+              
+              <div class="form-field">
+                <label class="form-label">Target Informational Keyword *</label>
+                <input type="text" id="guide-keyword" required placeholder="e.g. how to clean a vape coil" class="form-input">
+              </div>
+              
+              <div class="form-field">
+                <label class="form-label">Author</label>
+                <input type="text" id="guide-author" placeholder="Default: Vape Matrix Education" class="form-input">
+              </div>
+              
+              <div class="form-field" style="grid-column: span 2;">
+                <label class="form-label">Summary / Excerpt * (Brief overview for cards)</label>
+                <input type="text" id="guide-summary" required placeholder="A brief one-sentence summary of what readers will learn..." class="form-input">
+              </div>
+              
+              <div class="form-field" style="grid-column: span 2;">
+                <label class="form-label">Article Content * (Use double newlines for paragraphs)</label>
+                <textarea id="guide-content" required placeholder="Write the main body of your educational guide here. Focus on compliance, safety, and helpful facts..." class="form-input" style="height: 180px; font-family: inherit; font-size: 13px; line-height: 1.5; resize: vertical;"></textarea>
+              </div>
+            </div>
+            
+            <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:20px;">
+              <button type="button" id="btn-cancel-guide-edit" class="btn-secondary" style="display:none; margin:0;">Cancel Edit</button>
+              <button type="submit" id="btn-save-guide" class="btn-primary" style="margin:0;">Add Article</button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Guides List Grid -->
+        <div class="glass-card admin-card" style="margin-top: 30px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; flex-wrap:wrap; gap:10px;">
+            <h2 class="admin-card-title" style="border:none; margin:0;">Manage Existing Articles (<span id="admin-guide-count">0</span>)</h2>
+          </div>
+          <div class="admin-table-container">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>Title</th>
+                  <th>Target Keyword</th>
+                  <th>Date</th>
+                  <th>Author</th>
+                  <th style="text-align: right; width: 150px;">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="admin-guides-list">
+                <!-- Rendered dynamically by admin.js -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- TAB 3: CUSTOMER ORDERS LOG -->
+      <section id="tab-orders" class="admin-tab-content">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; flex-wrap:wrap; gap:10px;">
+          <h2 class="admin-card-title" style="border:none; margin:0;">Customer Orders Log</h2>
+          <div style="display:flex; gap:10px; align-items:center;">
+            <button id="btn-create-test-order" class="btn-primary" style="font-size:11px; padding:6px 12px; margin:0; background:var(--gold-accent); color:#000; font-weight:bold;">✨ Create Test Order</button>
+            <button id="btn-clear-orders" class="btn-secondary" style="border-color:var(--error-color); color:var(--error-color); font-size:11px; padding:6px 12px; margin:0;">Clear All Logs</button>
+          </div>
+        </div>
+        
+        <div id="admin-orders-container" class="orders-list">
+          <!-- Dynamically populated -->
+        </div>
+      </section>
+
+      <!-- TAB: VISITOR ANALYTICS -->
+      <section id="tab-visitors" class="admin-tab-content">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; flex-wrap:wrap; gap:10px;">
+          <div>
+            <h2 class="admin-card-title" style="border:none; margin:0;">Visitor Analytics Logs</h2>
+            <p style="font-size:12px; color:var(--text-secondary); margin-top:4px;">
+              Track real-time visitor traffic, geo-location insights, browser details, and navigation flows.
+            </p>
+          </div>
+          <div style="display:flex; gap:10px; align-items:center;">
+            <button id="btn-refresh-visitors" class="btn-primary" style="font-size:11px; padding:6px 12px; margin:0;">🔄 Refresh Logs</button>
+            <button id="btn-clear-visitors" class="btn-secondary" style="border-color:var(--error-color); color:var(--error-color); font-size:11px; padding:6px 12px; margin:0;">Clear All Logs</button>
+          </div>
+        </div>
+
+        <!-- Metrics Grid -->
+        <div class="metrics-grid" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:15px; margin-bottom:25px;">
+          <div class="glass-card" style="padding:15px 20px; text-align:center;">
+            <div style="font-size:11px; text-transform:uppercase; color:var(--text-secondary); letter-spacing:0.5px;">Total Sessions</div>
+            <div id="metric-total-sessions" style="font-size:28px; font-weight:700; color:var(--gold-accent); margin-top:5px;">0</div>
+          </div>
+          <div class="glass-card" style="padding:15px 20px; text-align:center;">
+            <div style="font-size:11px; text-transform:uppercase; color:var(--text-secondary); letter-spacing:0.5px;">Unique Visitors</div>
+            <div id="metric-unique-visitors" style="font-size:28px; font-weight:700; color:var(--gold-accent); margin-top:5px;">0</div>
+          </div>
+          <div class="glass-card" style="padding:15px 20px; text-align:center;">
+            <div style="font-size:11px; text-transform:uppercase; color:var(--text-secondary); letter-spacing:0.5px;">Mobile & Tablet</div>
+            <div id="metric-mobile-sessions" style="font-size:28px; font-weight:700; color:var(--gold-accent); margin-top:5px;">0</div>
+          </div>
+          <div class="glass-card" style="padding:15px 20px; text-align:center;">
+            <div style="font-size:11px; text-transform:uppercase; color:var(--text-secondary); letter-spacing:0.5px;">Desktop Users</div>
+            <div id="metric-desktop-sessions" style="font-size:28px; font-weight:700; color:var(--gold-accent); margin-top:5px;">0</div>
+          </div>
+        </div>
+
+        <!-- Visitor Logs Table -->
+        <div class="glass-card" style="padding:0; overflow-x:auto;">
+          <table class="admin-table" style="width:100%; border-collapse:collapse; text-align:left;">
+            <thead>
+              <tr style="border-bottom:1px solid rgba(255,255,255,0.08); background:rgba(255,255,255,0.02);">
+                <th style="padding:12px 15px; font-size:11px; text-transform:uppercase; color:var(--gold-accent);">Timestamp</th>
+                <th style="padding:12px 15px; font-size:11px; text-transform:uppercase; color:var(--gold-accent);">IP Address</th>
+                <th style="padding:12px 15px; font-size:11px; text-transform:uppercase; color:var(--gold-accent);">Location</th>
+                <th style="padding:12px 15px; font-size:11px; text-transform:uppercase; color:var(--gold-accent);">ISP / Network</th>
+                <th style="padding:12px 15px; font-size:11px; text-transform:uppercase; color:var(--gold-accent);">Device & OS</th>
+                <th style="padding:12px 15px; font-size:11px; text-transform:uppercase; color:var(--gold-accent);">Referrer</th>
+                <th style="padding:12px 15px; font-size:11px; text-transform:uppercase; color:var(--gold-accent); text-align:center;">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="visitors-log-tbody">
+              <tr>
+                <td colspan="7" style="padding:30px; text-align:center; color:var(--text-muted); font-size:13px;">
+                  No visitor logs available. Click refresh or wait for database sync.
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Visitor Activity Detail Modal -->
+      <div id="visitor-detail-modal" class="modal-overlay">
+        <div class="modal-container glass-card" style="max-width:550px; padding:30px; position:relative; background:#0e1014;">
+          <button id="btn-close-visitor-modal" class="modal-close-btn" style="position:absolute; right:20px; top:20px; background:none; border:none; color:#fff; font-size:18px; cursor:pointer;">✖</button>
+          <h2 class="modal-name text-gold" style="margin-bottom:15px; text-transform:uppercase; font-size:16px; border-bottom:1px solid rgba(212,175,55,0.2); padding-bottom:10px;">Visitor Journey Timeline</h2>
+          <div id="visitor-modal-meta" style="font-size:12px; color:var(--text-secondary); margin-bottom:20px; padding-bottom:10px; border-bottom:1px solid rgba(255,255,255,0.08); display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+            <!-- Rendered dynamically -->
+          </div>
+          <div style="max-height:350px; overflow-y:auto; padding-right:5px;">
+            <ul id="visitor-activity-timeline" style="list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:12px; position:relative; padding-left:20px; border-left:1px dashed rgba(212,175,55,0.3);">
+              <!-- Rendered dynamically -->
+            </ul>
+          </div>
+          <div id="visitor-modal-actions" style="margin-top:20px; padding-top:15px; border-top:1px solid rgba(255,255,255,0.08); display:flex; justify-content:flex-end;">
+            <!-- Rendered dynamically -->
+          </div>
+        </div>
+      </div>
+
+
+
+      <!-- TAB 4: FIREBASE SETUPS & RULE GUIDE -->
+      <section id="tab-guide" class="admin-tab-content">
+        <div class="glass-card guide-card">
+          <h2 class="admin-card-title" style="border:none;">Firebase Realtime Database Setup Guide</h2>
+          <p style="font-size:14px; color:var(--text-secondary); margin-bottom:25px; line-height:1.6;">
+            To enable live updates and secure access to your merchant dashboard, follow these steps to set up your Firebase Realtime Database.
+          </p>
+
+          <div class="guide-step">
+            <div class="guide-step-num">1</div>
+            <h3 class="guide-step-title">Create a Firebase Realtime Database</h3>
+            <p class="guide-step-desc">
+              Go to the <a href="https://console.firebase.google.com" target="_blank" style="color:var(--gold-accent);">Firebase Console</a>, create a project, and add a **Realtime Database** in the **Build** section. Make sure to choose the **Asia-Southeast1 (Singapore)** region or whichever is closest.
+            </p>
+          </div>
+
+          <div class="guide-step">
+            <div class="guide-step-num">2</div>
+            <h3 class="guide-step-title">Set up Database Security Rules</h3>
+            <p class="guide-step-desc">
+              Navigate to the **Rules** tab in your Firebase Realtime Database dashboard and paste the following configuration, then click **Publish**:
+              <div class="code-box" style="white-space: pre-wrap; text-align: left; font-family: monospace; background: rgba(0,0,0,0.5); padding: 15px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.05); margin-top: 10px; color: #fff;">{
+  "rules": {
+    "config": {
+      ".read": true,
+      ".write": true
+    },
+    "guides": {
+      ".read": true,
+      ".write": true
+    },
+    "orders": {
+      ".read": true,
+      "$orderId": {
+        ".write": "!data.exists() || data.child('status').exists()"
+      }
+    },
+    "adminKey": {
+      ".read": true,
+      ".write": true
+    },
+    "visits": {
+      ".read": true,
+      ".write": true
+    },
+    "blacklist": {
+      ".read": true,
+      ".write": true
+    }
+  }
+}</div>
+              *(Note: If you are using granular security rules, make sure to add the `"visits"` and `"blacklist"` nodes configuration above to authorize analytics and user block updates).*
+            </p>
+          </div>
+
+          <div class="guide-step">
+            <div class="guide-step-num">3</div>
+            <h3 class="guide-step-title">Connect your Database to the Store</h3>
+            <p class="guide-step-desc">
+              Copy your Firebase Database URL (e.g. <code>https://your-project-id.firebaseio.com/</code>) and paste it into the **Cloud Database Integration** field inside the **SEO & Bank Settings** tab, then click **Apply Settings Caches** and **Publish Live**. Your site will now be fully live!
+            </p>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <script src="js/config_default.js?v=15"></script>
+  <script src="js/admin.js?v=15"></script>
+</body>
+</html>
+
+
+
+
+

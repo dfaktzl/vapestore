@@ -654,52 +654,43 @@ class StoreApp {
     return soldCount;
   }
 
-  isFlavorOutOfStock(productId, flavorName, flavorsList) {
-    if (!flavorName || !flavorsList) return false;
+  getOutOfStockFlavorsForProduct(productId, flavorsList) {
+    if (!flavorsList || flavorsList.length === 0) return [];
     
-    // 0. Manual in-stock exceptions
-    if (productId === "alibarbar-link-12k" && flavorName.toLowerCase() === "triple berry ice") {
-      return false;
-    }
-    if (productId === "alibarbar-ingot-9k" && flavorName.toLowerCase() === "blue razz ice") {
-      return false;
-    }
-    if (productId === "alibarbar-ingot-9k" && flavorName.toLowerCase() === "triple berry") {
-      return false;
-    }
-    if (productId === "alibarbar-toybox-8k" && flavorName.toLowerCase() === "peach mango") {
-      return false;
-    }
-
-    // 1. Mint flavors are always out of stock and do not add to the 1-3 limit
-    if (flavorName.toLowerCase().includes("mint")) {
-      return true;
-    }
-    
-    // 2. Filter non-mint and exception flavors to select 1-3 other out of stock flavors
-    const nonMintFlavors = flavorsList.filter(f => {
+    // 1. Identify active exceptions
+    const isException = (f) => {
       const nameLower = f.toLowerCase();
-      if (nameLower.includes("mint")) return false;
-      if (productId === "alibarbar-link-12k" && nameLower === "triple berry ice") return false;
-      if (productId === "alibarbar-ingot-9k" && nameLower === "blue razz ice") return false;
-      if (productId === "alibarbar-ingot-9k" && nameLower === "triple berry") return false;
-      if (productId === "alibarbar-toybox-8k" && nameLower === "peach mango") return false;
-      return true;
-    });
-    if (nonMintFlavors.length === 0) return false;
+      if (productId === "alibarbar-link-12k" && nameLower === "triple berry ice") return true;
+      if (productId === "alibarbar-ingot-9k" && nameLower === "blue razz ice") return true;
+      if (productId === "alibarbar-ingot-9k" && nameLower === "triple berry") return true;
+      if (productId === "alibarbar-toybox-8k" && nameLower === "peach mango") return true;
+      return false;
+    };
+
+    // 2. Identify mint flavors
+    const mints = [];
+    const candidates = [];
     
+    flavorsList.forEach(f => {
+      if (isException(f)) return; // Never out of stock
+      if (f.toLowerCase().includes("mint")) {
+        mints.push(f);
+      } else {
+        candidates.push(f);
+      }
+    });
+
+    // 3. Select K non-mint candidates to be out of stock
     let hash = 0;
     for (let i = 0; i < productId.length; i++) {
       hash += productId.charCodeAt(i);
     }
-    
-    let K = (hash % 3) + 1; // 1, 2, or 3 out of stock
-    if (K > nonMintFlavors.length) {
-      K = nonMintFlavors.length;
+    let K = (hash % 3) + 1; // 1, 2, or 3
+    if (K > candidates.length) {
+      K = candidates.length;
     }
-    
-    // Deterministically select K flavors by sorting them using their string hash
-    const nonMintWithHash = nonMintFlavors.map(f => {
+
+    const candidatesWithHash = candidates.map(f => {
       let fHash = hash;
       for (let i = 0; i < f.length; i++) {
         fHash = (fHash * 31 + f.charCodeAt(i)) % 100000;
@@ -707,15 +698,35 @@ class StoreApp {
       return { name: f, hash: fHash };
     });
     
-    nonMintWithHash.sort((a, b) => a.hash - b.hash);
+    candidatesWithHash.sort((a, b) => a.hash - b.hash);
     
+    const selectedCandidates = [];
     for (let i = 0; i < K; i++) {
-      if (nonMintWithHash[i].name === flavorName) {
-        return true;
-      }
+      selectedCandidates.push(candidatesWithHash[i].name);
     }
-    
-    return false;
+
+    // Combined out of stock flavors: mints + selectedCandidates
+    let outOfStockList = [...mints, ...selectedCandidates];
+
+    // 4. Product-specific capping overrides:
+    // "the alibarbar 9k should never have more than 2 flavours out of stock, no matter what other logic there is"
+    if (productId === "alibarbar-ingot-9k" && outOfStockList.length > 2) {
+      const prioritized = [];
+      mints.forEach(m => {
+        if (prioritized.length < 2) prioritized.push(m);
+      });
+      selectedCandidates.forEach(c => {
+        if (prioritized.length < 2) prioritized.push(c);
+      });
+      outOfStockList = prioritized;
+    }
+
+    return outOfStockList;
+  }
+
+  isFlavorOutOfStock(productId, flavorName, flavorsList) {
+    const oosList = this.getOutOfStockFlavorsForProduct(productId, flavorsList);
+    return oosList.includes(flavorName);
   }
 
   renderProducts() {

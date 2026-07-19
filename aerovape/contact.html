@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-973WJXFS2F"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-973WJXFS2F');
+  </script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="index, follow">
+  <title>Contact Us | AeroVape Support</title>
+  <meta name="description" content="Get in touch with AeroVape Support. Ask about device stocks, shipping times, or bulk wholesale PayID or Bank Transfer orders.">
+  <meta name="keywords" content="contact aerovape, vape support, cheap cigarette delivery australia, bulk vape orders help">
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="img/logo_small.png">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/design_system.css?v=16">
+  <link rel="stylesheet" href="css/main.css?v=16">
+  <link rel="stylesheet" href="css/admin.css?v=16">
+</head>
+<body>
+
+  <!-- Age Gate Overlay -->
+  <div id="age-gate" class="age-gate-overlay">
+    <div class="age-gate-container glass-card">
+      <div style="margin-bottom: 20px; display:flex; align-items:center; justify-content:center; gap:8px;">
+        <span style="font-size:32px; color:var(--primary-accent);">🔵</span>
+        <span style="font-family:var(--font-title); font-weight:800; font-size:32px; color:var(--text-primary); letter-spacing:1px; text-transform:uppercase;">
+          aero<span style="color:var(--primary-accent);">Vape</span>
+        </span>
+      </div>
+      <h2 class="age-gate-title">Age Verification Check</h2>
+      <p class="age-gate-desc">
+        Under Australian law, you must be 18 years of age or older to view or purchase tobacco and vaping products. Please verify your age.
+      </p>
+      <div class="age-gate-actions">
+        <button id="btn-age-verify" class="btn-primary">I am 18 or older</button>
+        <button id="btn-age-reject" class="btn-secondary">Leave Site</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="main-wrapper">
+    <!-- 1. ANNOUNCEMENT BAR -->
+    <div class="announcement-bar" style="background:var(--primary-accent); color:#ffffff; font-family:var(--font-title); font-weight:800; text-transform:uppercase; font-size:11px; letter-spacing:1px; text-align:center; padding:8px 0;">
+      <p id="announcement-text" style="margin:0;">⚡ FREE EXPRESS POST OVER $150 | BULK WHOLESALE RATES AUTOMATICALLY APPLIED ⚡</p>
+    </div>
+
+    <!-- 2. MAIN HEADER -->
+    <header class="main-header" style="border-bottom:1px solid var(--glass-border); background:rgba(11,15,25,0.9); backdrop-filter:blur(10px); position:sticky; top:0; z-index:1000; padding:15px 0;">
+      <div class="container header-container" style="display:flex; justify-content:space-between; align-items:center;">
+        
+        <!-- Logo Wrap -->
+        <div style="display:flex; align-items:center; gap:12px;">
+          <a href="index.html" class="logo-link" style="text-decoration:none;">
+            <div id="dynamic-logo-target" class="logo-text-dynamic">
+              <span style="font-family:var(--font-title); font-weight:800; font-size:20px; color:var(--text-primary); letter-spacing:0.5px; text-transform:uppercase;">
+                🔵 aero<span style="color:var(--primary-accent);">Vape</span>
+              </span>
+            </div>
+          </a>
+          
+          <!-- Logo Style Selector Widget -->
+          <div class="logo-selector-wrap" style="display:flex; align-items:center; gap:4px; background:var(--bg-tertiary); border:1px solid var(--glass-border); padding:2px 8px; border-radius:100px; font-size:9px; color:var(--text-secondary);">
+            <span style="opacity:0.6;">Logo:</span>
+            <select id="logo-style-select" style="background:none; border:none; color:var(--primary-accent); font-family:var(--font-title); font-weight:700; cursor:pointer; outline:none; font-size:10px; padding:0;">
+              <option value="1">Minimal Sans</option>
+              <option value="2" selected>🔵 Modern Emblem</option>
+              <option value="3">Technical Clean</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Desktop Navigation Menu -->
+        <nav class="header-nav" style="display:flex; align-items:center; gap:20px;">
+          <a href="index.html" class="nav-link" style="color:var(--text-secondary); text-decoration:none; font-family:var(--font-title); font-size:13px; text-transform:uppercase; font-weight:700; letter-spacing:0.5px; transition:color 0.2s;">Home</a>
+          <a href="catalog.html" class="nav-link" style="color:var(--text-secondary); text-decoration:none; font-family:var(--font-title); font-size:13px; text-transform:uppercase; font-weight:700; letter-spacing:0.5px; transition:color 0.2s;">Shop Catalog</a>
+          <a href="guides.html" class="nav-link" style="color:var(--text-secondary); text-decoration:none; font-family:var(--font-title); font-size:13px; text-transform:uppercase; font-weight:700; letter-spacing:0.5px; transition:color 0.2s;">Vape Academy</a>
+          <a href="contact.html" class="nav-link" style="color:var(--primary-accent); text-decoration:none; font-family:var(--font-title); font-size:13px; text-transform:uppercase; font-weight:700; letter-spacing:0.5px; transition:color 0.2s;">Contact Us</a>
+        </nav>
+
+        <!-- Header Actions -->
+        <div class="header-actions" style="display:flex; align-items:center; gap:15px;">
+          <button id="cart-toggle" class="cart-toggle-btn" style="background:none; border:1px solid var(--glass-border); padding:8px 18px; border-radius:100px; font-family:var(--font-title); color:var(--text-primary); font-size:12px; font-weight:700; cursor:pointer; display:flex; align-items:center; gap:6px;">
+            <span>🛒</span> CART
+            <span id="cart-count" class="cart-count-badge" style="background:var(--primary-accent); color:#ffffff; border-radius:10px; padding:2px 6px; font-size:10px; font-weight:800; margin-left:4px;">0</span>
+          </button>
+        </div>
+
+      </div>
+    </header>
+
+    <!-- 3. CONTACT CONTAINER -->
+    <main style="padding: 60px 0; background: linear-gradient(180deg, #ffffff 0%, var(--bg-primary) 100%); flex-grow: 1; display: flex; align-items: center;">
+      <div class="container" style="max-width: 600px; width: 100%;">
+        
+        <div style="text-align: center; margin-bottom: 35px;">
+          <h1 style="font-family:var(--font-title); font-size:32px; font-weight:900; text-transform:uppercase; letter-spacing:0.5px; margin:0 0 10px 0; color:var(--text-primary);">
+            Contact Support Team
+          </h1>
+          <p style="color: var(--text-secondary); margin: 0; font-size: 14px; line-height: 1.5;">
+            Questions about shipping times, product options, or wholesale bank transfers? Fill in the secure form below and our staff will respond within 4-12 hours.
+          </p>
+        </div>
+        
+        <div class="glass-card" style="padding: 35px; border-radius: var(--radius-lg); border: 1px solid var(--glass-border); background:var(--bg-primary); box-shadow: var(--shadow-lg);">
+          <form id="contact-form" onsubmit="event.preventDefault();">
+            <div style="margin-bottom: 18px;">
+              <label style="display:block; font-size:12px; color:var(--text-secondary); margin-bottom:6px; font-family:var(--font-title); text-transform:uppercase; font-weight:700;">Your Name *</label>
+              <input type="text" id="contact-name" required class="search-input" style="padding-left:15px; border-radius:8px; background:var(--bg-secondary); border:1px solid var(--glass-border); width:100%; box-sizing:border-box; height:42px; color:var(--text-primary);">
+            </div>
+            <div style="margin-bottom: 18px;">
+              <label style="display:block; font-size:12px; color:var(--text-secondary); margin-bottom:6px; font-family:var(--font-title); text-transform:uppercase; font-weight:700;">Your Email *</label>
+              <input type="email" id="contact-email" required class="search-input" style="padding-left:15px; border-radius:8px; background:var(--bg-secondary); border:1px solid var(--glass-border); width:100%; box-sizing:border-box; height:42px; color:var(--text-primary);">
+            </div>
+            <div style="margin-bottom: 25px;">
+              <label style="display:block; font-size:12px; color:var(--text-secondary); margin-bottom:6px; font-family:var(--font-title); text-transform:uppercase; font-weight:700;">Message *</label>
+              <textarea id="contact-message" required rows="6" class="search-input" style="padding:12px 15px; border-radius:8px; background:var(--bg-secondary); border:1px solid var(--glass-border); width:100%; box-sizing:border-box; font-family:var(--font-body); resize:vertical; color:var(--text-primary);" placeholder="Write your message here..."></textarea>
+            </div>
+            <button type="submit" id="btn-contact-submit" class="btn-primary" style="width:100%; margin:0; padding:12px; cursor:pointer; font-family:var(--font-title); text-transform:uppercase; font-weight:800; border:none;">Send Secure Message</button>
+          </form>
+          
+          <div id="contact-success" style="display:none; text-align:center; padding:20px 0;">
+            <span style="font-size:48px; color:var(--primary-accent);">✓</span>
+            <h3 style="margin-top:10px; margin-bottom:5px; color:var(--text-primary); font-family:var(--font-title); text-transform:uppercase;">Message Dispatched</h3>
+            <p style="color:var(--text-secondary); font-size:13px; margin:0; line-height:1.4;">Thank you for contacting us. We will follow up via your email shortly.</p>
+          </div>
+        </div>
+
+      </div>
+    </main>
+
+    <!-- CART SIDE DRAWER -->
+    <div id="cart-drawer-overlay" class="cart-drawer-overlay"></div>
+    <div id="cart-drawer" class="cart-drawer glass-card">
+      <div class="cart-header">
+        <h3 class="cart-drawer-title" style="font-family:var(--font-title); font-size:18px; text-transform:uppercase; color:var(--text-primary);">Your Order Cart</h3>
+        <button id="cart-close" class="cart-close-btn">✖</button>
+      </div>
+      <div id="cart-items" class="cart-items-container">
+        <!-- Rendered dynamically -->
+      </div>
+      <div class="cart-footer">
+        <div class="cart-summary-row">
+          <span>Subtotal</span>
+          <span id="cart-subtotal">$0.00</span>
+        </div>
+        <div class="cart-summary-row" style="color:var(--success-color);">
+          <span>Bulk Savings</span>
+          <span id="cart-savings">$0.00</span>
+        </div>
+        <div class="cart-summary-row">
+          <span>Express Shipping</span>
+          <span id="cart-shipping">Free</span>
+        </div>
+        <div class="cart-summary-row total-row">
+          <span>Total Payable</span>
+          <span id="cart-total" class="cart-total-value">$0.00</span>
+        </div>
+        <button id="btn-checkout-trigger" class="btn-primary btn-checkout" style="width:100%;">Proceed to Checkout</button>
+      </div>
+    </div>
+
+    <!-- 10. MAIN FOOTER -->
+    <footer class="main-footer" style="border-top:1px solid rgba(0,0,0,0.05); background:#0f172a; padding:50px 0 20px 0; color:#94a3b8;">
+      <div class="container">
+        <div class="footer-grid">
+          <div>
+            <div style="margin-bottom: 20px; display:flex; align-items:center; gap:8px;">
+              <span style="font-size:22px; color:var(--primary-light);">🔵</span>
+              <span style="font-family:var(--font-title); font-weight:800; font-size:22px; color:#fff; letter-spacing:0.5px; text-transform:uppercase;">
+                AERO<span style="color:var(--primary-light);">VAPE</span>
+              </span>
+            </div>
+            <p class="footer-text">
+              Australia's #1 premium light-mode outlet for cigarettes, cigarette tobacco cartons, and vapes (IGET, Alibarbar, Waka SoPro &amp; HQD).
+            </p>
+            <p class="footer-text" style="margin-top: 10px; font-size: 11px; color: #64748b;">
+              AeroVape strictly enforces legal age constraints. Vaping and tobacco products are sold only to adults aged 18 and older.
+            </p>
+          </div>
+          
+          <div>
+            <h3 class="footer-col-title">Bulk Products</h3>
+            <ul class="footer-links">
+              <li><a href="catalog.html">Vapes (Singles)</a></li>
+              <li><a href="catalog.html">JNR Vapes</a></li>
+              <li><a href="catalog.html">Wholesale Vape Boxes</a></li>
+              <li><a href="catalog.html">Cigarette Cartons</a></li>
+            </ul>
+          </div>
+          
+          <div>
+            <h3 class="footer-col-title">Customer Service</h3>
+            <ul class="footer-links">
+              <li><a href="#" id="footer-btn-clear-cookie">Reset Verification Cache</a></li>
+              <li><a href="contact.html">Contact Us &amp; Support</a></li>
+              <li><a href="guides.html">Vape Academy</a></li>
+            </ul>
+          </div>
+          
+          <div>
+            <h3 class="footer-col-title">Direct Orders</h3>
+            <div class="footer-contact-item">
+              <span class="footer-contact-icon">✉</span>
+              <ul style="list-style: none; padding: 0; margin: 0;">
+                <li>
+                  <span id="footer-email">orders@aerovape.co</span>
+                </li>
+              </ul>
+            </div>
+            <div class="footer-contact-item">
+              <span class="footer-contact-icon">☎</span>
+              <span id="footer-phone">0402 179 489</span>
+            </div>
+            <div class="footer-contact-item">
+              <span class="footer-contact-icon">📍</span>
+              <span>Melbourne, VIC, Australia</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="footer-bottom">
+          <div class="footer-copy">
+            &copy; 2026 AeroVape &amp; Smokes. All rights reserved.
+          </div>
+          <div style="display: flex; gap: 15px; color: #64748b;">
+            <span>PayID &amp; Bank Transfer Only</span>
+            <span style="opacity:0.3;">|</span>
+            <a href="admin.html" style="color: #64748b; font-size: 11px; opacity: 0.4; text-decoration: none; transition: opacity 0.2s;" onmouseover="this.style.opacity='0.8'" onmouseout="this.style.opacity='0.4'">Merchant</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Loading scripts -->
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <script src="js/config_default.js?v=16"></script>
+  <script src="js/store.js?v=16"></script>
+</body>
+</html>
+
+
+
+
+
+
