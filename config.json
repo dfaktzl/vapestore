@@ -66,7 +66,10 @@
                                          "Grape Mint",
                                          "Peach Mango",
                                          "Tropical Ice",
-                                         "Kiwi Passionfruit"
+                                         "Kiwi Passionfruit",
+                                         "Fruity Skittles",
+                                         "FTP",
+                                         "California Sunset"
                                      ],
                          "image":  "img/alibarbar_toybox_8k.webp",
                          "description":  "The Alibarbar Toybox 8000 packs an impressive 8,000 puffs into a compact, distinctive design. Powered by a robust 2000mAh non-rechargeable battery with 20mL of premium 5% (50mg/mL) nicotine salt e-liquid. Features a 1.1Î© mesh coil for consistent, flavour-rich vapour from the first draw to the very last. Sold as single units or in bulk boxes of 10.",
@@ -95,7 +98,10 @@
                                          "Triple Berry",
                                          "Double Apple",
                                          "Peach Mango",
-                                         "Minty Mint"
+                                         "Minty Mint",
+                                         "Fruity Skittles",
+                                         "FTP",
+                                         "California Sunset"
                                      ],
                          "image":  "img/alibarbar_9000.png",
                          "description":  "The Alibarbar Ingot 9000 delivers up to 9,000 puffs of pure satisfaction in a premium metallic design. Equipped with advanced dual mesh coil technology and a rechargeable cobalt battery (USB Type-C) to ensure rich, consistent flavor from start to finish. Adjustable airflow control included.",
@@ -125,7 +131,10 @@
                                          "Cherry Lemonade",
                                          "Watermelon Ice",
                                          "Lychee Ice",
-                                         "Blueberry Raspberry"
+                                         "Blueberry Raspberry",
+                                         "Fruity Skittles",
+                                         "FTP",
+                                         "California Sunset"
                                      ],
                          "image":  "img/alibarbar_link_12k.webp",
                          "description":  "The Alibarbar Link 12000 is a premium rechargeable disposable delivering up to 12,000 puffs. Features an intelligent smart display screen showing real-time e-liquid level and battery percentage. Powered by a rechargeable 1800mAh cobalt battery (USB Type-C), 25mL of 5% nicotine salt e-liquid, and triple titanium mesh coils for ultra-smooth, consistent flavour. Adjustable ice cooling switch included.",
@@ -160,7 +169,10 @@
                                          "Strawberry Kiwi",
                                          "Peach Ice",
                                          "Watermelon Ice",
-                                         "Lush Ice"
+                                         "Lush Ice",
+                                         "Fruity Skittles",
+                                         "Strawberry Banana Ice",
+                                         "Pineapple Coconut Ice"
                                      ],
                          "image":  "img/iget_bar_3500.webp",
                          "description":  "Australia's most popular disposable vape. The IGET Bar 3500 delivers up to 3,500 puffs from 12mL of premium 5% (50mg/mL) nicotine salt e-liquid. Powered by a 1500mAh built-in non-rechargeable battery and a 1.2Î© mesh coil for smooth, consistent draws and rich flavour from start to finish. Ergonomic, pocket-friendly design. Available as single units or cartons of 10.",
@@ -191,7 +203,10 @@
                                          "Pineapple Coconut Ice",
                                          "Blackcurrant Ice",
                                          "Watermelon Mint",
-                                         "Strawberry Mango"
+                                         "Strawberry Mango",
+                                         "Fruity Skittles",
+                                         "Strawberry Banana Ice",
+                                         "Kiwi Passionfruit Grape"
                                      ],
                          "image":  "img/iget_legend_4000.webp",
                          "description":  "Elegantly built with a translucent PCTG shell and an ergonomic flat mouthpiece for a comfortable, refined draw. The IGET Legend 4000 delivers up to 4,000 puffs from 12mL of 5% (50mg/mL) nicotine salt e-liquid. Powered by a 1350mAh non-rechargeable battery and a precision mesh coil that extracts deep, layered flavour profiles. A step up in quality from the standard Bar.",
@@ -221,7 +236,10 @@
                                          "Cola Ice",
                                          "Blueberry Blackberry",
                                          "Mango Passionfruit",
-                                         "Peach Berry Lemonade"
+                                         "Peach Berry Lemonade",
+                                         "Fruity Skittles",
+                                         "Strawberry Banana Ice",
+                                         "Pineapple Coconut Ice"
                                      ],
                          "image":  "img/iget_hot_5500.webp",
                          "description":  "IGET's most powerful single-unit disposable. The IGET Hot 5500 delivers up to 5,500 puffs from 12mL of premium 5% (50mg/mL) nicotine salt e-liquid. Housed in a high-quality aluminium shell with a transparent visual tank, it uses a 1.4Î© ceramic-mesh coil for fast, even vapourisation with intense flavour and throat hit. Features a breathing LED indicator and integrated short-circuit, overcharge, and overheat protection.",
@@ -275,7 +293,10 @@
                                          "Blueberry Raspberry Bubblegum",
                                          "Double Apple",
                                          "Grape Ice",
-                                         "Cherry Pomegranate"
+                                         "Cherry Pomegranate",
+                                         "Fruity Skittles",
+                                         "Strawberry Banana Ice",
+                                         "Pineapple Coconut Ice"
                                      ],
                          "image":  "img/iget_bar_plus_6000.png",
                          "description":  "Scraped from Quantum Vape: The IGET Bar Plus (S3) features a smart screen displaying battery and e-liquid percentages. Employs a mesh coil system to extract deep, rich flavours. Compact, stylish, and fully rechargeable.",
@@ -306,7 +327,10 @@
                                          "Triple Berry",
                                          "Double Apple",
                                          "Peach Mango",
-                                         "Minty Mint"
+                                         "Minty Mint",
+                                         "Fruity Skittles",
+                                         "FTP",
+                                         "California Sunset"
                                      ],
                          "image":  "img/alibarbar_9000.png",
                          "description":  "Exclusive 5-Pack Bundle Pack. Customise your bundle by choosing 5 separate flavours of the premium Alibarbar Ingot 9000. Mix and match flavours or stock up on your favourites! Delivers up to 9,000 puffs per device with dual mesh coil technology.",
@@ -342,7 +366,10 @@
                                          "Strawberry Kiwi",
                                          "Peach Ice",
                                          "Watermelon Ice",
-                                         "Lush Ice"
+                                         "Lush Ice",
+                                         "Fruity Skittles",
+                                         "Strawberry Banana Ice",
+                                         "Pineapple Coconut Ice"
                                      ],
                          "image":  "img/iget_bar_3500.webp",
                          "description":  "Value 5-Pack Bundle. Select 5 individual flavours from the legendary IGET Bar 3500 range. Maximise savings and custom-build your personal variety pack! Enjoy 3,500 puffs per device.",
