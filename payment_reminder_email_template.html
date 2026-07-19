@@ -1,0 +1,201 @@
+<!-- Outer wrapper -->
+<table style="background-color: #1a1a1a; padding: 24px 0;" role="presentation" border="0" width="100%" cellspacing="0" cellpadding="0">
+<tbody>
+<tr>
+<td style="padding: 0 12px;" align="center"><!-- Card (made fluid with max-width constraint) -->
+<table style="max-width: 600px; background-color: #0d0f13; border: 1px solid #2a2d35;" role="presentation" border="0" width="100%" cellspacing="0" cellpadding="0"><!-- ── HEADER ── -->
+<tbody>
+<tr>
+<td class="header-padding" style="background-color: #0d0f13; border-bottom: 3px solid #ff9500; padding: 22px 28px;">
+<table role="presentation" border="0" width="100%" cellspacing="0" cellpadding="0">
+<tbody>
+<tr>
+<td><span style="font-size: 20px; font-weight: bold; color: #d4af37; letter-spacing: 3px; text-transform: uppercase;">VAPE 'R' AUS</span><br><span style="font-size: 11px; color: #666666; letter-spacing: 1px; text-transform: uppercase;">vaperaus.com &nbsp;&middot;&nbsp; Australia's Vape &amp; Smokes Store</span></td>
+<td align="right" valign="middle"><span style="display: inline-block; font-size: 11px; color: #ff9500; font-weight: bold; border: 1px solid #ff9500; padding: 5px 11px; letter-spacing: 1px; text-transform: uppercase;">PAYMENT PENDING ⏳</span></td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+<!-- ── GREETING ── -->
+<tr>
+<td class="card-padding" style="padding: 26px 28px 0 28px;">
+<p style="margin: 0 0 10px 0; font-size: 16px; font-weight: bold; color: #ffffff;">G'Day {{customer_name}},</p>
+<p style="margin: 0 0 12px 0; font-size: 14px; color: #aaaaaa; line-height: 1.7;">We noticed that we haven't received the payment for your order yet. To secure your items and ensure they are processed for dispatch, please complete the transfer using the PayID or bank details listed below.</p>
+<p style="margin: 0 0 12px 0; font-size: 14px; color: #aaaaaa; line-height: 1.7;"><strong style="color: #ffffff;">Discreet Packaging Notice:</strong> To protect your privacy, our team uses an extremely <strong style="color: #ffffff;">discreet packing and labeling process</strong> (no vape or cigarette references will appear on the parcel). Once dispatched from Melbourne, we send all orders untracked express. This is done for security reasons to guarantee your package arrives untouched and unharmed by third parties using our particular delivery methods.</p>
+<p style="margin: 0; font-size: 14px; color: #aaaaaa; line-height: 1.7;">If you have already made the transfer, please reply to this email with a screenshot of your transaction receipt so we can manually match and dispatch your order immediately.</p>
+</td>
+</tr>
+<!-- ── PAYMENT PENDING BANNER ── -->
+<tr>
+<td class="card-padding" style="padding: 18px 28px 0 28px;">
+<table style="background-color: #2b1d0a; border-left: 4px solid #ff9500;" role="presentation" border="0" width="100%" cellspacing="0" cellpadding="0">
+<tbody>
+<tr>
+<td style="padding: 12px 16px;">
+<p style="margin: 0; font-size: 13px; color: #ff9500; font-weight: bold;">⏳ PAYMENT PENDING &mdash; Action Required</p>
+<p style="margin: 6px 0 0 0; font-size: 13px; color: #cccccc; line-height: 1.6;">Please transfer the total of <strong style="color: #ffffff;">{{total_price}}</strong> using your payment reference <strong style="color: #ffffff;">{{ref_code}}</strong> to avoid order cancellation.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+<!-- ── PAYMENT DETAILS INFO ── -->
+<tr>
+<td class="card-padding" style="padding: 22px 28px 0 28px;">
+<table style="background-color: #0d0f13; border: 1px solid #d4af37; border-radius: 8px;" role="presentation" border="0" width="100%" cellspacing="0" cellpadding="0">
+<tbody>
+<tr>
+<td style="padding: 18px 20px;">
+<p style="margin: 0 0 14px 0; font-size: 12px; font-weight: bold; color: #d4af37; text-transform: uppercase; letter-spacing: 1px;">💳 &nbsp;Payment Instructions</p>
+<table style="font-size: 13px; width: 100%;" role="presentation" border="0" cellspacing="0" cellpadding="0">
+<tbody>
+<tr>
+<td style="padding: 6px 0; color: #666666; width: 35%; vertical-align: top;">PayID Email</td>
+<td style="padding: 6px 0; color: #ffffff; font-weight: bold; vertical-align: top;">{{payid}}</td>
+</tr>
+<tr>
+<td style="padding: 6px 0; color: #666666; vertical-align: top;">Bank Name</td>
+<td style="padding: 6px 0; color: #cccccc; vertical-align: top;">{{bank_name}}</td>
+</tr>
+<tr>
+<td style="padding: 6px 0; color: #666666; vertical-align: top;">Account Name</td>
+<td style="padding: 6px 0; color: #cccccc; vertical-align: top;">{{account_name}}</td>
+</tr>
+<tr>
+<td style="padding: 6px 0; color: #666666; vertical-align: top;">BSB</td>
+<td style="padding: 6px 0; color: #ffffff; font-weight: bold; vertical-align: top;">{{bsb}}</td>
+</tr>
+<tr>
+<td style="padding: 6px 0; color: #666666; vertical-align: top;">Account Number</td>
+<td style="padding: 6px 0; color: #ffffff; font-weight: bold; vertical-align: top;">{{account_number}}</td>
+</tr>
+<tr>
+<td style="padding: 6px 0; color: #666666; vertical-align: top;">Reference / Description</td>
+<td style="padding: 6px 0; color: #d4af37; font-weight: bold; font-family: Courier New, monospace; vertical-align: top;">{{ref_code}}</td>
+</tr>
+</tbody>
+</table>
+<p style="margin: 12px 0 0 0; font-size: 11px; color: #888888; line-height: 1.5;"><strong style="color: #ffffff;">CRITICAL:</strong> Please input your exact reference description <strong style="color: #d4af37; font-family: Courier New, monospace;">{{ref_code}}</strong> in the transfer reference field. Transfers without this reference cannot be matched automatically and may delay processing.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+<!-- ── ORDER ID / REFERENCE ROW (stacks on mobile) ── -->
+<tr>
+<td class="card-padding" style="padding: 18px 28px 0 28px;">
+<table role="presentation" border="0" width="100%" cellspacing="0" cellpadding="0">
+<tbody>
+<tr>
+<td class="ref-col" style="background-color: #1a1d24; padding: 12px 14px; vertical-align: top;" width="48%">
+<p style="margin: 0 0 4px 0; font-size: 10px; color: #666666; text-transform: uppercase; letter-spacing: 1px;">Order ID</p>
+<p style="margin: 0; font-size: 14px; color: #ffffff; font-weight: bold;">#{{order_id}}</p>
+</td>
+<td class="ref-spacer" width="4%">&nbsp;</td>
+<td class="ref-col" style="background-color: #1a1d24; padding: 12px 14px; vertical-align: top;" width="48%">
+<p style="margin: 0 0 4px 0; font-size: 10px; color: #666666; text-transform: uppercase; letter-spacing: 1px;">Payment Reference</p>
+<p style="margin: 0; font-size: 15px; color: #d4af37; font-weight: bold; font-family: Courier New, monospace; letter-spacing: 1px;">{{ref_code}}</p>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+<!-- ── ITEMS ORDERED ── -->
+<tr>
+<td class="card-padding" style="padding: 22px 28px 0 28px;">
+<p style="margin: 0 0 10px 0; font-size: 11px; color: #666666; text-transform: uppercase; letter-spacing: 1px; border-bottom: 1px solid #2a2d35; padding-bottom: 8px;">Items Ordered</p>
+<p style="margin: 0; font-size: 13px; color: #cccccc; line-height: 2.0; font-family: Courier New, monospace; background-color: #111316; padding: 14px 16px; white-space: pre-line; word-break: break-word;">{{order_items}}</p>
+</td>
+</tr>
+<!-- ── TOTAL ── -->
+<tr>
+<td class="card-padding" style="padding: 0 28px 0 28px;">
+<table role="presentation" border="0" width="100%" cellspacing="0" cellpadding="0">
+<tbody>
+<tr>
+<td style="padding: 14px 0 0 0; border-top: 2px solid #ff9500;"><span style="font-size: 15px; font-weight: bold; color: #ffffff;">Total Outstanding</span></td>
+<td style="padding: 14px 0 0 0; border-top: 2px solid #ff9500;" align="right"><span style="font-size: 22px; font-weight: bold; color: #d4af37;">{{total_price}}</span></td>
+</tr>
+<tr>
+<td style="padding-top: 6px;" colspan="2">
+<p style="margin: 0; font-size: 11px; color: #555555;">Includes free express shipping on orders over $150.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+<!-- ── DELIVERY DETAILS ── -->
+<tr>
+<td class="card-padding" style="padding: 22px 28px 0 28px;">
+<p style="margin: 0 0 10px 0; font-size: 11px; color: #666666; text-transform: uppercase; letter-spacing: 1px; border-bottom: 1px solid #2a2d35; padding-bottom: 8px;">Your Delivery Details</p>
+<table style="font-size: 13px; width: 100%;" role="presentation" border="0" cellspacing="0" cellpadding="0">
+<tbody>
+<tr>
+<td style="padding: 6px 0; color: #666666; width: 32%; vertical-align: top;">Name</td>
+<td style="padding: 6px 0; color: #cccccc; vertical-align: top;">{{customer_name}}</td>
+</tr>
+<tr>
+<td style="padding: 6px 0; color: #666666; vertical-align: top;">Phone</td>
+<td style="padding: 6px 0; color: #cccccc; vertical-align: top;">{{customer_phone}}</td>
+</tr>
+<tr>
+<td style="padding: 6px 0; color: #666666; vertical-align: top;">Address</td>
+<td style="padding: 6px 0; color: #cccccc; vertical-align: top;">{{customer_address}}</td>
+</tr>
+<tr>
+<td style="padding: 6px 0; color: #666666; vertical-align: top;">Notes</td>
+<td style="padding: 6px 0; color: #cccccc; vertical-align: top;">{{customer_notes}}</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+<!-- ── WHAT HAPPENS NEXT ── -->
+<tr>
+<td class="card-padding" style="padding: 22px 28px 0 28px;">
+<table style="background-color: #111316; border: 1px solid #2a2d35;" role="presentation" border="0" width="100%" cellspacing="0" cellpadding="0">
+<tbody>
+<tr>
+<td style="padding: 16px 20px;">
+<p style="margin: 0 0 12px 0; font-size: 11px; font-weight: bold; color: #ffffff; text-transform: uppercase; letter-spacing: 1px;">What Happens Next</p>
+<p style="margin: 0 0 8px 0; font-size: 13px; color: #aaaaaa; line-height: 1.6;">1.&nbsp; Complete your PayID or Bank Transfer payment using your reference code. 💳</p>
+<p style="margin: 0 0 8px 0; font-size: 13px; color: #aaaaaa; line-height: 1.6;">2.&nbsp; We match your payment and confirm dispatch of your parcel. ✓</p>
+<p style="margin: 0; font-size: 13px; color: #aaaaaa; line-height: 1.6;">3.&nbsp; Your discreetly packaged parcel is shipped Express Post from Melbourne. 🚚</p>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+<!-- ── EMAIL DELIVERY NOTICE ── -->
+<tr>
+<td class="card-padding" style="padding: 14px 28px 0 28px;">
+<table style="background-color: #150d20; border: 1px solid #3a1f60;" role="presentation" border="0" width="100%" cellspacing="0" cellpadding="0">
+<tbody>
+<tr>
+<td style="padding: 12px 16px;">
+<p style="margin: 0; font-size: 12px; color: #bb88ff; line-height: 1.6;">📧 &nbsp;<strong>Note:</strong> Automated reminder emails can sometimes be delayed or filtered as spam. If you have already paid or have questions, contact us at <strong>admin@vaperaus.com</strong> with your order reference <strong style="color: #d4af37;">{{ref_code}}</strong>.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+<!-- ── FOOTER ── -->
+<tr>
+<td class="card-padding" style="padding: 24px 28px; border-top: 1px solid #2a2d35; margin-top: 20px; text-align: center;">
+<p style="margin: 0 0 8px 0; font-size: 13px; color: #888888;">Questions? Reply to this email or reach us at <a style="color: #d4af37; text-decoration: none;" href="mailto:admin@vaperaus.com">admin@vaperaus.com</a></p>
+<p style="margin: 0; font-size: 11px; color: #444444; line-height: 1.6;">This payment reminder was sent to <strong style="color: #666666;">{{customer_email}}</strong> because you placed an order at vaperaus.com.<br>&copy; 2025 Vape 'R' Aus. All rights reserved. Melbourne, Australia.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<!-- End Card --></td>
+</tr>
+</tbody>
+</table>
