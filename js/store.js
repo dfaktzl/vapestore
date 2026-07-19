@@ -661,8 +661,8 @@ class StoreApp {
     const isException = (f) => {
       const nameLower = f.toLowerCase();
       if (productId === "alibarbar-link-12k" && nameLower === "triple berry ice") return true;
-      if (productId === "alibarbar-ingot-9k" && nameLower === "blue razz ice") return true;
-      if (productId === "alibarbar-ingot-9k" && nameLower === "triple berry") return true;
+      if ((productId === "alibarbar-ingot-9k" || productId === "alibarbar-9k-bundle") && nameLower === "blue razz ice") return true;
+      if ((productId === "alibarbar-ingot-9k" || productId === "alibarbar-9k-bundle") && nameLower === "triple berry") return true;
       if (productId === "alibarbar-toybox-8k" && nameLower === "peach mango") return true;
       return false;
     };
@@ -710,7 +710,7 @@ class StoreApp {
 
     // 4. Product-specific capping overrides:
     // "the alibarbar 9k should never have more than 2 flavours out of stock, no matter what other logic there is"
-    if (productId === "alibarbar-ingot-9k" && outOfStockList.length > 2) {
+    if ((productId === "alibarbar-ingot-9k" || productId === "alibarbar-9k-bundle") && outOfStockList.length > 2) {
       const prioritized = [];
       mints.forEach(m => {
         if (prioritized.length < 2) prioritized.push(m);

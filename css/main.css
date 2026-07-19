@@ -1769,3 +1769,66 @@
   border-radius: 4px;
 }
 
+/* Responsive Product Details Grid */
+.product-detail-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(212, 175, 55, 0.1);
+  border-radius: 12px;
+  padding: 40px;
+  box-shadow: var(--shadow-lg);
+}
+
+@media (max-width: 992px) {
+  .product-detail-grid {
+    gap: 30px;
+    padding: 30px;
+  }
+}
+
+@media (max-width: 768px) {
+  .product-detail-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+    padding: 20px;
+  }
+}
+
+/* Responsive Product Specs Grid */
+.product-specs-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  font-size: 12px;
+  margin-bottom: 30px;
+}
+
+@media (max-width: 480px) {
+  .product-specs-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Responsive Promo Banner on Mobile */
+.promo-banner {
+  flex-wrap: wrap;
+  justify-content: center;
+  text-align: center;
+  font-size: 14px !important;
+  padding: 10px 15px !important;
+}
+
+@media (max-width: 768px) {
+  .promo-banner {
+    font-size: 12px !important;
+    padding: 10px 12px !important;
+    gap: 8px !important;
+  }
+  .promo-badge {
+    padding: 2px 8px !important;
+    font-size: 9px !important;
+  }
+}
+
