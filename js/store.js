@@ -671,7 +671,7 @@ class StoreApp {
   }
 
   getOutOfStockFlavorsForProduct(productId, flavorsList) {
-    if (!flavorsList || flavorsList.length === 0) return [];
+    if (!productId || !flavorsList || flavorsList.length === 0) return [];
     
     // 1. Identify active exceptions
     const isException = (f) => {
@@ -1834,11 +1834,17 @@ class StoreApp {
         this.renderProducts();
       });
     });
-    
-    document.getElementById("modal-close").addEventListener("click", () => this.closeModal());
-    document.getElementById("product-detail-modal").addEventListener("click", (e) => {
-      if (e.target === document.getElementById("product-detail-modal")) this.closeModal();
-    });
+    const modalClose = document.getElementById("modal-close");
+    if (modalClose) {
+      modalClose.addEventListener("click", () => this.closeModal());
+    }
+
+    const detailModal = document.getElementById("product-detail-modal");
+    if (detailModal) {
+      detailModal.addEventListener("click", (e) => {
+        if (e.target === detailModal) this.closeModal();
+      });
+    }
     
     const modalAdd = document.getElementById("btn-modal-add");
     if (modalAdd) {
