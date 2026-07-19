@@ -344,6 +344,7 @@ class AdminApp {
     document.getElementById("set-emailjs-contact-template").value = this.config.settings.emailjsContactTemplateId || "";
     document.getElementById("set-emailjs-order-template").value = this.config.settings.emailjsOrderTemplateId || "";
     document.getElementById("set-emailjs-payment-received-template").value = this.config.settings.emailjsPaymentReceivedTemplateId || "";
+    document.getElementById("set-emailjs-payment-reminder-template").value = this.config.settings.emailjsPaymentReminderTemplateId || "";
 
     // Admin password field if present
     const adminPassField = document.getElementById("set-admin-password");
@@ -374,6 +375,7 @@ class AdminApp {
     this.config.settings.emailjsContactTemplateId = document.getElementById("set-emailjs-contact-template").value.trim();
     this.config.settings.emailjsOrderTemplateId = document.getElementById("set-emailjs-order-template").value.trim();
     this.config.settings.emailjsPaymentReceivedTemplateId = document.getElementById("set-emailjs-payment-received-template").value.trim();
+    this.config.settings.emailjsPaymentReminderTemplateId = document.getElementById("set-emailjs-payment-reminder-template").value.trim();
 
     // Refresh Firebase URL after URL field may have changed
     this.firebaseUrl = this._resolveFirebaseUrl();
@@ -770,7 +772,7 @@ class AdminApp {
             </table>
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 15px;">
               <button class="btn-primary send-reminder-email-btn" data-order-id="${order.orderId}" style="font-size: 11px; height: 32px; padding: 0 10px; display: flex; align-items: center; justify-content: center; gap: 4px; font-weight: 700; cursor: pointer; border-radius: 4px;">
-                ✉️ Send Reminder
+                ✉️ Payment Not Received
               </button>
               <button class="btn-secondary send-confirmed-email-btn" data-order-id="${order.orderId}" style="font-size: 11px; height: 32px; padding: 0 10px; display: flex; align-items: center; justify-content: center; gap: 4px; font-weight: 700; cursor: pointer; border-color: #10b981; color: #10b981; margin:0; border-radius: 4px; background: transparent;">
                 ✉️ Send Receipt
@@ -1176,7 +1178,7 @@ class AdminApp {
 
     try {
       const serviceId = this.config.settings.emailjsServiceId;
-      const templateId = this.config.settings.emailjsOrderTemplateId;
+      const templateId = this.config.settings.emailjsPaymentReminderTemplateId || this.config.settings.emailjsOrderTemplateId;
       const publicKey = this.config.settings.emailjsPublicKey;
 
       if (!serviceId || !templateId || !publicKey) {
@@ -1190,7 +1192,7 @@ class AdminApp {
       emailjs.init({ publicKey: publicKey.trim() });
       const resp = await emailjs.send(serviceId.trim(), templateId.trim(), templateParams);
       if (resp.status === 200) {
-        alert("✉️ Payment Reminder Email sent successfully via EmailJS!");
+        alert("✉️ 'Payment Not Received Yet' Reminder Email sent successfully via EmailJS!");
         btn.innerText = "✓ Sent!";
         btn.style.background = "#10b981";
       } else {
@@ -1198,7 +1200,7 @@ class AdminApp {
       }
     } catch(err) {
       console.error("Failed to send EmailJS Reminder:", err);
-      alert("❌ Failed to send Payment Reminder: " + err.message);
+      alert("❌ Failed to send 'Payment Not Received Yet' Reminder: " + err.message);
       btn.innerText = originalText;
       btn.disabled = false;
     }
