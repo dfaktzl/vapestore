@@ -286,7 +286,7 @@ class StoreApp {
           }
 
           this.addToCart(product, flavorSelection, this.selectedFormat, 1);
-          pageAddBtn.innerText = "Added to Cart! ✓";
+          pageAddBtn.innerText = "Added to Cart! &#10003;";
           pageAddBtn.style.background = "linear-gradient(135deg, #10b981 0%, #059669 100%)";
           
           setTimeout(() => {
@@ -618,7 +618,7 @@ class StoreApp {
     if (this.isHappyHour()) {
       banner.style.background = "linear-gradient(90deg, #3a1f60 0%, #d4af37 50%, #3a1f60 100%)";
       banner.style.borderBottom = "1px solid #d4af37";
-      bannerText.innerHTML = "⚡ HAPPY HOUR IS ACTIVE! All orders get 10% OFF automatically at checkout until 6:00 PM AEST! ⚡";
+      bannerText.innerHTML = "&#9889; HAPPY HOUR IS ACTIVE! All orders get 10% OFF automatically at checkout until 6:00 PM AEST! &#9889;";
       bannerText.style.color = "#ffffff";
       bannerText.style.fontWeight = "800";
     } else {
@@ -805,7 +805,7 @@ class StoreApp {
     if (filtered.length === 0) {
       grid.innerHTML = `
         <div class="empty-catalog">
-          <div class="empty-icon">🔍</div>
+          <div class="empty-icon">&#128269;</div>
           <h3 class="empty-title">No products match your criteria</h3>
           <p class="empty-desc">Try clearing filters or searching for another term.</p>
         </div>
@@ -927,11 +927,11 @@ class StoreApp {
         </div>
         <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 12px; margin-bottom: 2px;">
           <div class="product-card-brand" style="margin-bottom: 0;">${prod.brand}</div>
-          <a href="/products/${prod.id}.html" class="product-page-link" style="color: var(--gold-primary); text-decoration: none; font-size: 11px; font-weight: bold; border: 1px solid var(--gold-primary); padding: 2px 6px; border-radius: 4px;" title="View Dedicated Product Page">Page ➜</a>
+          <a href="/products/${prod.id}.html" class="product-page-link" style="color: var(--gold-primary); text-decoration: none; font-size: 11px; font-weight: bold; border: 1px solid var(--gold-primary); padding: 2px 6px; border-radius: 4px;" title="View Dedicated Product Page">Page &#10140;</a>
         </div>
         <a href="#" class="product-card-name" id="name-${prod.id}">${prod.name}</a>
         <div class="product-card-sold-count" style="font-size: 11px; color: #10b981; margin-top: 4px; display: flex; align-items: center; gap: 4px; font-weight: 600;">
-          <span>🔥</span> <span>${this.getSoldCount(prod.id)} sold recently</span>
+          <span>&#128293;</span> <span>${this.getSoldCount(prod.id)} sold recently</span>
         </div>
         
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px;">
@@ -975,7 +975,7 @@ class StoreApp {
           this.addToCart(prod, flavor, format, 1);
           
           const originalText = addBtn.innerText;
-          addBtn.innerText = "Added! ✓";
+          addBtn.innerText = "Added! &#10003;";
           addBtn.style.background = "linear-gradient(135deg, #10b981 0%, #059669 100%)";
           setTimeout(() => {
             addBtn.innerText = originalText;
@@ -1355,7 +1355,7 @@ class StoreApp {
     if (this.cart.length === 0) {
       itemsList.innerHTML = `
         <div class="cart-empty-state">
-          <div class="cart-empty-icon">🛒</div>
+          <div class="cart-empty-icon">&#128722;</div>
           <h4 class="empty-title" style="font-size: 16px;">Your cart is empty</h4>
           <p class="empty-desc" style="font-size: 12px;">Add items from the catalog above to build your order.</p>
         </div>
@@ -1391,7 +1391,7 @@ class StoreApp {
             <div class="cart-item-price">$${itemPriceTotal.toFixed(2)}</div>
           </div>
         </div>
-        <button class="cart-item-remove-btn">✖</button>
+        <button class="cart-item-remove-btn">&#10006;</button>
       `;
       
       cartItem.querySelector(".dec-btn").addEventListener("click", () => this.updateQuantity(item.id, item.flavor, item.format, -1));
@@ -1626,7 +1626,7 @@ class StoreApp {
       }).catch(err => {
         console.error("EmailJS Order trigger failed:", err);
         const errMsg = err.text || err.message || JSON.stringify(err);
-        this.logActivity(`❌ Order confirmation email failed: ${errMsg}`);
+        this.logActivity(`&#10060; Order confirmation email failed: ${errMsg}`);
       });
     } else {
       this.logActivity("Order confirmation email skipped (EmailJS keys not fully configured or SDK not loaded)");
@@ -1657,7 +1657,7 @@ class StoreApp {
         "Language": metadata.language,
         "Local Time": metadata.localTime,
         "_captcha": "false",
-        "_subject": `🛒 NEW ORDER PLACED: ${orderId} (${refCode})`
+        "_subject": `&#128722; NEW ORDER PLACED: ${orderId} (${refCode})`
       })
     })
     .then(res => {
@@ -1870,7 +1870,7 @@ class StoreApp {
 
           this.addToCart(this.selectedProduct, flavorSelection, this.selectedFormat, 1);
           
-          modalAdd.innerText = "Added to Cart! ✓";
+          modalAdd.innerText = "Added to Cart! &#10003;";
           modalAdd.style.background = "linear-gradient(135deg, #10b981 0%, #059669 100%)";
           
           setTimeout(() => {

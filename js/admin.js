@@ -269,7 +269,7 @@ class AdminApp {
   async publishToFirebase() {
     const dbUrl = this._resolveFirebaseUrl();
     if (!dbUrl) {
-      alert("⚠️ No Firebase URL configured. Go to SEO & Bank Settings and enter your Firebase Database URL first.");
+      alert("&#9888;️ No Firebase URL configured. Go to SEO & Bank Settings and enter your Firebase Database URL first.");
       return false;
     }
 
@@ -300,7 +300,7 @@ class AdminApp {
         throw new Error(`Firebase returned HTTP ${errStatus}. Check your database security rules.`);
       }
     } catch (err) {
-      alert("❌ Publish failed: " + err.message + "\n\nIf you see a 401/403 error, your Firebase rules need to be updated. Check the 'Hosting & Automation' tab for instructions.");
+      alert("&#10060; Publish failed: " + err.message + "\n\nIf you see a 401/403 error, your Firebase rules need to be updated. Check the 'Hosting & Automation' tab for instructions.");
       return false;
     } finally {
       if (btn) { btn.innerText = originalText; btn.disabled = false; }
@@ -311,7 +311,7 @@ class AdminApp {
     const btn = document.getElementById("btn-publish-live");
     if (!btn) return;
     const originalText = btn.innerText;
-    btn.innerText = "✅ Live! Changes Published";
+    btn.innerText = "&#9989; Live! Changes Published";
     btn.style.background = "linear-gradient(135deg, #10b981 0%, #059669 100%)";
     btn.style.borderColor = "#10b981";
     setTimeout(() => {
@@ -349,6 +349,7 @@ class AdminApp {
     document.getElementById("set-emailjs-order-template").value = this.config.settings.emailjsOrderTemplateId || "";
     document.getElementById("set-emailjs-payment-received-template").value = this.config.settings.emailjsPaymentReceivedTemplateId || "";
     document.getElementById("set-emailjs-payment-reminder-template").value = this.config.settings.emailjsPaymentReminderTemplateId || "";
+    document.getElementById("set-emailjs-order-problem-template").value = this.config.settings.emailjsOrderProblemTemplateId || "";
 
     // Admin password field if present
     const adminPassField = document.getElementById("set-admin-password");
@@ -380,6 +381,7 @@ class AdminApp {
     this.config.settings.emailjsOrderTemplateId = document.getElementById("set-emailjs-order-template").value.trim();
     this.config.settings.emailjsPaymentReceivedTemplateId = document.getElementById("set-emailjs-payment-received-template").value.trim();
     this.config.settings.emailjsPaymentReminderTemplateId = document.getElementById("set-emailjs-payment-reminder-template").value.trim();
+    this.config.settings.emailjsOrderProblemTemplateId = document.getElementById("set-emailjs-order-problem-template").value.trim();
 
     // Refresh Firebase URL after URL field may have changed
     this.firebaseUrl = this._resolveFirebaseUrl();
@@ -458,8 +460,8 @@ class AdminApp {
         <td>${formatsHTML}</td>
         <td>
           <div class="action-btn-group">
-            <button class="btn-icon edit-btn" title="Edit Product">✏️</button>
-            <button class="btn-icon delete-btn" title="Delete Product">🗑️</button>
+            <button class="btn-icon edit-btn" title="Edit Product">&#9999;️</button>
+            <button class="btn-icon delete-btn" title="Delete Product">&#128465;️</button>
           </div>
         </td>
       `;
@@ -745,7 +747,7 @@ class AdminApp {
           <div style="display:flex; align-items:center; gap:10px;">
             <span class="order-ref" style="font-size:12px; margin-right:5px;">Ref: <strong>${escapeHTML(order.refCode) || "N/A"}</strong></span>
             ${statusSelectHTML}
-            <button class="btn-icon delete-order-btn" title="Delete Order" data-order-id="${order.orderId}" style="background:none; border:none; cursor:pointer; font-size:16px;">🗑️</button>
+            <button class="btn-icon delete-order-btn" title="Delete Order" data-order-id="${order.orderId}" style="background:none; border:none; cursor:pointer; font-size:16px;">&#128465;️</button>
           </div>
         </div>
         <div class="order-grid">
@@ -776,10 +778,15 @@ class AdminApp {
             </table>
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 15px;">
               <button class="btn-primary send-reminder-email-btn" data-order-id="${order.orderId}" style="font-size: 11px; height: 32px; padding: 0 10px; display: flex; align-items: center; justify-content: center; gap: 4px; font-weight: 700; cursor: pointer; border-radius: 4px;">
-                ✉️ Payment Not Received
+                &#9993; Payment Not Received
               </button>
               <button class="btn-secondary send-confirmed-email-btn" data-order-id="${order.orderId}" style="font-size: 11px; height: 32px; padding: 0 10px; display: flex; align-items: center; justify-content: center; gap: 4px; font-weight: 700; cursor: pointer; border-color: #10b981; color: #10b981; margin:0; border-radius: 4px; background: transparent;">
-                ✉️ Send Receipt
+                &#9993; Send Receipt
+              </button>
+            </div>
+            <div style="margin-top: 6px;">
+              <button class="btn-secondary send-problem-email-btn" data-order-id="${order.orderId}" disabled title="Template not yet configured — add EmailJS Problem Template ID to enable" style="font-size: 11px; height: 32px; padding: 0 10px; display: flex; align-items: center; justify-content: center; gap: 4px; font-weight: 700; cursor: not-allowed; border-color: #f59e0b; color: #f59e0b; margin:0; border-radius: 4px; background: transparent; width: 100%; opacity: 0.6;">
+                &#9888; Problem with Order# ${order.orderId} &mdash; <em style="font-style:italic; font-weight:400;">Configure Template to Enable</em>
               </button>
             </div>
           </div>
@@ -868,7 +875,7 @@ class AdminApp {
       tbody.innerHTML = `
         <tr>
           <td colspan="7" style="padding:30px; text-align:center; color:var(--error-color);">
-            ⚠️ No Cloud Database configured. Geolocation and visitor logs require Firebase Database URL in Settings.
+            &#9888;️ No Cloud Database configured. Geolocation and visitor logs require Firebase Database URL in Settings.
           </td>
         </tr>
       `;
@@ -898,7 +905,7 @@ class AdminApp {
       tbody.innerHTML = `
         <tr>
           <td colspan="7" style="padding:30px; text-align:center; color:var(--error-color);">
-            ❌ Failed to load visitor logs: ${err.message}
+            &#10060; Failed to load visitor logs: ${err.message}
           </td>
         </tr>
       `;
@@ -959,10 +966,10 @@ class AdminApp {
       tr.innerHTML = `
         <td style="padding:12px 15px; font-size:13px; color:var(--text-secondary);">${dateStr}</td>
         <td style="padding:12px 15px; font-size:13px; font-family:monospace; color:var(--text-primary); font-weight:600;">${escapeHTML(visitor.ip) || "Unknown"}</td>
-        <td style="padding:12px 15px; font-size:13px; color:#fff;">📍 ${escapeHTML(location)}</td>
+        <td style="padding:12px 15px; font-size:13px; color:#fff;">&#128205; ${escapeHTML(location)}</td>
         <td style="padding:12px 15px; font-size:12px; color:var(--text-secondary); max-width:140px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="${escapeHTML(visitor.isp) || ""}">${escapeHTML(visitor.isp) || "Unknown"}</td>
-        <td style="padding:12px 15px; font-size:12px; color:var(--text-secondary); max-width:140px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="${escapeHTML(visitor.userAgent) || ""}">🖥️ [${escapeHTML(visitor.device) || "Desktop"}]</td>
-        <td style="padding:12px 15px; font-size:12px; color:var(--text-secondary); max-width:140px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="${escapeHTML(visitor.referrer) || ""}">🔗 ${escapeHTML(visitor.referrer) || "Direct"}</td>
+        <td style="padding:12px 15px; font-size:12px; color:var(--text-secondary); max-width:140px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="${escapeHTML(visitor.userAgent) || ""}">&#128421;️ [${escapeHTML(visitor.device) || "Desktop"}]</td>
+        <td style="padding:12px 15px; font-size:12px; color:var(--text-secondary); max-width:140px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="${escapeHTML(visitor.referrer) || ""}">&#128279; ${escapeHTML(visitor.referrer) || "Direct"}</td>
         <td style="padding:12px 15px; text-align:center;">
           <button class="btn-primary btn-view-journey" data-id="${visitor.visitId}" style="font-size:10px; padding:4px 8px; margin:0; min-height:auto; height:24px; line-height:22px; width:auto; border-radius:4px; font-weight:700;">
             Flow (${activityCount})
@@ -1058,7 +1065,7 @@ class AdminApp {
           btn.style.transition = "background-color 0.2s";
           
           if (isBlocked) {
-            btn.innerText = "✔️ Unblock IP Address";
+            btn.innerText = "&#10004;️ Unblock IP Address";
             btn.className = "btn-secondary";
             btn.style.background = "#28a745";
             btn.style.borderColor = "#28a745";
@@ -1080,11 +1087,11 @@ class AdminApp {
               } catch (err) {
                 alert(`Error unblocking IP: ${err.message}`);
                 btn.disabled = false;
-                btn.innerText = "✔️ Unblock IP Address";
+                btn.innerText = "&#10004;️ Unblock IP Address";
               }
             });
           } else {
-            btn.innerText = "🚫 Block IP Address";
+            btn.innerText = "&#128683; Block IP Address";
             btn.className = "btn-secondary";
             btn.style.background = "#dc3545";
             btn.style.borderColor = "#dc3545";
@@ -1114,7 +1121,7 @@ class AdminApp {
                 } catch (err) {
                   alert(`Error blocking IP: ${err.message}`);
                   btn.disabled = false;
-                  btn.innerText = "🚫 Block IP Address";
+                  btn.innerText = "&#128683; Block IP Address";
                 }
               }
             });
@@ -1196,15 +1203,15 @@ class AdminApp {
       emailjs.init({ publicKey: publicKey.trim() });
       const resp = await emailjs.send(serviceId.trim(), templateId.trim(), templateParams);
       if (resp.status === 200) {
-        alert("✉️ 'Payment Not Received Yet' Reminder Email sent successfully via EmailJS!");
-        btn.innerText = "✓ Sent!";
+        alert("&#9993;️ 'Payment Not Received Yet' Reminder Email sent successfully via EmailJS!");
+        btn.innerText = "&#10003; Sent!";
         btn.style.background = "#10b981";
       } else {
         throw new Error("Status code " + resp.status);
       }
     } catch(err) {
       console.error("Failed to send EmailJS Reminder:", err);
-      alert("❌ Failed to send 'Payment Not Received Yet' Reminder: " + err.message);
+      alert("&#10060; Failed to send 'Payment Not Received Yet' Reminder: " + err.message);
       btn.innerText = originalText;
       btn.disabled = false;
     }
@@ -1221,7 +1228,7 @@ class AdminApp {
     const publicKey = this.config.settings.emailjsPublicKey;
 
     if (!templateId) {
-      alert("⚠️ Please configure the 'EmailJS Payment Received Template ID' inside the SEO & Bank Settings tab first.");
+      alert("&#9888;️ Please configure the 'EmailJS Payment Received Template ID' inside the SEO & Bank Settings tab first.");
       return;
     }
 
@@ -1265,15 +1272,15 @@ class AdminApp {
       emailjs.init({ publicKey: publicKey.trim() });
       const resp = await emailjs.send(serviceId.trim(), templateId.trim(), templateParams);
       if (resp.status === 200) {
-        alert("✉️ Payment Received Email sent successfully via EmailJS!");
-        btn.innerText = "✓ Sent!";
+        alert("&#9993;️ Payment Received Email sent successfully via EmailJS!");
+        btn.innerText = "&#10003; Sent!";
         btn.style.background = "#10b981";
       } else {
         throw new Error("Status code " + resp.status);
       }
     } catch(err) {
       console.error("Failed to send EmailJS Received confirmation:", err);
-      alert("❌ Failed to send Payment Received confirmation: " + err.message);
+      alert("&#10060; Failed to send Payment Received confirmation: " + err.message);
       btn.innerText = originalText;
       btn.disabled = false;
     }
@@ -1399,7 +1406,7 @@ class AdminApp {
           <td><span style="font-size: 11px; color: var(--text-secondary);">${ispText}</span></td>
           <td><span style="font-size: 11px;">${browserName}</span></td>
           <td>
-            <button class="btn-secondary view-user-timeline-btn" style="padding: 4px 8px; font-size: 11px; margin: 0; border-radius: 4px; cursor: pointer;" data-visitor-id="${user.visitorId}">🔍 View Timeline</button>
+            <button class="btn-secondary view-user-timeline-btn" style="padding: 4px 8px; font-size: 11px; margin: 0; border-radius: 4px; cursor: pointer;" data-visitor-id="${user.visitorId}">&#128269; View Timeline</button>
           </td>
         `;
 
@@ -1569,7 +1576,7 @@ class AdminApp {
         alert("No products available to create a test order.");
         if (btn) {
           btn.disabled = false;
-          btn.innerText = "✨ Create Test Order";
+          btn.innerText = "&#10024; Create Test Order";
         }
         return;
       }
@@ -1718,7 +1725,7 @@ class AdminApp {
           "Order Items": orderItemsText,
           "Total Amount": `$${total.toFixed(2)}`,
           "_captcha": "false",
-          "_subject": `🛒 NEW TEST ORDER: ${orderId} (${refCode})`
+          "_subject": `&#128722; NEW TEST ORDER: ${orderId} (${refCode})`
         })
       });
       console.log("Test order notification sent to merchant via FormSubmit.");
@@ -1755,7 +1762,7 @@ class AdminApp {
     } finally {
       if (btn) {
         btn.disabled = false;
-        btn.innerText = "✨ Create Test Order";
+        btn.innerText = "&#10024; Create Test Order";
       }
     }
   }

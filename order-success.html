@@ -245,7 +245,7 @@
 
   <!-- Announcement Header -->
   <div class="announcement-bar">
-    <p>🔥 FREE EXPRESS SHIPPING ON ALL ORDERS OVER $150! PAYID & BANK XFER ACCEPTED 🔥</p>
+    <p>&#128293; FREE EXPRESS SHIPPING ON ALL ORDERS OVER $150! PAYID & BANK XFER ACCEPTED &#128293;</p>
   </div>
 
   <!-- Minimal Nav Header -->
@@ -264,14 +264,14 @@
       
       <!-- 1. Header Confirmation Card -->
       <div class="glass-card success-header-card">
-        <span class="check-icon">✓</span>
+        <span class="check-icon">&#10003;</span>
         <h1 class="text-gold" style="font-size:30px; margin-bottom:10px; font-family:var(--font-title); font-weight:800;">Order Placed Successfully!</h1>
         <p style="color:var(--text-secondary); max-width:600px; margin:0 auto 15px auto; font-size:14px; line-height:1.5;">
           Thank you for shopping with Vape 'R' Aus. To secure your products and dispatch your order immediately, please process PayID or Bank Transfer payment using the details below. <br>
-          <span style="font-size:12px; color:var(--text-muted);">💡 <em>Note: Automatic email receipts can sometimes be delayed or filtered. If you do not receive yours, we will also manually follow up with you from <strong>admin@vaperaus.com</strong>.</em></span>
+          <span style="font-size:12px; color:var(--text-muted);">&#128161; <em>Note: Automatic email receipts can sometimes be delayed or filtered. If you do not receive yours, we will also manually follow up with you from <strong>admin@vaperaus.com</strong>.</em></span>
         </p>
         <p style="color:var(--gold-accent); font-weight:600; font-size:13px; margin:0;">
-          🚚 Once payment is verified, we process & dispatch from Melbourne, VIC within 48 hours.
+          &#128666; Once payment is verified, we process & dispatch from Melbourne, VIC within 48 hours.
         </p>
       </div>
 
@@ -328,8 +328,8 @@
         </div>
 
         <!-- Single copy button -->
-        <button class="btn-copy-all" id="btn-copy-all" onclick="copyAllDetails(this)">📋 &nbsp;Copy All Payment Details</button>
-        <p style="text-align:center; font-size:11px; color:var(--text-muted); margin:10px 0 0 0;">💡 Tip: Paste into Notepad first for easy reference when making your payment.</p>
+        <button class="btn-copy-all" id="btn-copy-all" onclick="copyAllDetails(this)">&#128203; &nbsp;Copy All Payment Details</button>
+        <p style="text-align:center; font-size:11px; color:var(--text-muted); margin:10px 0 0 0;">&#128161; Tip: Paste into Notepad first for easy reference when making your payment.</p>
       </div>
 
       <!-- 3. Details grid (Items summary & shipping destination) -->
@@ -391,7 +391,7 @@
           </div>
 
           <div style="margin-top:20px; padding:10px; border-radius:6px; background:rgba(212,175,55,0.08); border:1px solid rgba(212,175,55,0.2); font-size:12px; color:var(--gold-light); text-align:center;">
-            📸 <strong>Tip: Bookmark this page!</strong> You can close this window or return later to check your payment status and delivery details anytime.
+            &#128248; <strong>Tip: Bookmark this page!</strong> You can close this window or return later to check your payment status and delivery details anytime.
           </div>
         </div>
 
@@ -408,7 +408,7 @@
 
     <!-- 4. Fallback Empty State View -->
     <div id="order-empty-view" class="glass-card empty-state" style="display:none;">
-      <span style="font-size:50px; display:block; margin-bottom:15px;">🔍</span>
+      <span style="font-size:50px; display:block; margin-bottom:15px;">&#128269;</span>
       <h2 class="text-gold" style="font-size:22px; margin-bottom:10px;">No Recent Order Found</h2>
       <p style="color:var(--text-secondary); max-width:450px; margin:0 auto 25px auto; font-size:14px; line-height:1.5;">
         We couldn't locate a recent purchase log on this device's browser cache. If you just placed an order, please check your email inbox for payment instructions.
@@ -455,7 +455,7 @@ Paste your Order Reference (${ref}) into the payment description so we can match
 
       navigator.clipboard.writeText(summary).then(() => {
         const orig = btn.innerHTML;
-        btn.innerHTML = "✓ &nbsp;Copied to Clipboard!";
+        btn.innerHTML = "&#10003; &nbsp;Copied to Clipboard!";
         btn.classList.add("copied");
         setTimeout(() => {
           btn.innerHTML = orig;

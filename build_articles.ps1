@@ -227,8 +227,8 @@ foreach ($guide in $guides) {
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   
   <!-- Styles -->
-  <link rel="stylesheet" href="../css/design_system.css?v=32">
-  <link rel="stylesheet" href="../css/main.css?v=32">
+  <link rel="stylesheet" href="../css/design_system.css?v=33">
+  <link rel="stylesheet" href="../css/main.css?v=33">
   
   <!-- Custom Article Page styling -->
   <style>
@@ -736,8 +736,8 @@ foreach ($prod in $config.products) {
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;900&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   
   <!-- Stylesheets -->
-  <link rel="stylesheet" href="../css/design_system.css?v=32">
-  <link rel="stylesheet" href="../css/main.css?v=32">
+  <link rel="stylesheet" href="../css/design_system.css?v=33">
+  <link rel="stylesheet" href="../css/main.css?v=33">
   <link rel="icon" type="image/png" href="../img/logo_small.png">
   
   <!-- Structured SEO Schema -->
@@ -811,9 +811,7 @@ foreach ($prod in $config.products) {
             <div style="font-family: var(--font-title); font-size: 14px; text-transform: uppercase; color: var(--gold-accent); margin-bottom: 5px; font-weight: 700; letter-spacing: 0.1em;">$brand</div>
             <h1 style="font-family: var(--font-title); font-size: 32px; font-weight: 900; color: #fff; margin: 0 0 10px 0;">$name</h1>
             
-            <div style="font-size: 13px; color: #10b981; margin-bottom: 20px; font-weight: 600; display: flex; align-items: center; gap: 6px;">
-              <span>&#128293;</span> <span>$soldCount items sold recently</span>
-            </div>
+            $(if ($inStock -ne $false) { '<div style="font-size: 13px; color: #10b981; margin-bottom: 20px; font-weight: 600; display: flex; align-items: center; gap: 6px;"><span>&#128293;</span> <span>' + $soldCount + ' items sold recently</span></div>' })
 
             <p style="font-size: 14px; color: var(--text-secondary); line-height: 1.6; margin-bottom: 25px;">$description</p>
 
@@ -892,8 +890,8 @@ foreach ($prod in $config.products) {
   </div>
 
   <!-- scripts -->
-  <script src="../js/config_default.js?v=32"></script>
-  <script src="../js/store.js?v=32"></script>
+  <script src="../js/config_default.js?v=33"></script>
+  <script src="../js/store.js?v=33"></script>
 </body>
 </html>
 "@

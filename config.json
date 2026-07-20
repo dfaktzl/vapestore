@@ -187,12 +187,12 @@
                          "popular":  true
                      },
                      {
-                         "id":  "iget-legend-4000",
+                         "id":  "iget-bar-pro-10000",
                          "brand":  "IGET",
-                         "name":  "IGET Legend 4000 Puffs",
+                         "name":  "IGET Bar Pro 10000 Puffs",
                          "category":  "vapes-single",
-                         "price":  41,
-                         "boxPrice":  290,
+                         "price":  55,
+                         "boxPrice":  420,
                          "isBoxOnly":  false,
                          "flavors":  [
                                          "Lush Ice",
@@ -208,17 +208,18 @@
                                          "Strawberry Banana Ice",
                                          "Kiwi Passionfruit Grape"
                                      ],
-                         "image":  "img/iget_legend_4000.webp",
-                         "description":  "Elegantly built with a translucent PCTG shell and an ergonomic flat mouthpiece for a comfortable, refined draw. The IGET Legend 4000 delivers up to 4,000 puffs from 12mL of 5% (50mg/mL) nicotine salt e-liquid. Powered by a 1350mAh non-rechargeable battery and a precision mesh coil that extracts deep, layered flavour profiles. A step up in quality from the standard Bar.",
+                         "image":  "img/iget_bar_pro_10000.png",
+                         "description":  "IGET's biggest hitter — the Bar Pro 10000 delivers an incredible 10,000 puffs from 20mL of premium 5% (50mg/mL) nicotine salt e-liquid. Housed in a premium polycarbonate and aluminium alloy shell, powered by a 2000mAh built-in battery and a 1.2 ohm mesh coil for consistently rich, smooth flavour from first puff to last. No charging required — just unwrap and enjoy.",
                          "specs":  {
-                                       "Puffs":  "4,000 Puffs",
-                                       "E-Liquid":  "12mL Salt Nic",
-                                       "Battery":  "1350mAh (Built-in)",
-                                       "Coil Type":  "Precision Mesh Coil",
-                                       "Nicotine":  "5% (50mg/mL)"
+                                       "Puffs":  "~10,000 Puffs",
+                                       "E-Liquid":  "20mL Salt Nic",
+                                       "Battery":  "2000mAh (Built-in)",
+                                       "Coil Type":  "1.2ohm Mesh Coil",
+                                       "Nicotine":  "5% (50mg/mL)",
+                                       "Material":  "Polycarbonate + Aluminium Alloy"
                                    },
                          "inStock":  true,
-                         "popular":  false
+                         "popular":  true
                      },
                      {
                          "id":  "iget-hot-5500",
@@ -250,7 +251,7 @@
                                        "Coil Type":  "1.4ÃŽÂ© Ceramic-Mesh",
                                        "Nicotine":  "5% (50mg/mL)"
                                    },
-                         "inStock":  true,
+                         "inStock":  false,
                          "popular":  true
                      },
                      {
@@ -377,6 +378,42 @@
                                        "Puffs":  "~3,500 Puffs per unit",
                                        "Quantity":  "5 Devices",
                                        "E-Liquid":  "12mL per unit",
+                                       "Nicotine":  "5% (50mg/mL)",
+                                       "Flavour Choice":  "Select 5 individual flavours"
+                                   },
+                         "inStock":  true,
+                         "popular":  true
+                     },
+                     {
+                         "id":  "iget-bar-pro-10000-bundle",
+                         "brand":  "IGET",
+                         "name":  "IGET Bar Pro 10000 - 5-Pack Bundle",
+                         "category":  "vapes-single",
+                         "price":  235,
+                         "boxPrice":  235,
+                         "isBoxOnly":  false,
+                         "isBundle":  true,
+                         "bundleQty":  5,
+                         "flavors":  [
+                                         "Lush Ice",
+                                         "Mango Banana Ice",
+                                         "Passion Fruit Melon Ice",
+                                         "Grape Blue Razz",
+                                         "Pink Lemonade",
+                                         "Pineapple Coconut Ice",
+                                         "Blackcurrant Ice",
+                                         "Watermelon Mint",
+                                         "Strawberry Mango",
+                                         "Fruity Skittles",
+                                         "Strawberry Banana Ice",
+                                         "Kiwi Passionfruit Grape"
+                                     ],
+                         "image":  "img/iget_bar_pro_10000.png",
+                         "description":  "Value 5-Pack Bundle. Select 5 individual flavours from the premium IGET Bar Pro 10000 range. Get 10,000 puffs per device and mix and match your favourite flavours for the ultimate variety pack.",
+                         "specs":  {
+                                       "Puffs":  "~10,000 Puffs per unit",
+                                       "Quantity":  "5 Devices",
+                                       "E-Liquid":  "20mL per unit",
                                        "Nicotine":  "5% (50mg/mL)",
                                        "Flavour Choice":  "Select 5 individual flavours"
                                    },
