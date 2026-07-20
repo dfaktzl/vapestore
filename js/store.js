@@ -97,7 +97,21 @@ class StoreApp {
     const product = this.config.products.find(p => p.id === productId);
     if (!product) return;
 
-    // Set state
+    // Check if there is a matching single or bundle product counterpart
+    let singleProduct = null;
+    let bundleProduct = null;
+
+    if (product.isBundle) {
+      bundleProduct = product;
+      const baseId = product.id.replace("-bundle", "");
+      singleProduct = this.config.products.find(p => p.id === baseId) || null;
+    } else {
+      singleProduct = product;
+      const bundleId = `${product.id}-bundle`;
+      bundleProduct = this.config.products.find(p => p.id === bundleId) || null;
+    }
+
+    // Set initial state
     this.selectedProduct = product;
     this.selectedFlavor = product.flavors ? (product.flavors[0] || "Default") : "Default";
     this.selectedFormat = product.isBundle ? "Bundle" : (product.isBoxOnly ? "Box" : "Single");
@@ -110,9 +124,10 @@ class StoreApp {
 
     if (!formatContainer) return;
 
-    // Function to render flavor selections
+    // Function to render flavor selections based on active selectedFormat
     const renderFlavorsUI = () => {
-      if (!product.flavors || product.flavors.length === 0) {
+      const activeProd = this.selectedProduct || product;
+      if (!activeProd.flavors || activeProd.flavors.length === 0) {
         if (flavorGroupWrap) flavorGroupWrap.style.display = "none";
         return;
       }
@@ -120,15 +135,21 @@ class StoreApp {
       if (flavorGroupWrap) flavorGroupWrap.style.display = "block";
       if (flavorInputsContainer) flavorInputsContainer.innerHTML = "";
 
-      if (this.selectedFormat === "Bundle") {
-        if (flavorLabel) flavorLabel.innerText = "Customise Bundle (Choose 5 Flavours)";
-        
-        for (let i = 1; i <= 5; i++) {
+      const qty = this.selectedFormat === "Bundle" ? (activeProd.bundleQty || 5) : (this.selectedFormat === "Box" ? 10 : 1);
+
+      if (qty > 1) {
+        if (flavorLabel) {
+          flavorLabel.innerText = this.selectedFormat === "Bundle" 
+            ? `Customise 5-Pack Bundle (Choose ${qty} Flavours)` 
+            : `Customise Box of 10 Pack (Choose ${qty} Flavours)`;
+        }
+
+        for (let i = 1; i <= qty; i++) {
           const div = document.createElement("div");
           div.style.marginBottom = "12px";
           
-          let optionsHtml = product.flavors.map((flavor) => {
-            if (this.isFlavorOutOfStock(product.id, flavor, product.flavors)) {
+          let optionsHtml = activeProd.flavors.map((flavor) => {
+            if (this.isFlavorOutOfStock(activeProd.id, flavor, activeProd.flavors)) {
               return `<option value="${flavor}" disabled>${flavor} (OUT OF STOCK)</option>`;
             } else {
               return `<option value="${flavor}">${flavor}</option>`;
@@ -142,14 +163,22 @@ class StoreApp {
             </select>
           `;
           if (flavorInputsContainer) flavorInputsContainer.appendChild(div);
+
+          const selectEl = div.querySelector(`#page-flavor-select-${i}`);
+          if (selectEl) {
+            const firstOpt = selectEl.querySelector("option:not([disabled])");
+            if (firstOpt) {
+              selectEl.value = firstOpt.value;
+            }
+          }
         }
       } else {
         if (flavorLabel) flavorLabel.innerText = "Choose Flavour";
         
         const div = document.createElement("div");
         
-        let optionsHtml = product.flavors.map((flavor) => {
-          if (this.isFlavorOutOfStock(product.id, flavor, product.flavors)) {
+        let optionsHtml = activeProd.flavors.map((flavor) => {
+          if (this.isFlavorOutOfStock(activeProd.id, flavor, activeProd.flavors)) {
             return `<option value="${flavor}" disabled>${flavor} (OUT OF STOCK)</option>`;
           } else {
             return `<option value="${flavor}">${flavor}</option>`;
@@ -165,7 +194,6 @@ class StoreApp {
 
         const selectEl = div.querySelector("#page-flavor-select");
         if (selectEl) {
-          // Set initial flavor to first available (not last disabled option)
           const firstOpt = selectEl.querySelector("option:not([disabled])");
           if (firstOpt) {
             this.selectedFlavor = firstOpt.value;
@@ -180,14 +208,87 @@ class StoreApp {
 
     // Function to update price display
     const updatePriceUI = () => {
-      const price = this.selectedFormat === "Box" ? (product.boxPrice || product.price) : product.price;
+      const activeProd = this.selectedProduct || product;
+      let price = activeProd.price;
+      if (this.selectedFormat === "Box") {
+        price = activeProd.boxPrice || (singleProduct ? singleProduct.boxPrice : activeProd.price);
+      } else if (this.selectedFormat === "Bundle" && bundleProduct) {
+        price = bundleProduct.price;
+      } else if (this.selectedFormat === "Single" && singleProduct) {
+        price = singleProduct.price;
+      }
       if (pagePriceValue) pagePriceValue.innerText = `$${price.toFixed(2)}`;
     };
 
-    // Render format cards
+    // Render format cards dynamically
     formatContainer.innerHTML = "";
 
-    if (product.isBundle) {
+    if (bundleProduct && singleProduct && !product.isBoxOnly) {
+      // 3 Format Cards: Single Unit, 5-Pack Bundle, Box of 10
+      const cardSingle = document.createElement("div");
+      cardSingle.className = this.selectedFormat === "Single" ? "format-card active" : "format-card";
+      cardSingle.innerHTML = `
+        <div class="format-card-title">Single Unit</div>
+        <div class="format-card-price">$${singleProduct.price.toFixed(2)}</div>
+      `;
+
+      const cardBundle = document.createElement("div");
+      cardBundle.className = this.selectedFormat === "Bundle" ? "format-card active" : "format-card";
+      cardBundle.innerHTML = `
+        <div class="format-card-title">5-Pack Variety Bundle</div>
+        <div class="format-card-price">$${bundleProduct.price.toFixed(2)}</div>
+        <div class="format-card-savings">Value Pack</div>
+      `;
+
+      const cardBox = document.createElement("div");
+      cardBox.className = this.selectedFormat === "Box" ? "format-card active" : "format-card";
+      let savingsHtml = "";
+      if (singleProduct.boxPrice && singleProduct.price) {
+        const singleTotal = singleProduct.price * 10;
+        const savings = singleTotal - singleProduct.boxPrice;
+        if (savings > 0) savingsHtml = `<div class="format-card-savings">Save $${savings.toFixed(0)}!</div>`;
+      }
+      cardBox.innerHTML = `
+        <div class="format-card-title">Box of 10 Pack</div>
+        <div class="format-card-price">$${singleProduct.boxPrice.toFixed(2)}</div>
+        ${savingsHtml}
+      `;
+
+      cardSingle.onclick = () => {
+        this.selectedProduct = singleProduct;
+        this.selectedFormat = "Single";
+        cardSingle.classList.add("active");
+        cardBundle.classList.remove("active");
+        cardBox.classList.remove("active");
+        renderFlavorsUI();
+        updatePriceUI();
+      };
+
+      cardBundle.onclick = () => {
+        this.selectedProduct = bundleProduct;
+        this.selectedFormat = "Bundle";
+        cardBundle.classList.add("active");
+        cardSingle.classList.remove("active");
+        cardBox.classList.remove("active");
+        renderFlavorsUI();
+        updatePriceUI();
+      };
+
+      cardBox.onclick = () => {
+        this.selectedProduct = singleProduct;
+        this.selectedFormat = "Box";
+        cardBox.classList.add("active");
+        cardSingle.classList.remove("active");
+        cardBundle.classList.remove("active");
+        renderFlavorsUI();
+        updatePriceUI();
+      };
+
+      formatContainer.appendChild(cardSingle);
+      formatContainer.appendChild(cardBundle);
+      formatContainer.appendChild(cardBox);
+
+    } else if (product.isBundle) {
       const card = document.createElement("div");
       card.className = "format-card active";
       card.style.gridColumn = "span 2";
@@ -208,7 +309,7 @@ class StoreApp {
       `;
       formatContainer.appendChild(card);
     } else {
-      // Single unit card
+      // Single unit card & Box of 10 card
       const cardSingle = document.createElement("div");
       cardSingle.className = this.selectedFormat === "Single" ? "format-card active" : "format-card";
       cardSingle.innerHTML = `
@@ -216,19 +317,14 @@ class StoreApp {
         <div class="format-card-price">$${product.price.toFixed(2)}</div>
       `;
       
-      // Box of 10 card
       const cardBox = document.createElement("div");
       cardBox.className = this.selectedFormat === "Box" ? "format-card active" : "format-card";
-      
       let savingsHtml = "";
       if (product.boxPrice && product.price) {
         const singleTotal = product.price * 10;
         const savings = singleTotal - product.boxPrice;
-        if (savings > 0) {
-          savingsHtml = `<div class="format-card-savings">Save $${savings.toFixed(0)}!</div>`;
-        }
+        if (savings > 0) savingsHtml = `<div class="format-card-savings">Save $${savings.toFixed(0)}!</div>`;
       }
-      
       cardBox.innerHTML = `
         <div class="format-card-title">Box of 10 Pack</div>
         <div class="format-card-price">$${product.boxPrice.toFixed(2)}</div>
@@ -236,6 +332,7 @@ class StoreApp {
       `;
 
       cardSingle.onclick = () => {
+        this.selectedProduct = product;
         this.selectedFormat = "Single";
         cardSingle.classList.add("active");
         cardBox.classList.remove("active");
@@ -244,6 +341,7 @@ class StoreApp {
       };
 
       cardBox.onclick = () => {
+        this.selectedProduct = product;
         this.selectedFormat = "Box";
         cardBox.classList.add("active");
         cardSingle.classList.remove("active");
@@ -271,10 +369,13 @@ class StoreApp {
         pageAddBtn.style.borderColor = "#4a4d55";
       } else {
         pageAddBtn.addEventListener("click", () => {
+          const activeProd = this.selectedProduct || product;
           let flavorSelection = "";
-          if (product.isBundle) {
+          const qty = this.selectedFormat === "Bundle" ? (activeProd.bundleQty || 5) : (this.selectedFormat === "Box" ? 10 : 1);
+
+          if (qty > 1) {
             const selectedFlavors = [];
-            for (let i = 1; i <= 5; i++) {
+            for (let i = 1; i <= qty; i++) {
               const el = document.getElementById(`page-flavor-select-${i}`);
               if (el) selectedFlavors.push(el.value);
             }
@@ -285,7 +386,7 @@ class StoreApp {
             flavorSelection = this.selectedFlavor;
           }
 
-          this.addToCart(product, flavorSelection, this.selectedFormat, 1);
+          this.addToCart(activeProd, flavorSelection, this.selectedFormat, 1);
           pageAddBtn.innerText = "Added to Cart! &#10003;";
           pageAddBtn.style.background = "linear-gradient(135deg, #10b981 0%, #059669 100%)";
           
@@ -1052,8 +1153,9 @@ class StoreApp {
     if (product.flavors && product.flavors.length > 0) {
       mFlavorGroup.style.display = "block";
       if (product.isBundle) {
-        mFlavorGroup.innerHTML = `<h4 class="modal-option-title">Choose 5 Flavours</h4>`;
-        for (let i = 1; i <= 5; i++) {
+        const qty = product.bundleQty || 5;
+        mFlavorGroup.innerHTML = `<h4 class="modal-option-title">Choose ${qty} Flavours</h4>`;
+        for (let i = 1; i <= qty; i++) {
           const selectId = `modal-flavor-select-${i}`;
           const selectWrapper = document.createElement("div");
           selectWrapper.style.marginBottom = "8px";
@@ -1070,6 +1172,14 @@ class StoreApp {
             </select>
           `;
           mFlavorGroup.appendChild(selectWrapper);
+
+          const sel = selectWrapper.querySelector(`#${selectId}`);
+          if (sel) {
+            const firstOpt = sel.querySelector("option:not([disabled])");
+            if (firstOpt) {
+              sel.value = firstOpt.value;
+            }
+          }
         }
       } else {
         mFlavorGroup.innerHTML = `
@@ -1855,7 +1965,8 @@ class StoreApp {
           let flavorSelection = "";
           if (this.selectedProduct.isBundle) {
             const selectedFlavors = [];
-            for (let i = 1; i <= 5; i++) {
+            const qty = this.selectedProduct.bundleQty || 5;
+            for (let i = 1; i <= qty; i++) {
               const el = document.getElementById(`modal-flavor-select-${i}`);
               if (el) selectedFlavors.push(el.value);
             }
