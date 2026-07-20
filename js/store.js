@@ -930,9 +930,7 @@ class StoreApp {
           <a href="/products/${prod.id}.html" class="product-page-link" style="color: var(--gold-primary); text-decoration: none; font-size: 11px; font-weight: bold; border: 1px solid var(--gold-primary); padding: 2px 6px; border-radius: 4px;" title="View Dedicated Product Page">Page &#10140;</a>
         </div>
         <a href="#" class="product-card-name" id="name-${prod.id}">${prod.name}</a>
-        <div class="product-card-sold-count" style="font-size: 11px; color: #10b981; margin-top: 4px; display: flex; align-items: center; gap: 4px; font-weight: 600;">
-          <span>&#128293;</span> <span>${this.getSoldCount(prod.id)} sold recently</span>
-        </div>
+        ${prod.inStock !== false ? `<div class="product-card-sold-count" style="font-size: 11px; color: #10b981; margin-top: 4px; display: flex; align-items: center; gap: 4px; font-weight: 600;"><span>&#128293;</span> <span>${this.getSoldCount(prod.id)} sold recently</span></div>` : ''}
         
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px;">
           ${flavorHTML}
