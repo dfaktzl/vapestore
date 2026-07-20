@@ -227,8 +227,8 @@ foreach ($guide in $guides) {
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   
   <!-- Styles -->
-  <link rel="stylesheet" href="../css/design_system.css?v=37">
-  <link rel="stylesheet" href="../css/main.css?v=37">
+  <link rel="stylesheet" href="../css/design_system.css?v=38">
+  <link rel="stylesheet" href="../css/main.css?v=38">
   
   <!-- Custom Article Page styling -->
   <style>
@@ -741,11 +741,11 @@ $flavorOptions                    </select>
             }
         }
         $formatCardsHtml = @"
-                <div class="format-card active" id="card-format-single">
+                <div class="format-card active" id="card-format-single" onclick="if(window.store) window.store.setPageFormat('Single')">
                   <div class="format-card-title">Single Unit</div>
                   <div class="format-card-price">`$$($price.ToString("F2"))</div>
                 </div>
-                <div class="format-card" id="card-format-box">
+                <div class="format-card" id="card-format-box" onclick="if(window.store) window.store.setPageFormat('Box')">
                   <div class="format-card-title">Box of 10 Pack</div>
                   <div class="format-card-price">`$$($boxPrice.ToString("F2"))</div>
                   $savingsHtml
@@ -818,8 +818,8 @@ $flavorOptions                    </select>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;900&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   
   <!-- Stylesheets -->
-  <link rel="stylesheet" href="../css/design_system.css?v=37">
-  <link rel="stylesheet" href="../css/main.css?v=37">
+  <link rel="stylesheet" href="../css/design_system.css?v=38">
+  <link rel="stylesheet" href="../css/main.css?v=38">
   <link rel="icon" type="image/png" href="../img/logo_small.png">
   
   <!-- Structured SEO Schema -->
@@ -972,8 +972,8 @@ $flavorOptions                    </select>
   </div>
 
   <!-- scripts -->
-  <script src="../js/config_default.js?v=37"></script>
-  <script src="../js/store.js?v=37"></script>
+  <script src="../js/config_default.js?v=38"></script>
+  <script src="../js/store.js?v=38"></script>
 </body>
 </html>
 "@

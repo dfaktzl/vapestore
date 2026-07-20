@@ -44,8 +44,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;900&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   
   <!-- Stylesheets -->
-  <link rel="stylesheet" href="../css/design_system.css?v=37">
-  <link rel="stylesheet" href="../css/main.css?v=37">
+  <link rel="stylesheet" href="../css/design_system.css?v=38">
+  <link rel="stylesheet" href="../css/main.css?v=38">
   <link rel="icon" type="image/png" href="../img/logo_small.png">
   
   <!-- Structured SEO Schema -->
@@ -147,11 +147,11 @@
             <div id="product-purchase-options-container" style="margin-bottom: 25px;">
               <div style="font-size:12px; color:var(--text-secondary); margin-bottom:8px; text-align:left; font-weight:600; text-transform:uppercase; letter-spacing:0.05em;">Select Option</div>
               <div id="page-format-cards-group" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 12px; margin-bottom: 20px;">
-                                <div class="format-card active" id="card-format-single">
+                                <div class="format-card active" id="card-format-single" onclick="if(window.store) window.store.setPageFormat('Single')">
                   <div class="format-card-title">Single Unit</div>
                   <div class="format-card-price">$45.00</div>
                 </div>
-                <div class="format-card" id="card-format-box">
+                <div class="format-card" id="card-format-box" onclick="if(window.store) window.store.setPageFormat('Box')">
                   <div class="format-card-title">Box of 10 Pack</div>
                   <div class="format-card-price">$350.00</div>
                   <div class="format-card-savings">Save $100!</div>
@@ -242,7 +242,7 @@
   </div>
 
   <!-- scripts -->
-  <script src="../js/config_default.js?v=37"></script>
-  <script src="../js/store.js?v=37"></script>
+  <script src="../js/config_default.js?v=38"></script>
+  <script src="../js/store.js?v=38"></script>
 </body>
 </html>

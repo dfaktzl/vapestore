@@ -87,6 +87,25 @@ class StoreApp {
      1. CONFIG & CACHE ENGINE
      ========================================================================== */
   
+  setPageFormat(format) {
+    this.selectedFormat = format;
+
+    const cardSingle = document.getElementById("card-format-single");
+    const cardBundle = document.getElementById("card-format-bundle");
+    const cardBox = document.getElementById("card-format-box");
+
+    if (cardSingle) cardSingle.classList.toggle("active", format === "Single");
+    if (cardBundle) cardBundle.classList.toggle("active", format === "Bundle");
+    if (cardBox) cardBox.classList.toggle("active", format === "Box");
+
+    if (typeof this.renderPageFlavorsUI === "function") {
+      this.renderPageFlavorsUI();
+    }
+    if (typeof this.updatePagePriceUI === "function") {
+      this.updatePagePriceUI();
+    }
+  }
+
   initProductPage() {
     const pageProductEl = document.getElementById("product-page-marker");
     if (!pageProductEl) return;
@@ -133,7 +152,7 @@ class StoreApp {
     if (!formatContainer) return;
 
     // Function to render flavor selections based on active selectedFormat
-    const renderFlavorsUI = () => {
+    this.renderPageFlavorsUI = () => {
       const activeProd = this.selectedProduct || product;
       if (!activeProd.flavors || activeProd.flavors.length === 0) {
         if (flavorGroupWrap) flavorGroupWrap.style.display = "none";
@@ -148,7 +167,7 @@ class StoreApp {
       if (qty > 1) {
         if (flavorLabel) {
           flavorLabel.innerText = this.selectedFormat === "Bundle" 
-            ? `Customise 5-Pack Bundle (Choose ${qty} Flavours)` 
+            ? `Customise 5-Pack Variety Bundle (Choose ${qty} Flavours)` 
             : `Customise Box of 10 Pack (Choose ${qty} Flavours)`;
         }
 
@@ -184,6 +203,7 @@ class StoreApp {
         if (flavorLabel) flavorLabel.innerText = "Choose Flavour";
         
         const div = document.createElement("div");
+        div.style.marginBottom = "0";
         
         let optionsHtml = activeProd.flavors.map((flavor) => {
           if (this.isFlavorOutOfStock(activeProd.id, flavor, activeProd.flavors)) {
@@ -215,7 +235,7 @@ class StoreApp {
     };
 
     // Function to update price display
-    const updatePriceUI = () => {
+    this.updatePagePriceUI = () => {
       const activeProd = this.selectedProduct || product;
       let price = activeProd.price;
       if (this.selectedFormat === "Box") {
@@ -264,32 +284,17 @@ class StoreApp {
 
       cardSingle.onclick = () => {
         this.selectedProduct = singleProduct;
-        this.selectedFormat = "Single";
-        cardSingle.classList.add("active");
-        cardBundle.classList.remove("active");
-        cardBox.classList.remove("active");
-        renderFlavorsUI();
-        updatePriceUI();
+        this.setPageFormat("Single");
       };
 
       cardBundle.onclick = () => {
         this.selectedProduct = bundleProduct;
-        this.selectedFormat = "Bundle";
-        cardBundle.classList.add("active");
-        cardSingle.classList.remove("active");
-        cardBox.classList.remove("active");
-        renderFlavorsUI();
-        updatePriceUI();
+        this.setPageFormat("Bundle");
       };
 
       cardBox.onclick = () => {
         this.selectedProduct = singleProduct;
-        this.selectedFormat = "Box";
-        cardBox.classList.add("active");
-        cardSingle.classList.remove("active");
-        cardBundle.classList.remove("active");
-        renderFlavorsUI();
-        updatePriceUI();
+        this.setPageFormat("Box");
       };
 
       formatContainer.appendChild(cardSingle);
@@ -341,20 +346,12 @@ class StoreApp {
 
       cardSingle.onclick = () => {
         this.selectedProduct = product;
-        this.selectedFormat = "Single";
-        cardSingle.classList.add("active");
-        cardBox.classList.remove("active");
-        renderFlavorsUI();
-        updatePriceUI();
+        this.setPageFormat("Single");
       };
 
       cardBox.onclick = () => {
         this.selectedProduct = product;
-        this.selectedFormat = "Box";
-        cardBox.classList.add("active");
-        cardSingle.classList.remove("active");
-        renderFlavorsUI();
-        updatePriceUI();
+        this.setPageFormat("Box");
       };
 
       formatContainer.appendChild(cardSingle);
