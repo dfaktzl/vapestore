@@ -5,7 +5,7 @@
 const CONFIG_DEFAULT = {
     "seo":  {
                 "title":  "Vape \u0027R\u0027 Aus | Buy Cheap Vapes \u0026 Cigarettes Online Australia",
-                "description":  "Vape \u0027R\u0027 Aus \u0026 Smokes â€” Australia\u0027s trusted outlet for disposable vapes \u0026 cigarette cartons. Buy IGET Bar 3500, Alibarbar Ingot 9000 \u0026 12000, Waka SoPro DM8000, HQD Cuvie Bar boxes at the lowest prices. Fast express shipping. PayID \u0026 bank transfer accepted.",
+                "description":  "Vape \u0027R\u0027 Aus \u0026 Smokes Ã¢â‚¬â€ Australia\u0027s trusted outlet for disposable vapes \u0026 cigarette cartons. Buy IGET Bar 3500, Alibarbar Ingot 9000 \u0026 12000, Waka SoPro DM8000, HQD Cuvie Bar boxes at the lowest prices. Fast express shipping. PayID \u0026 bank transfer accepted.",
                 "keywords":  "buy vapes online australia, cheap disposable vapes australia, iget bar 3500 buy online, alibarbar vape australia, waka sopro dm8000, hqd cuvie bar box, cheap cigarettes online australia, marlboro gold carton australia, winfield blue carton, vape wholesale australia, bulk vapes perth, buy cigarette cartons online, disposable vape 9000 puffs, iget legend 4000, iget hot 5500, vape r aus"
             },
     "settings":  {
@@ -194,8 +194,8 @@ const CONFIG_DEFAULT = {
                          "brand":  "IGET",
                          "name":  "IGET Bar Pro 10000 Puffs",
                          "category":  "vapes-single",
-                         "price":  55,
-                         "boxPrice":  420,
+                         "price":  57,
+                         "boxPrice":  410,
                          "isBoxOnly":  false,
                          "flavors":  [
                                          "Lush Ice",
@@ -392,8 +392,8 @@ const CONFIG_DEFAULT = {
                          "brand":  "IGET",
                          "name":  "IGET Bar Pro 10000 - 5-Pack Bundle",
                          "category":  "vapes-single",
-                         "price":  235,
-                         "boxPrice":  235,
+                         "price":  215,
+                         "boxPrice":  215,
                          "isBoxOnly":  false,
                          "isBundle":  true,
                          "bundleQty":  5,
