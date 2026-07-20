@@ -227,8 +227,8 @@ foreach ($guide in $guides) {
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   
   <!-- Styles -->
-  <link rel="stylesheet" href="../css/design_system.css?v=36">
-  <link rel="stylesheet" href="../css/main.css?v=36">
+  <link rel="stylesheet" href="../css/design_system.css?v=37">
+  <link rel="stylesheet" href="../css/main.css?v=37">
   
   <!-- Custom Article Page styling -->
   <style>
@@ -671,19 +671,101 @@ foreach ($prod in $config.products) {
         }
     }
 
-    # Options wrapper DOM populated by store.js
+    # Build static flavor select options
+    $flavorOptions = ""
+    if ($null -ne $prod.flavors) {
+        foreach ($flv in $prod.flavors) {
+            $flavorOptions += "                      <option value=`"$flv`">$flv</option>`n"
+        }
+    }
+
+    $flavorWrapDisplay = "block"
+    $flavorLabelText = "Choose Flavour"
+    $flavorInputsHtml = ""
+
+    if ($isBundle -eq $true) {
+        $qty = if ($null -ne $prod.bundleQty) { $prod.bundleQty } else { 5 }
+        $flavorLabelText = "Customise 5-Pack Variety Bundle (Choose $qty Flavours)"
+        for ($i = 1; $i -le $qty; $i++) {
+            $flavorInputsHtml += @"
+                  <div style="margin-bottom: 12px;">
+                    <div style="font-size:12px; color:var(--text-secondary); margin-bottom:4px; font-weight:600;">Device $i Flavour:</div>
+                    <select id="page-flavor-select-$i" class="product-card-flavor-select page-bundle-flavor-select" style="width: 100%; margin-bottom: 0;">
+$flavorOptions                    </select>
+                  </div>
+"@
+        }
+    } elseif ($prod.isBoxOnly -eq $true) {
+        $flavorLabelText = "Choose Flavour for Box of 10 Pack"
+        $flavorInputsHtml = @"
+                  <div style="margin-bottom: 0;">
+                    <select id="page-flavor-select" class="product-card-flavor-select" style="width: 100%; margin-bottom: 0;">
+$flavorOptions                    </select>
+                  </div>
+"@
+    } else {
+        $flavorLabelText = "Choose Flavour"
+        $flavorInputsHtml = @"
+                  <div style="margin-bottom: 0;">
+                    <select id="page-flavor-select" class="product-card-flavor-select" style="width: 100%; margin-bottom: 0;">
+$flavorOptions                    </select>
+                  </div>
+"@
+    }
+
+    # Build static format cards HTML
+    $formatCardsHtml = ""
+    if ($isBundle -eq $true) {
+        $formatCardsHtml = @"
+                <div class="format-card active" style="grid-column: span 2;">
+                  <div class="format-card-title">5-Pack Variety Bundle</div>
+                  <div class="format-card-price">`$$($price.ToString("F2"))</div>
+                  <div class="format-card-savings">Value Pack</div>
+                </div>
+"@
+    } elseif ($prod.isBoxOnly -eq $true) {
+        $formatCardsHtml = @"
+                <div class="format-card active" style="grid-column: span 2;">
+                  <div class="format-card-title">Box of 10 Pack</div>
+                  <div class="format-card-price">`$$($boxPrice.ToString("F2"))</div>
+                  <div class="format-card-savings">Wholesale Carton</div>
+                </div>
+"@
+    } else {
+        $savingsHtml = ""
+        if ($boxPrice -and $price) {
+            $singleTotal = $price * 10
+            $savings = $singleTotal - $boxPrice
+            if ($savings -gt 0) {
+                $savingsHtml = "<div class=`"format-card-savings`">Save `$$([math]::Round($savings))!</div>"
+            }
+        }
+        $formatCardsHtml = @"
+                <div class="format-card active" id="card-format-single">
+                  <div class="format-card-title">Single Unit</div>
+                  <div class="format-card-price">`$$($price.ToString("F2"))</div>
+                </div>
+                <div class="format-card" id="card-format-box">
+                  <div class="format-card-title">Box of 10 Pack</div>
+                  <div class="format-card-price">`$$($boxPrice.ToString("F2"))</div>
+                  $savingsHtml
+                </div>
+"@
+    }
+
+    # Options wrapper DOM
     $optionsHtml = @"
             <!-- Purchase Options & Customisation -->
             <div id="product-purchase-options-container" style="margin-bottom: 25px;">
               <div style="font-size:12px; color:var(--text-secondary); margin-bottom:8px; text-align:left; font-weight:600; text-transform:uppercase; letter-spacing:0.05em;">Select Option</div>
               <div id="page-format-cards-group" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 12px; margin-bottom: 20px;">
-                <!-- Generated dynamically by store.js -->
+                $formatCardsHtml
               </div>
               
-              <div id="page-flavor-group-wrap" style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); padding: 20px; border-radius: 8px; text-align: left; display: none;">
-                <label id="page-flavor-label" class="modal-option-title" style="display: block; margin-bottom: 10px; font-weight: 600; color: var(--gold-light);">Choose Flavour</label>
+              <div id="page-flavor-group-wrap" style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); padding: 20px; border-radius: 8px; text-align: left; display: $flavorWrapDisplay;">
+                <label id="page-flavor-label" class="modal-option-title" style="display: block; margin-bottom: 10px; font-weight: 600; color: var(--gold-light);">$flavorLabelText</label>
                 <div id="page-flavor-inputs-container">
-                  <!-- Populated dynamically by store.js -->
+                  $flavorInputsHtml
                 </div>
               </div>
             </div>
@@ -736,8 +818,8 @@ foreach ($prod in $config.products) {
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;900&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   
   <!-- Stylesheets -->
-  <link rel="stylesheet" href="../css/design_system.css?v=36">
-  <link rel="stylesheet" href="../css/main.css?v=36">
+  <link rel="stylesheet" href="../css/design_system.css?v=37">
+  <link rel="stylesheet" href="../css/main.css?v=37">
   <link rel="icon" type="image/png" href="../img/logo_small.png">
   
   <!-- Structured SEO Schema -->
@@ -890,8 +972,8 @@ foreach ($prod in $config.products) {
   </div>
 
   <!-- scripts -->
-  <script src="../js/config_default.js?v=36"></script>
-  <script src="../js/store.js?v=36"></script>
+  <script src="../js/config_default.js?v=37"></script>
+  <script src="../js/store.js?v=37"></script>
 </body>
 </html>
 "@

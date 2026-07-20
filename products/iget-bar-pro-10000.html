@@ -44,8 +44,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;900&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   
   <!-- Stylesheets -->
-  <link rel="stylesheet" href="../css/design_system.css?v=36">
-  <link rel="stylesheet" href="../css/main.css?v=36">
+  <link rel="stylesheet" href="../css/design_system.css?v=37">
+  <link rel="stylesheet" href="../css/main.css?v=37">
   <link rel="icon" type="image/png" href="../img/logo_small.png">
   
   <!-- Structured SEO Schema -->
@@ -150,13 +150,36 @@
             <div id="product-purchase-options-container" style="margin-bottom: 25px;">
               <div style="font-size:12px; color:var(--text-secondary); margin-bottom:8px; text-align:left; font-weight:600; text-transform:uppercase; letter-spacing:0.05em;">Select Option</div>
               <div id="page-format-cards-group" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 12px; margin-bottom: 20px;">
-                <!-- Generated dynamically by store.js -->
+                                <div class="format-card active" id="card-format-single">
+                  <div class="format-card-title">Single Unit</div>
+                  <div class="format-card-price">$57.00</div>
+                </div>
+                <div class="format-card" id="card-format-box">
+                  <div class="format-card-title">Box of 10 Pack</div>
+                  <div class="format-card-price">$410.00</div>
+                  <div class="format-card-savings">Save $160!</div>
+                </div>
               </div>
               
-              <div id="page-flavor-group-wrap" style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); padding: 20px; border-radius: 8px; text-align: left; display: none;">
+              <div id="page-flavor-group-wrap" style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); padding: 20px; border-radius: 8px; text-align: left; display: block;">
                 <label id="page-flavor-label" class="modal-option-title" style="display: block; margin-bottom: 10px; font-weight: 600; color: var(--gold-light);">Choose Flavour</label>
                 <div id="page-flavor-inputs-container">
-                  <!-- Populated dynamically by store.js -->
+                                    <div style="margin-bottom: 0;">
+                    <select id="page-flavor-select" class="product-card-flavor-select" style="width: 100%; margin-bottom: 0;">
+                      <option value="Lush Ice">Lush Ice</option>
+                      <option value="Mango Banana Ice">Mango Banana Ice</option>
+                      <option value="Passion Fruit Melon Ice">Passion Fruit Melon Ice</option>
+                      <option value="Grape Blue Razz">Grape Blue Razz</option>
+                      <option value="Pink Lemonade">Pink Lemonade</option>
+                      <option value="Pineapple Coconut Ice">Pineapple Coconut Ice</option>
+                      <option value="Blackcurrant Ice">Blackcurrant Ice</option>
+                      <option value="Watermelon Mint">Watermelon Mint</option>
+                      <option value="Strawberry Mango">Strawberry Mango</option>
+                      <option value="Fruity Skittles">Fruity Skittles</option>
+                      <option value="Strawberry Banana Ice">Strawberry Banana Ice</option>
+                      <option value="Kiwi Passionfruit Grape">Kiwi Passionfruit Grape</option>
+                    </select>
+                  </div>
                 </div>
               </div>
             </div>
@@ -229,7 +252,7 @@
   </div>
 
   <!-- scripts -->
-  <script src="../js/config_default.js?v=36"></script>
-  <script src="../js/store.js?v=36"></script>
+  <script src="../js/config_default.js?v=37"></script>
+  <script src="../js/store.js?v=37"></script>
 </body>
 </html>

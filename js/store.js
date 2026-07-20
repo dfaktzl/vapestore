@@ -103,12 +103,20 @@ class StoreApp {
 
     if (product.isBundle) {
       bundleProduct = product;
-      const baseId = product.id.replace("-bundle", "");
-      singleProduct = this.config.products.find(p => p.id === baseId) || null;
+      if (product.id === "alibarbar-9k-bundle") {
+        singleProduct = this.config.products.find(p => p.id === "alibarbar-ingot-9k") || null;
+      } else {
+        const baseId = product.id.replace("-bundle", "");
+        singleProduct = this.config.products.find(p => p.id === baseId) || null;
+      }
     } else {
       singleProduct = product;
-      const bundleId = `${product.id}-bundle`;
-      bundleProduct = this.config.products.find(p => p.id === bundleId) || null;
+      if (product.id === "alibarbar-ingot-9k") {
+        bundleProduct = this.config.products.find(p => p.id === "alibarbar-9k-bundle") || null;
+      } else {
+        const bundleId = `${product.id}-bundle`;
+        bundleProduct = this.config.products.find(p => p.id === bundleId) || null;
+      }
     }
 
     // Set initial state
