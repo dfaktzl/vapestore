@@ -142,12 +142,113 @@
             </div>
           </div>
         </div>
-        </div>
-        
+      </div>
+    </section>
 
-        
+    <!-- 5. CATEGORIES BAR -->
+    <div class="container">
+      <div id="category-tabs" class="categories-tabs">
+        <!-- Rendered dynamically by store.js -->
       </div>
     </div>
+
+    <!-- 6. PRODUCT CATALOG & GRID -->
+    <main class="catalog-section" id="catalog">
+      <div class="container">
+
+        <!-- Compact Filter Bar (mobile-friendly horizontal chips) -->
+        <div class="filter-bar-wrap">
+          <div class="filter-bar">
+            <span class="filter-bar-label">Filter:</span>
+            <div class="filter-chips-scroll">
+              <!-- Brand chips rendered dynamically -->
+              <div id="brand-filters" class="filter-chips-group"></div>
+              <!-- Price chips -->
+              <label class="filter-chip">
+                <input type="checkbox" name="price-filter" value="under-50" class="filter-checkbox"> Under $50
+              </label>
+              <label class="filter-chip">
+                <input type="checkbox" name="price-filter" value="50-250" class="filter-checkbox"> $50–$250
+              </label>
+              <label class="filter-chip">
+                <input type="checkbox" name="price-filter" value="over-250" class="filter-checkbox"> $250+
+              </label>
+              <!-- Format chips -->
+              <div id="format-filters" class="filter-chips-group">
+                <label class="filter-chip">
+                  <input type="checkbox" name="format-filter" value="single" class="filter-checkbox"> Singles
+                </label>
+                <label class="filter-chip">
+                  <input type="checkbox" name="format-filter" value="box-only" class="filter-checkbox"> Bulk Boxes
+                </label>
+              </div>
+            </div>
+             <button id="btn-clear-filters" class="filter-clear-btn">&#10005; Clear</button>
+          </div>
+          <div class="filter-bar-meta">
+            <span class="results-count">Showing <strong id="displayed-products-count">0</strong> products</span>
+            <div class="meta-right-wrap" style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+              <button id="btn-transit-trigger" class="transit-estimator-btn">
+                <span>&#128666;</span> Transit Delivery Estimator
+              </button>
+              <div class="sort-selector-container">
+                <span class="sort-label">Sort:</span>
+                <select id="sort-select" class="sort-select">
+                  <option value="featured">Featured</option>
+                  <option value="price-asc">Price ↑</option>
+                  <option value="price-desc">Price ↓</option>
+                  <option value="name-asc">A–Z</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Product Grid -->
+        <div id="products-grid" class="products-grid" style="margin-top:0;">
+          <!-- Rendered dynamically by store.js -->
+        </div>
+
+      </div>
+    </main>
+
+    <!-- 7. FAQ SECTION -->
+    <section class="faq-section" id="faq">
+      <div class="container">
+        <h2 class="faq-title">Frequently Asked Questions</h2>
+        <div class="faq-list">
+
+          <details class="faq-item" open>
+            <summary class="faq-question">How do I pay for my order?</summary>
+            <div class="faq-answer">
+              <p>We accept <strong>PayID</strong> and <strong>Direct Bank Transfer</strong> only. After placing your order, you'll receive full payment instructions including our BSB, account number, and PayID email. Orders are dispatched once payment is confirmed — usually within minutes for PayID.</p>
+            </div>
+          </details>
+
+          <details class="faq-item">
+            <summary class="faq-question">How fast is delivery?</summary>
+            <div class="faq-answer">
+              <p>We ship via <strong>Express Post</strong> Australia-wide. Most orders arrive within <strong>1–3 business days</strong> after payment is confirmed. Orders over $150 receive <strong>free express shipping</strong> (orders under $150 incur a flat $15 shipping fee).</p>
+            </div>
+          </details>
+
+          <details class="faq-item">
+            <summary class="faq-question">Are all products genuine and authentic?</summary>
+            <div class="faq-answer">
+              <p>Yes. All disposable vapes (IGET, Alibarbar, Waka, HQD) and cigarette cartons are 100% authentic, sealed in original factory packaging with batch codes and anti-counterfeit security verification stickers.</p>
+            </div>
+          </details>
+
+          <details class="faq-item">
+            <summary class="faq-question">Can I customize flavors in my 5-Pack Variety Bundle?</summary>
+            <div class="faq-answer">
+              <p>Absolutely! When ordering a 5-Pack Variety Bundle, you can select individual flavors for each device in your pack or choose a single flavor for the entire bundle.</p>
+            </div>
+          </details>
+
+        </div>
+      </div>
+    </section>
 
     <!-- 8. DYNAMIC PRODUCT DETAIL MODAL -->
     <div id="product-detail-modal" class="modal-overlay">
@@ -219,14 +320,16 @@
             <button id="btn-check-transit" class="btn-primary" style="margin:0; padding:0 20px; font-size:13px; cursor:pointer;">Check Time</button>
           </div>
         </div>
-        
-        <div id="transit-result" style="display:none; padding:15px; background:rgba(212,175,55,0.03); border:1px solid rgba(212,175,55,0.15); border-radius:var(--radius-sm); font-size:13px; text-align:left; line-height:1.6;">
-          <!-- Loaded dynamically -->
+
+        <div id="transit-result" style="display:none; padding:15px; background:rgba(212,175,55,0.05); border:1px solid rgba(212,175,55,0.2); border-radius:8px; text-align:left;">
+          <div style="font-size:12px; color:var(--text-secondary); margin-bottom:4px;">Estimated Arrival Window:</div>
+          <div id="transit-days" style="font-size:18px; font-weight:700; color:var(--gold-accent); margin-bottom:6px;">1 - 2 Business Days</div>
+          <div id="transit-notes" style="font-size:11px; color:var(--text-muted); line-height:1.4;">Dispatched within 48 hours via Australia Post Express from VIC depot.</div>
         </div>
       </div>
     </div>
 
-    <!-- 9. SHOPPING CART SIDE DRAWER -->
+    <!-- 9. CART DRAWER OVERLAY -->
     <div id="cart-drawer-overlay" class="cart-drawer-overlay"></div>
     <div id="cart-drawer" class="cart-drawer">
       <div class="cart-drawer-header">
@@ -234,22 +337,14 @@
         <button id="cart-close" class="cart-close-btn">&#10006;</button>
       </div>
       
-      <div id="cart-items" class="cart-items-container">
-        <!-- Rendered dynamically by store.js -->
+      <div id="cart-items-container" class="cart-items-container">
+        <!-- Rendered dynamically -->
       </div>
       
       <div class="cart-drawer-footer">
         <div class="cart-summary-row">
-          <span>Items Selected</span>
-          <span id="cart-items-count">0</span>
-        </div>
-        <div class="cart-summary-row">
           <span>Subtotal</span>
           <span id="cart-subtotal">$0.00</span>
-        </div>
-        <div class="cart-summary-row savings-row">
-          <span>Bulk Savings</span>
-          <span id="cart-savings">$0.00</span>
         </div>
         <div class="cart-summary-row happy-hour-row" id="cart-happy-hour-row" style="display: none; color: #bb88ff;">
           <span>Happy Hour (10% Off) &#9889;</span>
@@ -287,6 +382,7 @@
         <div id="guides-grid" class="guides-grid">
           <!-- Rendered dynamically by store.js -->
         </div>
+      </div>
     </section>
 
     <!-- 11B. CONTACT SECTION -->
@@ -324,9 +420,6 @@
       </div>
     </section>
 
-
-
-    
     <!-- 11C. ORGANIC SEO CONTENT & INFORMATION SECTION -->
     <section class="seo-info-section" id="seo-info" style="padding: 60px 0; border-top: 1px solid rgba(212, 175, 55, 0.1); background: #08090d;">
       <div class="container" style="max-width: 1100px;">
@@ -378,7 +471,6 @@
         </div>
       </div>
     </section>
-
 
     <!-- 10. MAIN FOOTER -->
     <footer class="main-footer">
@@ -449,8 +541,6 @@
       </div>
     </footer>
   </div>
-
-
 
   <!-- Loading scripts -->
   <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
