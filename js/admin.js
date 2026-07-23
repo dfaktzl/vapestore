@@ -50,6 +50,27 @@ class AdminApp {
     this.init();
   }
 
+    getEmailJSConfig() {
+    const s = (this.config && this.config.settings) ? this.config.settings : {};
+    const decode = (val) => {
+      if (!val) return "";
+      val = String(val).trim();
+      if (!val) return "";
+      if (/^[A-Za-z0-9+/=]{12,}$/.test(val) && !val.startsWith("template_") && !val.startsWith("service_")) {
+        try { return atob(val).trim(); } catch(e) { return val; }
+      }
+      return val;
+    };
+    return {
+      serviceId: decode(s.emailjsServiceId),
+      publicKey: decode(s.emailjsPublicKey),
+      orderTemplateId: decode(s.emailjsOrderTemplateId),
+      contactTemplateId: decode(s.emailjsContactTemplateId),
+      paymentReceivedTemplateId: decode(s.emailjsPaymentReceivedTemplateId),
+      paymentReminderTemplateId: decode(s.emailjsPaymentReminderTemplateId)
+    };
+  }
+
   async init() {
     this.setupTabs();
 
@@ -1188,9 +1209,10 @@ class AdminApp {
     };
 
     try {
-      const serviceId = this.config.settings.emailjsServiceId;
-      const templateId = this.config.settings.emailjsPaymentReminderTemplateId || this.config.settings.emailjsOrderTemplateId;
-      const publicKey = this.config.settings.emailjsPublicKey;
+      const cfg = this.getEmailJSConfig();
+      const serviceId = cfg.serviceId;
+      const templateId = cfg.paymentReminderTemplateId || cfg.orderTemplateId;
+      const publicKey = cfg.publicKey;
 
       if (!serviceId || !templateId || !publicKey) {
         throw new Error("EmailJS configurations are incomplete under SEO & Bank Settings.");

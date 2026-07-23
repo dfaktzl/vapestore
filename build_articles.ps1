@@ -227,8 +227,8 @@ foreach ($guide in $guides) {
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   
   <!-- Styles -->
-  <link rel="stylesheet" href="../css/design_system.css?v=42">
-  <link rel="stylesheet" href="../css/main.css?v=42">
+  <link rel="stylesheet" href="../css/design_system.css?v=43">
+  <link rel="stylesheet" href="../css/main.css?v=43">
   
   <!-- Custom Article Page styling -->
   <style>
@@ -879,8 +879,8 @@ $flavorOptions                    </select>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;900&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   
   <!-- Stylesheets -->
-  <link rel="stylesheet" href="../css/design_system.css?v=42">
-  <link rel="stylesheet" href="../css/main.css?v=42">
+  <link rel="stylesheet" href="../css/design_system.css?v=43">
+  <link rel="stylesheet" href="../css/main.css?v=43">
   <link rel="icon" type="image/png" href="../img/logo_small.png">
   
   <!-- Rich Product JSON-LD Schema (Google Search Rating Snippets) -->
@@ -1097,8 +1097,8 @@ $flavorOptions                    </select>
   </div>
 
   <!-- scripts -->
-  <script src="../js/config_default.js?v=42"></script>
-  <script src="../js/store.js?v=42"></script>
+  <script src="../js/config_default.js?v=43"></script>
+  <script src="../js/store.js?v=43"></script>
 </body>
 </html>
 "@
