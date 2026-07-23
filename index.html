@@ -44,8 +44,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
   <!-- Styles -->
-  <link rel="stylesheet" href="css/design_system.css?v=39">
-  <link rel="stylesheet" href="css/main.css?v=39">
+  <link rel="stylesheet" href="css/design_system.css?v=40">
+  <link rel="stylesheet" href="css/main.css?v=40">
 </head>
 <body>
 
@@ -124,79 +124,21 @@
         </div>
         <div class="hero-visual">
           <div class="hero-glow-ring"></div>
-          <div class="hero-floating-card" style="cursor: pointer;" onclick="document.getElementById('catalog').scrollIntoView({behavior: 'smooth'})">
+          <div class="hero-floating-card" style="cursor: pointer; text-align: center;" onclick="document.getElementById('catalog').scrollIntoView({behavior: 'smooth'})">
             <div>
-              <div class="hero-card-header" style="background: rgba(212, 175, 55, 0.15); color: var(--gold-accent); border: 1px solid rgba(212, 175, 55, 0.3);">Daily Special Promo</div>
-              <div class="hero-card-title" style="font-size: 18px; font-weight: 800; color: var(--gold-light);">Happy Hour 10% Off</div>
+              <div class="hero-card-header" style="background: rgba(212, 175, 55, 0.15); color: var(--gold-accent); border: 1px solid rgba(212, 175, 55, 0.3); display: inline-block; padding: 4px 14px; border-radius: 20px; font-size: 11px; text-transform: uppercase; font-weight: 800; letter-spacing: 1px; margin-bottom: 8px;">Daily Special Promo</div>
+              <div class="hero-card-title" style="font-size: 20px; font-weight: 900; color: #fff; letter-spacing: 0.5px;">Happy Hour 10% Off</div>
             </div>
-            <div style="flex-grow: 1; display: flex; justify-content: center; align-items: center; margin: 12px 0;">
-              <img src="img/happy_hour_banner.jpg?v=39" alt="Happy Hour Every Day 5 PM - 6 PM AEST 10% Off" style="max-height: 210px; width: auto; object-fit: contain; border-radius: 8px; filter: drop-shadow(0 10px 20px rgba(0,0,0,0.55)); border: 1px solid rgba(212, 175, 55, 0.2);">
+            
+            <div style="margin: 14px 0; display: flex; justify-content: center; align-items: center;">
+              <img src="img/happy_hour_banner.png?v=40" alt="Happy Hour Every Day 5 PM - 6 PM AEST 10% Off" style="width: 100%; max-height: 160px; object-fit: contain; border-radius: 10px; filter: drop-shadow(0 8px 16px rgba(0,0,0,0.6)); border: 1px solid rgba(212, 175, 55, 0.25);">
             </div>
+            
             <div>
-              <div class="hero-card-price" style="font-size: 15px; color: var(--gold-accent); font-weight: 800;">10% OFF ALL PRODUCTS</div>
-              <p style="font-size: 12px; color: var(--text-secondary); margin-top: 6px; line-height: 1.4;">
+              <div class="hero-card-price" style="font-size: 18px; color: var(--gold-accent); font-weight: 900; letter-spacing: 0.5px;">10% OFF ALL PRODUCTS</div>
+              <p style="font-size: 12px; color: var(--text-secondary); margin-top: 8px; line-height: 1.5; padding: 0 4px;">
                 Active <strong>5:00 PM &ndash; 6:00 PM AEST</strong> daily! Discount is added to your cart automatically during Happy Hour.
               </p>
-            </div>
-          </div>
-        </div>
-    </section>
-
-    <!-- 5. CATEGORIES BAR -->
-    <div class="container">
-      <div id="category-tabs" class="categories-tabs">
-        <!-- Rendered dynamically by store.js -->
-      </div>
-    </div>
-
-    <!-- 6. PRODUCT CATALOG & GRID -->
-    <main class="catalog-section" id="catalog">
-      <div class="container">
-
-        <!-- Compact Filter Bar (mobile-friendly horizontal chips) -->
-        <div class="filter-bar-wrap">
-          <div class="filter-bar">
-            <span class="filter-bar-label">Filter:</span>
-            <div class="filter-chips-scroll">
-              <!-- Brand chips rendered dynamically -->
-              <div id="brand-filters" class="filter-chips-group"></div>
-              <!-- Price chips -->
-              <label class="filter-chip">
-                <input type="checkbox" name="price-filter" value="under-50" class="filter-checkbox"> Under $50
-              </label>
-              <label class="filter-chip">
-                <input type="checkbox" name="price-filter" value="50-250" class="filter-checkbox"> $50–$250
-              </label>
-              <label class="filter-chip">
-                <input type="checkbox" name="price-filter" value="over-250" class="filter-checkbox"> $250+
-              </label>
-              <!-- Format chips -->
-              <div id="format-filters" class="filter-chips-group">
-                <label class="filter-chip">
-                  <input type="checkbox" name="format-filter" value="single" class="filter-checkbox"> Singles
-                </label>
-                <label class="filter-chip">
-                  <input type="checkbox" name="format-filter" value="box-only" class="filter-checkbox"> Bulk Boxes
-                </label>
-              </div>
-            </div>
-             <button id="btn-clear-filters" class="filter-clear-btn">&#10005; Clear</button>
-          </div>
-          <div class="filter-bar-meta">
-            <span class="results-count">Showing <strong id="displayed-products-count">0</strong> products</span>
-            <div class="meta-right-wrap" style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
-              <button id="btn-transit-trigger" class="transit-estimator-btn">
-                <span>&#128666;</span> Transit Delivery Estimator
-              </button>
-              <div class="sort-selector-container">
-                <span class="sort-label">Sort:</span>
-                <select id="sort-select" class="sort-select">
-                  <option value="featured">Featured</option>
-                  <option value="price-asc">Price ↑</option>
-                  <option value="price-desc">Price ↓</option>
-                  <option value="name-asc">A–Z</option>
-                </select>
-              </div>
             </div>
           </div>
         </div>
@@ -656,7 +598,7 @@
 
   <!-- Loading scripts -->
   <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-  <script src="js/config_default.js?v=39"></script>
-  <script src="js/store.js?v=39"></script>
+  <script src="js/config_default.js?v=40"></script>
+  <script src="js/store.js?v=40"></script>
 </body>
 </html>
