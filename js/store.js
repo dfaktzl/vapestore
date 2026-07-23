@@ -1766,6 +1766,7 @@ class StoreApp {
     }
 
     // Always send the full merchant notification via FormSubmit.co as the backend logging database
+    const settings = this.config?.settings || {};
     const targetEmail = settings.contactEmail || "vapesonlineaustralia@proton.me";
     const orderPostUrl = `https://formsubmit.co/ajax/${targetEmail.trim()}`;
     
