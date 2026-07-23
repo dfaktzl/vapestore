@@ -265,7 +265,7 @@ class AdminApp {
   async publishToFirebase() {
     const dbUrl = this._resolveFirebaseUrl();
     if (!dbUrl) {
-      alert("⚠️ No Firebase URL configured. Go to SEO & Bank Settings and enter your Firebase Database URL first.");
+      alert("&#9888;️ No Firebase URL configured. Go to SEO & Bank Settings and enter your Firebase Database URL first.");
       return false;
     }
 
@@ -767,7 +767,7 @@ class AdminApp {
               </tfoot>
             </table>
             <button class="btn-primary compose-email-btn" data-order-id="${order.orderId}" style="margin-top: 15px; width: 100%; font-size: 11px; height: 32px; padding: 0 10px; display: flex; align-items: center; justify-content: center; gap: 6px; font-weight: 700;">
-              ✉️ Open Thunderbird / Mail Compose
+              &#9993;️ Open Thunderbird / Mail Compose
             </button>
           </div>
         </div>
@@ -852,7 +852,7 @@ class AdminApp {
       tbody.innerHTML = `
         <tr>
           <td colspan="7" style="padding:30px; text-align:center; color:var(--error-color);">
-            ⚠️ No Cloud Database configured. Geolocation and visitor logs require Firebase Database URL in Settings.
+            &#9888;️ No Cloud Database configured. Geolocation and visitor logs require Firebase Database URL in Settings.
           </td>
         </tr>
       `;
@@ -943,7 +943,7 @@ class AdminApp {
       tr.innerHTML = `
         <td style="padding:12px 15px; font-size:13px; color:var(--text-secondary);">${dateStr}</td>
         <td style="padding:12px 15px; font-size:13px; font-family:monospace; color:var(--text-primary); font-weight:600;">${escapeHTML(visitor.ip) || "Unknown"}</td>
-        <td style="padding:12px 15px; font-size:13px; color:#fff;">📍 ${escapeHTML(location)}</td>
+        <td style="padding:12px 15px; font-size:13px; color:#fff;">&#128205; ${escapeHTML(location)}</td>
         <td style="padding:12px 15px; font-size:12px; color:var(--text-secondary); max-width:140px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="${escapeHTML(visitor.isp) || ""}">${escapeHTML(visitor.isp) || "Unknown"}</td>
         <td style="padding:12px 15px; font-size:12px; color:var(--text-secondary); max-width:140px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="${escapeHTML(visitor.userAgent) || ""}">🖥️ [${escapeHTML(visitor.device) || "Desktop"}]</td>
         <td style="padding:12px 15px; font-size:12px; color:var(--text-secondary); max-width:140px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="${escapeHTML(visitor.referrer) || ""}">🔗 ${escapeHTML(visitor.referrer) || "Direct"}</td>
@@ -1042,7 +1042,7 @@ class AdminApp {
           btn.style.transition = "background-color 0.2s";
           
           if (isBlocked) {
-            btn.innerText = "✔️ Unblock IP Address";
+            btn.innerText = "&#10004;️ Unblock IP Address";
             btn.className = "btn-secondary";
             btn.style.background = "#28a745";
             btn.style.borderColor = "#28a745";
@@ -1064,7 +1064,7 @@ class AdminApp {
               } catch (err) {
                 alert(`Error unblocking IP: ${err.message}`);
                 btn.disabled = false;
-                btn.innerText = "✔️ Unblock IP Address";
+                btn.innerText = "&#10004;️ Unblock IP Address";
               }
             });
           } else {
@@ -1459,7 +1459,7 @@ AeroVape Team`;
           "Order Items": orderItemsText,
           "Total Amount": `$${total.toFixed(2)}`,
           "_captcha": "false",
-          "_subject": `🛒 NEW TEST ORDER: ${orderId} (${refCode})`
+          "_subject": `&#128722; NEW TEST ORDER: ${orderId} (${refCode})`
         })
       });
       console.log("Test order notification sent to merchant via FormSubmit.");

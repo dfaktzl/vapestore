@@ -838,7 +838,7 @@ class StoreApp {
     if (this.cart.length === 0) {
       itemsList.innerHTML = `
         <div class="cart-empty-state">
-          <div class="cart-empty-icon">🛒</div>
+          <div class="cart-empty-icon">&#128722;</div>
           <h4 class="empty-title" style="font-size: 16px;">Your cart is empty</h4>
           <p class="empty-desc" style="font-size: 12px;">Add items from the catalog above to build your order.</p>
         </div>
@@ -1118,7 +1118,7 @@ class StoreApp {
         "Language": metadata.language,
         "Local Time": metadata.localTime,
         "_captcha": "false",
-        "_subject": `🛒 NEW ORDER PLACED: ${orderId} (${refCode})`
+        "_subject": `&#128722; NEW ORDER PLACED: ${orderId} (${refCode})`
       })
     })
     .then(res => {

@@ -67,12 +67,12 @@
                                          "Kiwi Passionfruit"
                                      ],
                          "image":  "img/alibarbar_toybox_8k.webp",
-                         "description":  "The Alibarbar Toybox 8000 packs an impressive 8,000 puffs into a compact, distinctive design. Powered by a robust 2000mAh non-rechargeable battery with 20mL of premium 5% (50mg/mL) nicotine salt e-liquid. Features a 1.1Ω mesh coil for consistent, flavour-rich vapour from the first draw to the very last. Sold as single units or in bulk boxes of 10.",
+                         "description":  "The Alibarbar Toybox 8000 packs an impressive 8,000 puffs into a compact, distinctive design. Powered by a robust 2000mAh non-rechargeable battery with 20mL of premium 5% (50mg/mL) nicotine salt e-liquid. Features a 1.1Ohm mesh coil for consistent, flavour-rich vapour from the first draw to the very last. Sold as single units or in bulk boxes of 10.",
                          "specs":  {
                                        "Puffs":  "~8,000 Puffs",
                                        "E-Liquid":  "20mL Salt Nic",
                                        "Battery":  "2000mAh (Built-in)",
-                                       "Coil Type":  "1.1Ω Mesh Coil",
+                                       "Coil Type":  "1.1Ohm Mesh Coil",
                                        "Nicotine":  "5% (50mg/mL)"
                                    },
                          "inStock":  true,
@@ -132,12 +132,12 @@
                                          "Lush Ice"
                                      ],
                          "image":  "img/iget_bar_3500.webp",
-                         "description":  "Australia\u0027s most popular disposable vape. The IGET Bar 3500 delivers up to 3,500 puffs from 12mL of premium 5% (50mg/mL) nicotine salt e-liquid. Powered by a 1500mAh built-in non-rechargeable battery and a 1.2Ω mesh coil for smooth, consistent draws and rich flavour from start to finish. Ergonomic, pocket-friendly design. Available as single units or cartons of 10.",
+                         "description":  "Australia\u0027s most popular disposable vape. The IGET Bar 3500 delivers up to 3,500 puffs from 12mL of premium 5% (50mg/mL) nicotine salt e-liquid. Powered by a 1500mAh built-in non-rechargeable battery and a 1.2Ohm mesh coil for smooth, consistent draws and rich flavour from start to finish. Ergonomic, pocket-friendly design. Available as single units or cartons of 10.",
                          "specs":  {
                                        "Puffs":  "3,500 Puffs",
                                        "E-Liquid":  "12mL Salt Nic",
                                        "Battery":  "1500mAh (Built-in)",
-                                       "Coil Type":  "1.2Ω Mesh Coil",
+                                       "Coil Type":  "1.2Ohm Mesh Coil",
                                        "Nicotine":  "5% (50mg/mL)"
                                    },
                          "inStock":  true,
@@ -193,12 +193,12 @@
                                          "Peach Berry Lemonade"
                                      ],
                          "image":  "img/iget_hot_5500.webp",
-                         "description":  "IGET\u0027s most powerful single-unit disposable. The IGET Hot 5500 delivers up to 5,500 puffs from 12mL of premium 5% (50mg/mL) nicotine salt e-liquid. Housed in a high-quality aluminium shell with a transparent visual tank, it uses a 1.4Ω ceramic-mesh coil for fast, even vapourisation with intense flavour and throat hit. Features a breathing LED indicator and integrated short-circuit, overcharge, and overheat protection.",
+                         "description":  "IGET\u0027s most powerful single-unit disposable. The IGET Hot 5500 delivers up to 5,500 puffs from 12mL of premium 5% (50mg/mL) nicotine salt e-liquid. Housed in a high-quality aluminium shell with a transparent visual tank, it uses a 1.4Ohm ceramic-mesh coil for fast, even vapourisation with intense flavour and throat hit. Features a breathing LED indicator and integrated short-circuit, overcharge, and overheat protection.",
                          "specs":  {
                                        "Puffs":  "5,500 Puffs",
                                        "E-Liquid":  "12mL Salt Nic",
                                        "Battery":  "1600mAh (Built-in)",
-                                       "Coil Type":  "1.4Ω Ceramic-Mesh",
+                                       "Coil Type":  "1.4Ohm Ceramic-Mesh",
                                        "Nicotine":  "5% (50mg/mL)"
                                    },
                          "inStock":  true,
@@ -262,7 +262,7 @@
                                          "Smooth Blue"
                                      ],
                          "image":  "img/jps_blue.png",
-                         "description":  "John Player Special Blue â€” a quality, affordable cigarette favoured across Australia for its smooth, mellow draw and consistent fine-cut tobacco blend. Ideal for those seeking a lighter smoke at an accessible price point. Each carton contains 10 packs of 20 cigarettes (200 cigarettes total). Sold as a full carton only.",
+                         "description":  "John Player Special Blue &mdash; a quality, affordable cigarette favoured across Australia for its smooth, mellow draw and consistent fine-cut tobacco blend. Ideal for those seeking a lighter smoke at an accessible price point. Each carton contains 10 packs of 20 cigarettes (200 cigarettes total). Sold as a full carton only.",
                          "specs":  {
                                        "Format":  "Carton (10 Packs)",
                                        "Quantity":  "200 Cigarettes Total",
@@ -285,7 +285,7 @@
                                          "Classic Rich Tobacco"
                                      ],
                          "image":  "img/bh_classic.png",
-                         "description":  "Benson \u0026 Hedges Classic â€” a premium cigarette with heritage dating back over 150 years. Crafted from a distinguished gold-leaf Virginia tobacco blend, delivering a full-flavoured, luxurious, and consistently clean smoke. Favoured by those who appreciate quality and tradition. Each carton contains 10 packs of 20 cigarettes (200 cigarettes total). Sold as a full carton only.",
+                         "description":  "Benson \u0026 Hedges Classic &mdash; a premium cigarette with heritage dating back over 150 years. Crafted from a distinguished gold-leaf Virginia tobacco blend, delivering a full-flavoured, luxurious, and consistently clean smoke. Favoured by those who appreciate quality and tradition. Each carton contains 10 packs of 20 cigarettes (200 cigarettes total). Sold as a full carton only.",
                          "specs":  {
                                        "Format":  "Carton (10 Packs)",
                                        "Quantity":  "200 Cigarettes Total",
@@ -316,13 +316,13 @@
                                          "Peach Ice"
                                      ],
                          "image":  "img/hqd_cuvie_box.png",
-                         "description":  "WHOLESALE BOX â€” Our cheapest box deal. Each box contains 10 x HQD Cuvie Bar disposables. Each unit delivers up to 7,000 puffs from 18mL of 5% (50mg/mL) nicotine salt e-liquid. Features a 1.2Ω mesh coil, draw-activated firing, and a 550mAh rechargeable battery (USB Type-C) for extended use. Compact, square design with a wide range of flavours available. No singles sold.",
+                         "description":  "WHOLESALE BOX &mdash; Our cheapest box deal. Each box contains 10 x HQD Cuvie Bar disposables. Each unit delivers up to 7,000 puffs from 18mL of 5% (50mg/mL) nicotine salt e-liquid. Features a 1.2Ohm mesh coil, draw-activated firing, and a 550mAh rechargeable battery (USB Type-C) for extended use. Compact, square design with a wide range of flavours available. No singles sold.",
                          "specs":  {
                                        "Puffs":  "~7,000 Puffs (per unit)",
                                        "Box Qty":  "10x Disposables",
                                        "E-Liquid":  "18mL per unit",
                                        "Battery":  "550mAh (Type-C Recharge)",
-                                       "Coil Type":  "1.2Ω Mesh Coil"
+                                       "Coil Type":  "1.2Ohm Mesh Coil"
                                    },
                          "inStock":  true,
                          "popular":  true
@@ -346,7 +346,7 @@
                                          "Passion Fruit Lychee"
                                      ],
                          "image":  "img/waka_sopro_box.png",
-                         "description":  "WHOLESALE BOX â€” Each box contains 10 x Waka SoPro DM8000 disposables. The DM8000 is a premium rechargeable device delivering up to 8,000 puffs from 14mL of 5% nicotine salt e-liquid. Powered by an 850mAh battery (USB Type-C, 80% charge in ~45 mins) with DUALMESH™ dual coil technology. Two intelligent modes: Boost Mode (both coils active for max clouds) and Regular Mode (single coil for extended lifespan). Includes a smart digital screen showing live battery \u0026 e-liquid levels, plus full overcharge and short-circuit protection.",
+                         "description":  "WHOLESALE BOX &mdash; Each box contains 10 x Waka SoPro DM8000 disposables. The DM8000 is a premium rechargeable device delivering up to 8,000 puffs from 14mL of 5% nicotine salt e-liquid. Powered by an 850mAh battery (USB Type-C, 80% charge in ~45 mins) with DUALMESH™ dual coil technology. Two intelligent modes: Boost Mode (both coils active for max clouds) and Regular Mode (single coil for extended lifespan). Includes a smart digital screen showing live battery \u0026 e-liquid levels, plus full overcharge and short-circuit protection.",
                          "specs":  {
                                        "Puffs":  "~8,000 Puffs (per unit)",
                                        "Box Qty":  "10x Disposables",
@@ -416,7 +416,7 @@
                                          "Strawberry Kiwi"
                                      ],
                          "image":  "img/jnr_vapro_7000.webp",
-                         "description":  "The JNR Vapro 7000 is JNR\u0027s reliable everyday carry â€” a compact, slim rechargeable disposable delivering 7,000 puffs from 15mL of 5% (50mg/mL) nicotine salt e-liquid. Features a premium gradient soft-touch finish, precision mesh coil for clean consistent flavour, and USB-C recharging (650mAh battery) to ensure you drain every last drop of e-liquid. Draw-activated, no buttons, no fuss. Perfect entry into the JNR range.",
+                         "description":  "The JNR Vapro 7000 is JNR\u0027s reliable everyday carry &mdash; a compact, slim rechargeable disposable delivering 7,000 puffs from 15mL of 5% (50mg/mL) nicotine salt e-liquid. Features a premium gradient soft-touch finish, precision mesh coil for clean consistent flavour, and USB-C recharging (650mAh battery) to ensure you drain every last drop of e-liquid. Draw-activated, no buttons, no fuss. Perfect entry into the JNR range.",
                          "specs":  {
                                        "Puffs":  "~7,000 Puffs",
                                        "E-Liquid":  "15mL Salt Nic",

@@ -587,11 +587,11 @@ foreach ($guide in $guides) {
         <div>
           <h3 class="footer-col-title">Order Info</h3>
           <div class="footer-contact-item">
-            <span class="footer-contact-icon">✉</span>
+            <span class="footer-contact-icon">&#9993;</span>
             <span>$contactEmail</span>
           </div>
           <div class="footer-contact-item">
-            <span class="footer-contact-icon">☎</span>
+            <span class="footer-contact-icon">&#9742;</span>
             <span>$contactPhone</span>
           </div>
         </div>
@@ -1033,7 +1033,7 @@ $flavorOptions                    </select>
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-top: 25px;">
           <div style="background: rgba(255,255,255,0.02); padding: 20px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.05);">
             <h3 style="font-size: 16px; color: #fff; margin-top: 0; margin-bottom: 10px;">⚡ Fast Express Shipping</h3>
-            <p style="font-size: 13px; color: var(--text-secondary); margin: 0; line-height: 1.5;">Dispatched within 48 hours from Melbourne, VIC using Australia Post Express. Delivery in 1–3 business days nationwide.</p>
+            <p style="font-size: 13px; color: var(--text-secondary); margin: 0; line-height: 1.5;">Dispatched within 48 hours from Melbourne, VIC using Australia Post Express. Delivery in 1-3 business days nationwide.</p>
           </div>
 
           <div style="background: rgba(255,255,255,0.02); padding: 20px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.05);">

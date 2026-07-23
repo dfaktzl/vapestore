@@ -9,7 +9,7 @@
         "tagline": "Best Deals on Vapes & Smokes in Australia",
         "contactEmail": "admin@vaperaus.com",
         "contactPhone": "0402 179 489",
-        "announcement": "ðŸ”¥ FREE EXPRESS SHIPPING ON ALL ORDERS OVER $150! PAYID & BANK XFER ACCEPTED ðŸ”¥",
+        "announcement": "&#128293; FREE EXPRESS SHIPPING ON ALL ORDERS OVER $150! PAYID & BANK XFER ACCEPTED &#128293;",
         "ageLimit": 18,
         "orderSyncUrl": "https://vapes-99ad2-default-rtdb.asia-southeast1.firebasedatabase.app/",
         "emailjsServiceId": "NKPHTNJE2GJBR1VF",
@@ -632,7 +632,7 @@
                 "Strawberry Kiwi"
             ],
             "image": "img/jnr_vapro_7000.webp",
-            "description": "The JNR Vapro 7000 is JNR's reliable everyday carry Ã¢â‚¬â€� a compact, slim rechargeable disposable delivering 7,000 puffs from 15mL of 5% (50mg/mL) nicotine salt e-liquid. Features a premium gradient soft-touch finish, precision mesh coil for clean consistent flavour, and USB-C recharging (650mAh battery) to ensure you drain every last drop of e-liquid. Draw-activated, no buttons, no fuss. Perfect entry into the JNR range.",
+            "description": "The JNR Vapro 7000 is JNR's reliable everyday carry disposable vape, featuring up to 7,000 puffs, rich flavor delivery, and a sleek modern design.",
             "specs": {
                 "Puffs": "~7,000 Puffs",
                 "E-Liquid": "15mL Salt Nic",
