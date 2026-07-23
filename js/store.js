@@ -585,7 +585,7 @@ class StoreApp {
     // Announcement bar
     const barText = document.getElementById("announcement-text");
     if (barText) {
-      barText.innerText = settings.announcement || "";
+      barText.innerHTML = settings.announcement || "";
     }
     
     // Footer contact info
