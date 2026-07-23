@@ -595,13 +595,33 @@ class StoreApp {
     if (footerPhone) footerPhone.innerText = settings.contactPhone || "";
   }
 
-  initEmailJS() {
-    if (this.config && this.config.settings && this.config.settings.emailjsPublicKey) {
-      const pubKey = this.config.settings.emailjsPublicKey.trim();
-      if (pubKey && typeof emailjs !== "undefined") {
-        emailjs.init({ publicKey: pubKey });
-        console.log("EmailJS initialized successfully.");
+  getEmailJSConfig() {
+    const s = (this.config && this.config.settings) ? this.config.settings : {};
+    const decode = (val) => {
+      if (!val) return "";
+      val = String(val).trim();
+      if (!val) return "";
+      // If base64 encoded string from obfuscated config
+      if (/^[A-Za-z0-9+/=]{12,}$/.test(val) && !val.startsWith("template_") && !val.startsWith("service_")) {
+        try { return atob(val).trim(); } catch(e) { return val; }
       }
+      return val;
+    };
+    return {
+      serviceId: decode(s.emailjsServiceId),
+      publicKey: decode(s.emailjsPublicKey),
+      orderTemplateId: decode(s.emailjsOrderTemplateId),
+      contactTemplateId: decode(s.emailjsContactTemplateId),
+      paymentReceivedTemplateId: decode(s.emailjsPaymentReceivedTemplateId),
+      paymentReminderTemplateId: decode(s.emailjsPaymentReminderTemplateId)
+    };
+  }
+
+  initEmailJS() {
+    const cfg = this.getEmailJSConfig();
+    if (cfg.publicKey && typeof emailjs !== "undefined") {
+      emailjs.init({ publicKey: cfg.publicKey });
+      console.log("EmailJS initialized successfully.");
     }
   }
 
@@ -1705,16 +1725,16 @@ class StoreApp {
     });
 
     // Send email notifications
-    const settings = this.config.settings;
-    const hasEmailJS = settings.emailjsPublicKey && settings.emailjsServiceId && settings.emailjsOrderTemplateId;
+    const cfg = this.getEmailJSConfig();
+    const hasEmailJS = cfg.publicKey && cfg.serviceId && cfg.orderTemplateId;
     
     let emailPromise = Promise.resolve();
 
     if (hasEmailJS && typeof emailjs !== "undefined") {
       // Send via EmailJS (to customer)
       emailPromise = emailjs.send(
-        settings.emailjsServiceId.trim(),
-        settings.emailjsOrderTemplateId.trim(),
+        cfg.serviceId,
+        cfg.orderTemplateId,
         {
           order_id: orderId,
           ref_code: refCode,

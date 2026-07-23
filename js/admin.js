@@ -1223,9 +1223,10 @@ class AdminApp {
 
     const originalText = btn.innerText;
     
-    const serviceId = this.config.settings.emailjsServiceId;
-    const templateId = this.config.settings.emailjsPaymentReceivedTemplateId;
-    const publicKey = this.config.settings.emailjsPublicKey;
+    const cfg = this.getEmailJSConfig();
+    const serviceId = cfg.serviceId;
+    const templateId = cfg.paymentReceivedTemplateId;
+    const publicKey = cfg.publicKey;
 
     if (!templateId) {
       alert("&#9888;️ Please configure the 'EmailJS Payment Received Template ID' inside the SEO & Bank Settings tab first.");
@@ -1654,8 +1655,8 @@ class AdminApp {
       console.log("Test order synced to Firebase successfully.");
 
       // 3. Send Email notifications (EmailJS & FormSubmit)
-      const settings = this.config.settings || {};
-      const hasEmailJS = settings.emailjsPublicKey && settings.emailjsServiceId && settings.emailjsOrderTemplateId;
+      const cfg = this.getEmailJSConfig();
+      const hasEmailJS = cfg.publicKey && cfg.serviceId && cfg.orderTemplateId;
 
       // Compile order summary text
       let orderItemsText = "";
@@ -1675,11 +1676,11 @@ class AdminApp {
       if (hasEmailJS && typeof emailjs !== "undefined") {
         try {
           // Initialize EmailJS
-          emailjs.init({ publicKey: settings.emailjsPublicKey.trim() });
+          emailjs.init({ publicKey: cfg.publicKey });
 
           await emailjs.send(
-            settings.emailjsServiceId.trim(),
-            settings.emailjsOrderTemplateId.trim(),
+            cfg.serviceId,
+            cfg.orderTemplateId,
             {
               order_id: orderId,
               ref_code: refCode,
