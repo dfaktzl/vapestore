@@ -124,23 +124,22 @@
         </div>
         <div class="hero-visual">
           <div class="hero-glow-ring"></div>
-          <div class="hero-floating-card" style="cursor: pointer;" onclick="event.preventDefault(); if (window.store && window.store.config) { const p = window.store.config.products.find(x => x.id === 'alibarbar-9k-bundle'); if (p) window.store.openModal(p); }">
+          <div class="hero-floating-card" style="cursor: pointer;" onclick="document.getElementById('catalog').scrollIntoView({behavior: 'smooth'})">
             <div>
-              <div class="hero-card-header">Best Value Bundle</div>
-              <div class="hero-card-title">Alibarbar Ingot 9K</div>
+              <div class="hero-card-header" style="background: rgba(212, 175, 55, 0.15); color: var(--gold-accent); border: 1px solid rgba(212, 175, 55, 0.3);">Daily Special Promo</div>
+              <div class="hero-card-title" style="font-size: 18px; font-weight: 800; color: var(--gold-light);">Happy Hour 10% Off</div>
             </div>
-            <div style="flex-grow: 1; display: flex; justify-content: center; align-items: center; margin: 15px 0;">
-              <img src="img/alibarbar_9000.png?v=16" alt="Alibarbar Ingot 9K" style="max-height: 180px; width: auto; object-fit: contain; filter: drop-shadow(0 10px 20px rgba(0,0,0,0.55));">
+            <div style="flex-grow: 1; display: flex; justify-content: center; align-items: center; margin: 12px 0;">
+              <img src="img/happy_hour_banner.jpg?v=39" alt="Happy Hour Every Day 5 PM - 6 PM AEST 10% Off" style="max-height: 210px; width: auto; object-fit: contain; border-radius: 8px; filter: drop-shadow(0 10px 20px rgba(0,0,0,0.55)); border: 1px solid rgba(212, 175, 55, 0.2);">
             </div>
             <div>
-              <div class="hero-card-price">$220.00 <span>/ 5 Pack</span></div>
-              <p style="font-size: 12px; color: var(--text-secondary); margin-top: 8px;">
-                Customize colors/flavors in your bundle.
+              <div class="hero-card-price" style="font-size: 15px; color: var(--gold-accent); font-weight: 800;">10% OFF ALL PRODUCTS</div>
+              <p style="font-size: 12px; color: var(--text-secondary); margin-top: 6px; line-height: 1.4;">
+                Active <strong>5:00 PM &ndash; 6:00 PM AEST</strong> daily! Discount is added to your cart automatically during Happy Hour.
               </p>
             </div>
           </div>
         </div>
-      </div>
     </section>
 
     <!-- 5. CATEGORIES BAR -->

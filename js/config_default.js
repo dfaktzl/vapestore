@@ -513,7 +513,7 @@ const CONFIG_DEFAULT = {
                 "Strength": "Full Flavor / Rich Draw",
                 "Packaging": "Sealed cellophane box"
             },
-            "inStock": true,
+            "inStock": false,
             "popular": false
         },
         {
@@ -575,7 +575,7 @@ const CONFIG_DEFAULT = {
                 "Coil Type": "DUALMESHÃ¢â€žÂ¢ Dual Coil",
                 "Screen": "Battery & E-Liquid Display"
             },
-            "inStock": true,
+            "inStock": false,
             "popular": true
         },
         {
