@@ -2,126 +2,188 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://vaperaus.com/index.html</loc>
+    <lastmod>2026-07-23</lastmod>
+    <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>https://vaperaus.com/education/how-to-clean-vape-coil.html</loc>
-    <priority>0.8</priority>
+    <lastmod>2026-07-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://vaperaus.com/education/understanding-vg-pg-ratios.html</loc>
-    <priority>0.8</priority>
+    <lastmod>2026-07-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://vaperaus.com/education/cigarette-carton-storage-guide.html</loc>
-    <priority>0.8</priority>
+    <lastmod>2026-07-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://vaperaus.com/education/choosing-nicotine-strength-guide.html</loc>
-    <priority>0.8</priority>
+    <lastmod>2026-07-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://vaperaus.com/education/how-to-order-payid-guide.html</loc>
-    <priority>0.8</priority>
+    <lastmod>2026-07-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://vaperaus.com/education/disposable-vape-recycling-guide.html</loc>
-    <priority>0.8</priority>
+    <lastmod>2026-07-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://vaperaus.com/education/iget-bar-troubleshooting-guide.html</loc>
-    <priority>0.8</priority>
+    <lastmod>2026-07-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://vaperaus.com/education/vaping-vs-smoking-cost-australia.html</loc>
-    <priority>0.8</priority>
+    <lastmod>2026-07-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://vaperaus.com/education/how-to-prevent-burnt-taste-disposable-vape.html</loc>
-    <priority>0.8</priority>
+    <lastmod>2026-07-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://vaperaus.com/education/disposable-vape-formats-guide-australia.html</loc>
-    <priority>0.8</priority>
+    <lastmod>2026-07-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://vaperaus.com/education/best-high-puff-count-disposable-vapes-2026.html</loc>
-    <priority>0.8</priority>
+    <lastmod>2026-07-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://vaperaus.com/products/alibarbar-toybox-8k.html</loc>
-    <priority>0.9</priority>
+    <lastmod>2026-07-23</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.85</priority>
   </url>
   <url>
     <loc>https://vaperaus.com/products/alibarbar-ingot-9k.html</loc>
-    <priority>0.9</priority>
+    <lastmod>2026-07-23</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.85</priority>
   </url>
   <url>
     <loc>https://vaperaus.com/products/alibarbar-link-12k.html</loc>
-    <priority>0.9</priority>
+    <lastmod>2026-07-23</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.85</priority>
   </url>
   <url>
     <loc>https://vaperaus.com/products/iget-bar-3500.html</loc>
-    <priority>0.9</priority>
+    <lastmod>2026-07-23</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.85</priority>
   </url>
   <url>
     <loc>https://vaperaus.com/products/iget-bar-pro-10000.html</loc>
-    <priority>0.9</priority>
+    <lastmod>2026-07-23</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.85</priority>
   </url>
   <url>
     <loc>https://vaperaus.com/products/iget-hot-5500.html</loc>
-    <priority>0.9</priority>
+    <lastmod>2026-07-23</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.85</priority>
   </url>
   <url>
     <loc>https://vaperaus.com/products/instabar-max-7500.html</loc>
-    <priority>0.9</priority>
+    <lastmod>2026-07-23</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.85</priority>
   </url>
   <url>
     <loc>https://vaperaus.com/products/iget-bar-plus-6000.html</loc>
-    <priority>0.9</priority>
+    <lastmod>2026-07-23</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.85</priority>
   </url>
   <url>
     <loc>https://vaperaus.com/products/alibarbar-9k-bundle.html</loc>
-    <priority>0.9</priority>
+    <lastmod>2026-07-23</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.85</priority>
   </url>
   <url>
     <loc>https://vaperaus.com/products/iget-bar-3500-bundle.html</loc>
-    <priority>0.9</priority>
+    <lastmod>2026-07-23</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.85</priority>
   </url>
   <url>
     <loc>https://vaperaus.com/products/iget-bar-pro-10000-bundle.html</loc>
-    <priority>0.9</priority>
+    <lastmod>2026-07-23</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.85</priority>
   </url>
   <url>
     <loc>https://vaperaus.com/products/cig-marlboro-gold.html</loc>
-    <priority>0.9</priority>
+    <lastmod>2026-07-23</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.85</priority>
   </url>
   <url>
     <loc>https://vaperaus.com/products/cig-winfield-blue.html</loc>
-    <priority>0.9</priority>
+    <lastmod>2026-07-23</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.85</priority>
   </url>
   <url>
     <loc>https://vaperaus.com/products/cig-jps-blue.html</loc>
-    <priority>0.9</priority>
+    <lastmod>2026-07-23</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.85</priority>
   </url>
   <url>
     <loc>https://vaperaus.com/products/cig-bh-classic.html</loc>
-    <priority>0.9</priority>
+    <lastmod>2026-07-23</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.85</priority>
   </url>
   <url>
     <loc>https://vaperaus.com/products/hqd-cuvie-box.html</loc>
-    <priority>0.9</priority>
+    <lastmod>2026-07-23</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.85</priority>
   </url>
   <url>
     <loc>https://vaperaus.com/products/waka-sopro-10k-box.html</loc>
-    <priority>0.9</priority>
+    <lastmod>2026-07-23</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.85</priority>
   </url>
   <url>
     <loc>https://vaperaus.com/products/jnr-falcon-x-18000.html</loc>
-    <priority>0.9</priority>
+    <lastmod>2026-07-23</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.85</priority>
   </url>
   <url>
     <loc>https://vaperaus.com/products/jnr-vapro-7000.html</loc>
-    <priority>0.9</priority>
+    <lastmod>2026-07-23</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.85</priority>
   </url>
 </urlset>
