@@ -1677,6 +1677,7 @@ class AdminApp {
       console.log("Test order synced to Firebase successfully.");
 
       // 3. Send Email notifications (EmailJS & FormSubmit)
+      const settings = this.config?.settings || {};
       const cfg = this.getEmailJSConfig();
       const hasEmailJS = cfg.publicKey && cfg.serviceId && cfg.orderTemplateId;
 
