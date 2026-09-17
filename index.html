@@ -302,6 +302,14 @@
               </div>
 
               <!-- Shipping policy alert -->
+              <div style="margin-bottom: 20px; display: flex; align-items: flex-start; gap: 8px; background: rgba(212,175,55,0.05); padding: 12px; border: 1px solid rgba(212,175,55,0.3); border-radius: var(--radius-sm);">
+                <input type="checkbox" id="promo-addon-checkbox" style="margin-top: 3px; cursor: pointer; width: 16px; height: 16px;">
+                <label for="promo-addon-checkbox" style="font-size: 13px; color: var(--text-primary); cursor: pointer; line-height: 1.4;">
+                  <strong>Add to Recent Order (30% Off)</strong><br>
+                  <span style="font-size: 11px; color: var(--gold-light);">Check this if you ordered in the last 3 days. Get 30% off this order and free shipping so it dispatches with your last batch!</span>
+                </label>
+              </div>
+
               <div style="margin-bottom: 20px; padding: 12px; background: rgba(212,175,55,0.05); border: 1px dashed rgba(212,175,55,0.2); border-radius: var(--radius-sm); font-size: 12px; color: var(--gold-light); display: flex; align-items: flex-start; gap: 8px; line-height: 1.4;">
                 <span style="font-size:14px; margin-top:2px;">&#128666;</span>
                 <span><strong>Order Shipping Policy:</strong> Once your transfer is received, the order will be Processed and Shipped from Melbourne, VIC (usually always within 48 hours).</span>
@@ -330,6 +338,10 @@
                 <div class="cart-summary-row happy-hour-row" id="checkout-happy-hour-row" style="display: none; color: #bb88ff;">
                   <span>Happy Hour (10% Off) &#9889;</span>
                   <span id="checkout-happy-hour-discount">-$0.00</span>
+                </div>
+                <div class="cart-summary-row" id="checkout-addon-promo-row" style="display: none; color: var(--gold-light);">
+                  <span>Add-on Promo (30% Off)</span>
+                  <span id="checkout-addon-promo-text">-$0.00</span>
                 </div>
                 <div class="cart-summary-row">
                   <span>Express Shipping</span>
@@ -454,6 +466,10 @@
         <div class="cart-summary-row happy-hour-row" id="cart-happy-hour-row" style="display: none; color: #bb88ff;">
           <span>Happy Hour (10% Off) &#9889;</span>
           <span id="cart-happy-hour-discount">-$0.00</span>
+        </div>
+        <div class="cart-summary-row" id="cart-addon-promo-row" style="display: none; color: var(--gold-light);">
+          <span>Add-on Promo (30% Off)</span>
+          <span id="cart-addon-promo-text">-$0.00</span>
         </div>
         <div class="cart-summary-row">
           <span>Express Shipping</span>

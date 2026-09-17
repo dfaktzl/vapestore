@@ -1429,8 +1429,21 @@ class StoreApp {
       total -= happyHourDiscount;
     }
 
-    // Hardcode free shipping on all orders over $150
-    const shipping = (total >= 150 || total === 0) ? 0 : 15.00;
+    // NEW PROMO: Add to recent order (30% off and free shipping)
+    let isAddonPromo = false;
+    const addonCheckbox = document.getElementById("promo-addon-checkbox");
+    if (addonCheckbox && addonCheckbox.checked) {
+      isAddonPromo = true;
+    }
+    
+    let addonPromoDiscount = 0;
+    if (isAddonPromo) {
+      addonPromoDiscount = total * 0.30;
+      total -= addonPromoDiscount;
+    }
+
+    // Hardcode free shipping on all orders over $150 (or if add-on promo is active)
+    const shipping = (total >= 150 || total === 0 || isAddonPromo) ? 0 : 15.00;
     total += shipping;
 
     return {
@@ -1438,6 +1451,7 @@ class StoreApp {
       savings: isNaN(savings) ? 0 : savings,
       shipping: isNaN(shipping) ? 0 : shipping,
       happyHourDiscount: isNaN(happyHourDiscount) ? 0 : happyHourDiscount,
+      addonPromoDiscount: isNaN(addonPromoDiscount) ? 0 : addonPromoDiscount,
       total: isNaN(total) ? 0 : total,
       itemCount: isNaN(itemCount) ? 0 : itemCount
     };
@@ -1474,6 +1488,17 @@ class StoreApp {
         happyHourDiscountText.innerText = `-$${calculations.happyHourDiscount.toFixed(2)}`;
       } else {
         happyHourRow.style.display = "none";
+      }
+    }
+    
+    const cartAddonPromoRow = document.getElementById("cart-addon-promo-row");
+    const cartAddonPromoText = document.getElementById("cart-addon-promo-text");
+    if (cartAddonPromoRow && cartAddonPromoText) {
+      if (calculations.addonPromoDiscount > 0) {
+        cartAddonPromoRow.style.display = "flex";
+        cartAddonPromoText.innerText = `-$${calculations.addonPromoDiscount.toFixed(2)}`;
+      } else {
+        cartAddonPromoRow.style.display = "none";
       }
     }
 
@@ -1539,6 +1564,55 @@ class StoreApp {
      6. CHECKOUT FLOW & METADATA LOGGING
      ========================================================================== */
   
+  updateCheckoutTotals() {
+    const subtotalText = document.getElementById("checkout-subtotal");
+    const savingsText = document.getElementById("checkout-savings");
+    const shippingText = document.getElementById("checkout-shipping");
+    const totalText = document.getElementById("checkout-total");
+    const checkoutHappyHourRow = document.getElementById("checkout-happy-hour-row");
+    const checkoutHappyHourDiscountText = document.getElementById("checkout-happy-hour-discount");
+    
+    const checkoutAddonPromoRow = document.getElementById("checkout-addon-promo-row");
+    const checkoutAddonPromoText = document.getElementById("checkout-addon-promo-text");
+
+    const calculations = this.calculateOrder();
+    
+    if (subtotalText) subtotalText.innerText = `$${calculations.subtotal.toFixed(2)}`;
+    if (savingsText) {
+      if (calculations.savings > 0) {
+        savingsText.parentElement.style.display = "flex";
+        savingsText.innerText = `-$${calculations.savings.toFixed(2)}`;
+      } else {
+        savingsText.parentElement.style.display = "none";
+      }
+    }
+    
+    if (checkoutHappyHourRow && checkoutHappyHourDiscountText) {
+      if (calculations.happyHourDiscount > 0) {
+        checkoutHappyHourRow.style.display = "flex";
+        checkoutHappyHourDiscountText.innerText = `-$${calculations.happyHourDiscount.toFixed(2)}`;
+      } else {
+        checkoutHappyHourRow.style.display = "none";
+      }
+    }
+    
+    if (checkoutAddonPromoRow && checkoutAddonPromoText) {
+      if (calculations.addonPromoDiscount > 0) {
+        checkoutAddonPromoRow.style.display = "flex";
+        checkoutAddonPromoText.innerText = `-$${calculations.addonPromoDiscount.toFixed(2)}`;
+      } else {
+        checkoutAddonPromoRow.style.display = "none";
+      }
+    }
+
+    if (shippingText) {
+      shippingText.innerText = calculations.shipping === 0 ? "Free" : `$${calculations.shipping.toFixed(2)}`;
+    }
+    if (totalText) {
+      totalText.innerText = `$${calculations.total.toFixed(2)}`;
+    }
+  }
+
   openCheckout() {
     if (this.cart.length === 0) {
       alert("Your cart is empty!");
@@ -1557,28 +1631,7 @@ class StoreApp {
     document.getElementById("cart-drawer").classList.remove("active");
     document.getElementById("cart-drawer-overlay").classList.remove("active");
     
-    const calculations = this.calculateOrder();
-    
-    subtotalText.innerText = `$${calculations.subtotal.toFixed(2)}`;
-    if (calculations.savings > 0) {
-      savingsText.parentElement.style.display = "flex";
-      savingsText.innerText = `-$${calculations.savings.toFixed(2)}`;
-    } else {
-      savingsText.parentElement.style.display = "none";
-    }
-    const checkoutHappyHourRow = document.getElementById("checkout-happy-hour-row");
-    const checkoutHappyHourDiscountText = document.getElementById("checkout-happy-hour-discount");
-    if (checkoutHappyHourRow && checkoutHappyHourDiscountText) {
-      if (calculations.happyHourDiscount > 0) {
-        checkoutHappyHourRow.style.display = "flex";
-        checkoutHappyHourDiscountText.innerText = `-$${calculations.happyHourDiscount.toFixed(2)}`;
-      } else {
-        checkoutHappyHourRow.style.display = "none";
-      }
-    }
-
-    shippingText.innerText = calculations.shipping === 0 ? "Free" : `$${calculations.shipping.toFixed(2)}`;
-    totalText.innerText = `$${calculations.total.toFixed(2)}`;
+    this.updateCheckoutTotals();
     
     checkList.innerHTML = "";
     this.cart.forEach(item => {
@@ -2036,6 +2089,15 @@ class StoreApp {
     
     if (checkTrigger) checkTrigger.addEventListener("click", () => this.openCheckout());
     if (checkClose) checkClose.addEventListener("click", () => this.closeCheckout());
+    
+    // NEW PROMO checkbox listener
+    const promoAddonCheckbox = document.getElementById("promo-addon-checkbox");
+    if (promoAddonCheckbox) {
+      promoAddonCheckbox.addEventListener("change", () => {
+        this.updateCartUI();
+        this.updateCheckoutTotals();
+      });
+    }
     
     const form = document.getElementById("checkout-form");
     if (form) {
