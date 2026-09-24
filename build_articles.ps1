@@ -819,8 +819,8 @@ $flavorOptions                    </select>
   
   <!-- Primary SEO Tags -->
   <title>Buy $name Online Australia | Free Express Shipping | Vape 'R' Aus</title>
-  <meta name="description" content="Buy $name ($brand) online in Australia. Cheap wholesale rates, fast express post shipping nationwide, PayID & bank transfer accepted. Order now from Vape 'R' Aus.">
-  <meta name="keywords" content="$name, buy $name online australia, $brand vapes australia, cheap $brand australia, buy disposable vapes australia, express post vapes melbourne sydney brisbane">
+  <meta name="description" content="Buy $name ($brand) online in Australia. Cheap wholesale rates, no minimum order, fast express post shipping nationwide, PayID & bank transfer accepted. Order now from Vape 'R' Aus.">
+  <meta name="keywords" content="$name, buy $name online australia, $brand vapes australia, cheap $brand australia, buy disposable vapes australia, no minimum order vapes, express post vapes melbourne sydney brisbane">
   <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
   <link rel="canonical" href="https://vaperaus.com/products/$id.html">
 
