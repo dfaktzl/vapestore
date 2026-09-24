@@ -906,6 +906,18 @@ $flavorOptions                    </select>
         "bestRating": "5",
         "worstRating": "1"
       },
+      "review": {
+        "@type": "Review",
+        "reviewRating": {
+          "@type": "Rating",
+          "ratingValue": "5",
+          "bestRating": "5"
+        },
+        "author": {
+          "@type": "Person",
+          "name": "Verified Buyer"
+        }
+      },
       "offers": {
         "@type": "Offer",
         "url": "https://vaperaus.com/products/$id.html",
