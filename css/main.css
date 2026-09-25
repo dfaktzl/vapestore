@@ -1826,3 +1826,13 @@
   }
 }
 
+
+@keyframes attentionPulse {
+  0% { text-shadow: 0 0 2px rgba(212, 175, 55, 0.1); color: var(--text-secondary); }
+  50% { text-shadow: 0 0 12px rgba(212, 175, 55, 0.5); color: var(--gold-accent); }
+  100% { text-shadow: 0 0 2px rgba(212, 175, 55, 0.1); color: var(--text-secondary); }
+}
+.attention-text {
+  animation: attentionPulse 4s infinite ease-in-out;
+  font-weight: 500;
+}
