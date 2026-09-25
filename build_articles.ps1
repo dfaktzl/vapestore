@@ -640,6 +640,7 @@ foreach ($prod in $config.products) {
     $boxPrice = $prod.boxPrice
     $image = $prod.image
     $inStock = $prod.inStock
+    $justRestocked = $prod.justRestocked
     $isBundle = $prod.isBundle
     
     # Calculate deterministic sold count
@@ -1014,7 +1015,13 @@ $flavorOptions                    </select>
           <div style="font-family: var(--font-title); font-size: 14px; text-transform: uppercase; color: var(--gold-accent); margin-bottom: 5px; font-weight: 700; letter-spacing: 0.1em;">$brand</div>
           <h1 style="font-family: var(--font-title); font-size: 30px; font-weight: 900; color: #fff; margin: 0 0 10px 0;">$name</h1>
           
-          $(if ($inStock -ne $false) { '<div style="font-size: 13px; color: #10b981; margin-bottom: 15px; font-weight: 600; display: flex; align-items: center; gap: 6px;"><span>&#128293;</span> <span>' + $soldCount + ' items sold recently</span> &bull; <span style="color:var(--gold-accent);">&#9733;&#9733;&#9733;&#9733;&#9733; (' + $ratingVal + '/5)</span></div>' })
+          $(
+            if ($justRestocked -eq $true) {
+                '<div style="font-size: 13px; color: #10b981; margin-bottom: 15px; font-weight: 800; display: flex; align-items: center; gap: 8px;"><span style="background: rgba(16, 185, 129, 0.15); padding: 4px 10px; border-radius: 4px; border: 1px solid #10b981; text-transform: uppercase; letter-spacing: 1px;">&#9889; BACK IN STOCK!</span> &bull; <span style="color:var(--gold-accent);">&#9733;&#9733;&#9733;&#9733;&#9733; (' + $ratingVal + '/5)</span></div>'
+            } elseif ($inStock -ne $false) {
+                '<div style="font-size: 13px; color: #10b981; margin-bottom: 15px; font-weight: 600; display: flex; align-items: center; gap: 6px;"><span>&#128293;</span> <span>' + $soldCount + ' items sold recently</span> &bull; <span style="color:var(--gold-accent);">&#9733;&#9733;&#9733;&#9733;&#9733; (' + $ratingVal + '/5)</span></div>'
+            }
+          )
 
           <p style="font-size: 14px; color: var(--text-secondary); line-height: 1.6; margin-bottom: 25px;">$description</p>
 
